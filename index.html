@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>개발자KUU</title>
-<meta name="description" content="아이디어 하나를 리서치부터 배포, 회고까지 혼자 완주하는 개발자 KUU의 포트폴리오.">
+<meta name="description" content="아이디어 하나를 리서치부터 배포, 회고까지 혼자 완주하는 개발자 KUU의 프로젝트 갤러리.">
 <meta property="og:title" content="개발자KUU 포트폴리오">
-<meta property="og:description" content="리서치→설계→빌드→배포→회고. 오늘의 역기획을 8일 만에 혼자 만든 기록.">
+<meta property="og:description" content="리서치→설계→빌드→배포→회고. 직접 만든 프로젝트들을 모아둔 갤러리.">
 <meta name="theme-color" content="#3182F6">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,9 +23,8 @@
       <h1 class="wordmark">개발자<span>KUU</span></h1>
       <p class="hero-sub">아이디어 하나를 <strong>리서치 → 설계 → 빌드 → 배포 → 회고</strong>까지 <br class="br-desktop">혼자 완주합니다. 반응이 없어도 그 과정을 그대로 보여줍니다.</p>
       <div class="cta-row">
-        <a class="btn btn-primary" href="https://reverseengineeringstudyapp.vercel.app" target="_blank" rel="noopener">라이브 데모 보기</a>
-        <a class="btn btn-ghost" href="https://github.com/kumori0042-sketch/reverse-engineering-study-app" target="_blank" rel="noopener">GitHub</a>
-        <a class="btn btn-ghost" href="https://claude.ai/code/artifact/5db5e871-4dd1-40d7-bfb0-1e003d6f33b6" target="_blank" rel="noopener">케이스 스터디 →</a>
+        <a class="btn btn-primary" href="#projects">프로젝트 보기 ↓</a>
+        <a class="btn btn-ghost" href="https://github.com/kumori0042-sketch" target="_blank" rel="noopener">GitHub</a>
       </div>
     </div>
     <div class="scroll-cue" aria-hidden="true"><span></span></div>
@@ -33,108 +32,24 @@
 
   <main>
 
-    <!-- ===== STATS ===== -->
-    <section class="stats-section">
+    <!-- ===== PROJECTS GALLERY ===== -->
+    <section class="gallery-section" id="projects">
       <div class="wrap">
-        <div class="stat-grid">
-          <div class="stat-tile">
-            <div class="stat-n mono">8<span class="unit">일</span></div>
-            <div class="stat-l">기획부터 배포까지</div>
-          </div>
-          <div class="stat-tile">
-            <div class="stat-n mono">6<span class="unit">개</span></div>
-            <div class="stat-l">직접 리서치한 기업 케이스</div>
-          </div>
-          <div class="stat-tile">
-            <div class="stat-n mono">3<span class="unit">번</span></div>
-            <div class="stat-l">방향을 튼 피벗</div>
-          </div>
-          <div class="stat-tile stat-null">
-            <div class="stat-n mono">0<span class="unit">건</span></div>
-            <div class="stat-l">실사용자 반응 — 숨기지 않음</div>
-          </div>
-        </div>
-      </div>
-    </section>
+        <p class="section-eyebrow">PROJECTS</p>
+        <h2 class="section-title">만든 것들</h2>
+        <p class="section-lede">완성도보다 과정을 먼저 봅니다. 카드를 누르면 어떻게 만들었는지까지 볼 수 있습니다.</p>
 
-    <!-- ===== FEATURED PROJECT ===== -->
-    <section class="project-section">
-      <div class="wrap">
-        <p class="section-eyebrow">FEATURED PROJECT</p>
-        <h2 class="section-title">오늘의 역기획</h2>
-        <p class="section-lede">PM/서비스기획 취준생을 위한 매일 3분 역기획 습관 앱. 5주 39만원짜리 코호트 스터디의 빈틈을 발견하고, 검증부터 디자인 재작업까지 전 과정을 직접 진행했습니다.</p>
-
-        <div class="browser-frame">
-          <div class="browser-bar">
-            <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
-            <span class="browser-url">reverseengineeringstudyapp.vercel.app</span>
-          </div>
-          <iframe class="browser-iframe" src="https://reverseengineeringstudyapp.vercel.app" title="오늘의 역기획 라이브 데모" loading="lazy"></iframe>
-        </div>
-
-        <div class="feature-grid">
-          <div class="feature-card">
-            <div class="feature-k">문제</div>
-            <p>역기획이 PM 취준생의 유일한 자체 포트폴리오 수단이지만, 기존 방법은 5주 코호트(30~40만원)나 완전 혼자 하는 것뿐이었습니다.</p>
-          </div>
-          <div class="feature-card">
-            <div class="feature-k">아키텍처</div>
-            <p>BYOK 구조로 백엔드 없이 정적 사이트로 설계 — AI 호출은 사용자 키로 브라우저에서 직접, 서버 비용을 거의 0에 가깝게 만들었습니다.</p>
-          </div>
-          <div class="feature-card">
-            <div class="feature-k">검증</div>
-            <p>정식 인터뷰 대신 라이브 앱에 가격 페이크도어를 심어 실제 반응을 수집하는 구조로 전환했습니다.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== PROCESS ===== -->
-    <section class="process-section">
-      <div class="wrap">
-        <p class="section-eyebrow">HOW I BUILT IT</p>
-        <h2 class="section-title">3번의 방향 전환</h2>
-        <p class="section-lede">정답을 처음부터 알았던 게 아니라, 매번 근거를 보고 방향을 바꿨습니다.</p>
-
-        <div class="pivot-grid">
-          <div class="pivot-card">
-            <div class="pivot-n">01</div>
-            <h3>브레인스토밍 앱 → 역기획 앱</h3>
-            <p>막연한 아이디어 수집 앱에서, PM 면접 과제 포맷과 정확히 겹치는 역기획 기반으로 컨셉을 좁혔습니다.</p>
-          </div>
-          <div class="pivot-card">
-            <div class="pivot-n">02</div>
-            <h3>인터뷰 먼저 → 출시 먼저</h3>
-            <p>WTP 인터뷰 스크립트까지 준비했지만, 형식적 인터뷰보다 실제 배포 후 반응이 더 정직한 신호라고 판단해 방향을 틀었습니다.</p>
-          </div>
-          <div class="pivot-card">
-            <div class="pivot-n">03</div>
-            <h3>편집적 디자인 → 토스 스타일</h3>
-            <p>세리프 헤드라인의 실험적 디자인을 사용자 피드백을 받고 전면 재작업 — 실배포 제품과 리포트의 디자인 기준은 다르다는 걸 배웠습니다.</p>
-          </div>
-        </div>
-
-        <a class="btn btn-primary btn-wide" href="https://claude.ai/code/artifact/5db5e871-4dd1-40d7-bfb0-1e003d6f33b6" target="_blank" rel="noopener">전체 8일 타임라인 · 회고 읽기 →</a>
+        <div class="filter-row" id="filter-row"></div>
+        <div class="project-grid" id="project-grid"></div>
       </div>
     </section>
 
     <!-- ===== SKILLS ===== -->
     <section class="skills-section">
       <div class="wrap">
-        <p class="section-eyebrow">DEMONSTRATED</p>
-        <h2 class="section-title">이 프로젝트로 보여준 것</h2>
-        <div class="skill-grid">
-          <div class="skill-chip">시장·경쟁사 실사 리서치</div>
-          <div class="skill-chip">제품 요구사항 정의</div>
-          <div class="skill-chip">BYOK 아키텍처 설계</div>
-          <div class="skill-chip">프론트엔드 구현 (Vanilla JS)</div>
-          <div class="skill-chip">서버리스 함수 · 영구 저장소 구축</div>
-          <div class="skill-chip">Vercel 배포 · CI 연결</div>
-          <div class="skill-chip">가격 정책 페이크도어 테스트</div>
-          <div class="skill-chip">디자인 시스템 반복 개선</div>
-          <div class="skill-chip">커뮤니티 채널 운영</div>
-          <div class="skill-chip">데이터 기반 정직한 회고</div>
-        </div>
+        <p class="section-eyebrow">CROSS-PROJECT</p>
+        <h2 class="section-title">반복해서 하는 것들</h2>
+        <div class="skill-grid" id="skill-grid"></div>
       </div>
     </section>
 
@@ -144,14 +59,21 @@
     <div class="wrap footer-inner">
       <div class="footer-brand">개발자KUU</div>
       <div class="footer-links">
-        <a href="https://reverseengineeringstudyapp.vercel.app" target="_blank" rel="noopener">라이브 데모</a>
-        <a href="https://github.com/kumori0042-sketch/reverse-engineering-study-app" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://github.com/kumori0042-sketch" target="_blank" rel="noopener">GitHub</a>
         <a href="https://disquiet.io/products/0f22c5c3-7692-448e-85d8-485b7a8598f0" target="_blank" rel="noopener">디스콰이엇</a>
-        <a href="https://claude.ai/code/artifact/5db5e871-4dd1-40d7-bfb0-1e003d6f33b6" target="_blank" rel="noopener">케이스 스터디</a>
       </div>
     </div>
   </footer>
 
+  <!-- ===== PROJECT DETAIL MODAL ===== -->
+  <div class="modal-backdrop" id="modal-backdrop" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <button type="button" class="modal-close" id="modal-close" aria-label="닫기">✕</button>
+      <div class="modal-scroll" id="modal-body"></div>
+    </div>
+  </div>
+
+<script src="projects.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
