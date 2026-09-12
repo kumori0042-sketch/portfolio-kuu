@@ -181,4 +181,34 @@
   );
   observeReveal(document.querySelectorAll(".skill-chip"), 40);
   observeReveal(document.querySelectorAll(".site-footer"), 0);
+
+  // ---------- 방문자 카운터 ----------
+  (async function trackVisit() {
+    const el = document.getElementById("visit-count");
+    if (!el) return;
+    try {
+      const alreadyCounted = sessionStorage.getItem("kuu_visit_counted");
+      const res = await fetch("/api/visits", { method: alreadyCounted ? "GET" : "POST" });
+      const data = await res.json();
+      sessionStorage.setItem("kuu_visit_counted", "1");
+      el.textContent = `누적 방문 ${data.count.toLocaleString()}명`;
+    } catch (e) {
+      el.textContent = "";
+    }
+  })();
+
+  // ---------- 링크 복사 ----------
+  const copyBtn = document.getElementById("btn-copy-link");
+  if (copyBtn) {
+    copyBtn.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(location.href);
+        const original = copyBtn.textContent;
+        copyBtn.textContent = "복사됐어요!";
+        setTimeout(() => (copyBtn.textContent = original), 1500);
+      } catch (e) {
+        copyBtn.textContent = "복사 실패";
+      }
+    });
+  }
 })();
