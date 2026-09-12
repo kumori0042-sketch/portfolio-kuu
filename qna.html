@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#3182F6">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Gothic+A1:wght@400;500;600;700;800;900&family=Noto+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@400;500;600;700;800;900&family=Noto+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 <link rel="stylesheet" href="qna.css">
 </head>
@@ -17,7 +17,10 @@
   <header class="qna-header">
     <div class="wrap qna-header-inner">
       <a class="qna-brand" href="index.html">개발자KUU</a>
-      <a class="qna-back" href="index.html">← 포트폴리오로</a>
+      <div class="qna-header-right">
+        <div id="auth-area" class="auth-area"></div>
+        <a class="qna-back" href="index.html">← 포트폴리오로</a>
+      </div>
     </div>
   </header>
 
@@ -33,10 +36,11 @@
     <section class="qna-ask-section">
       <div class="wrap">
         <div class="ask-card">
-          <div class="field">
+          <div class="field" id="ask-name-field">
             <label class="k" for="ask-name">이름 (선택)</label>
             <input type="text" id="ask-name" placeholder="익명이어도 괜찮아요">
           </div>
+          <p id="ask-as" class="ask-as" hidden></p>
           <div class="field">
             <label class="k" for="ask-question">질문</label>
             <textarea id="ask-question" rows="3" placeholder="궁금한 걸 편하게 적어주세요."></textarea>

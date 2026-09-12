@@ -1,10 +1,15 @@
 import { put, list } from "@vercel/blob";
+import { verifySessionCookie, parseCookies } from "./_session.js";
 
 // 질문과 답변을 별도 파일로 저장(append-only). Vercel Blob의 같은 경로 덮어쓰기는
 // CDN 캐시 때문에 즉시 반영이 안 되는 경우가 있어, 절대 덮어쓰지 않고 새 파일만 추가한다.
 // qna/<id>-q.json  질문
 // qna/<id>-a.json  답변 (있으면)
 export default async function handler(req, res) {
+  const cookies = parseCookies(req);
+  const sessionUser = verifySessionCookie(cookies.session);
+  const isOwner = !!sessionUser && sessionUser.login === process.env.OWNER_GITHUB_LOGIN;
+
   if (req.method === "GET") {
     const { blobs } = await list({ prefix: "qna/" });
     const byId = {};
@@ -42,7 +47,9 @@ export default async function handler(req, res) {
       const record = {
         id: newId,
         question: question.trim().slice(0, 500),
-        name: (name || "").trim().slice(0, 50) || "익명",
+        name: sessionUser ? sessionUser.name || sessionUser.login : (name || "").trim().slice(0, 50) || "익명",
+        avatar: sessionUser ? sessionUser.avatar : null,
+        githubLogin: sessionUser ? sessionUser.login : null,
         ts: new Date().toISOString()
       };
       await put(`qna/${newId}-q.json`, JSON.stringify(record), {
@@ -55,7 +62,8 @@ export default async function handler(req, res) {
     }
 
     if (type === "answer") {
-      if (!key || key !== process.env.ADMIN_KEY) {
+      const authorized = isOwner || (key && key === process.env.ADMIN_KEY);
+      if (!authorized) {
         res.status(403).json({ error: "권한이 없어요." });
         return;
       }
