@@ -49,12 +49,39 @@
       card.addEventListener("click", () => openModal(p));
       grid.appendChild(card);
     });
+    observeReveal(grid.querySelectorAll(".project-card"), 80);
   }
 
   function renderSkills() {
     const set = new Set();
     PROJECTS.forEach((p) => p.skills.forEach((s) => set.add(s)));
     skillGrid.innerHTML = [...set].map((s) => `<div class="skill-chip">${s}</div>`).join("");
+  }
+
+  // ---------- 스크롤 등장 애니메이션 ----------
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const revealObserver =
+    !reduceMotion && "IntersectionObserver" in window
+      ? new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("reveal-visible");
+                revealObserver.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.15, rootMargin: "0px 0px -40px 0px" }
+        )
+      : null;
+
+  function observeReveal(elements, stagger) {
+    if (!revealObserver) return; // reduced-motion이거나 미지원 브라우저면 그냥 기본 상태로 보임
+    elements.forEach((el, i) => {
+      el.classList.add("reveal-init");
+      if (stagger) el.style.transitionDelay = `${i * stagger}ms`;
+      revealObserver.observe(el);
+    });
   }
 
   // ---------- 모달 ----------
@@ -141,4 +168,17 @@
   renderFilters();
   renderCards("전체");
   renderSkills();
+
+  observeReveal(
+    document.querySelectorAll(
+      ".gallery-section .section-eyebrow, .gallery-section .section-title, .gallery-section .section-lede, .gallery-section .filter-row"
+    ),
+    0
+  );
+  observeReveal(
+    document.querySelectorAll(".skills-section .section-eyebrow, .skills-section .section-title"),
+    0
+  );
+  observeReveal(document.querySelectorAll(".skill-chip"), 40);
+  observeReveal(document.querySelectorAll(".site-footer"), 0);
 })();
