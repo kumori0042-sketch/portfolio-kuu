@@ -146,6 +146,62 @@
     });
   }
 
+  // ---------- 문단 스크롤 워드 리빌 (studioloop.com.br 참고) ----------
+  // 공백이 없는 일본어도 제대로 나뉘도록 Intl.Segmenter 우선 사용, 미지원 브라우저는 공백 분리로 폴백
+  function segmentText(text, lang) {
+    if (typeof Intl !== "undefined" && Intl.Segmenter) {
+      try {
+        return [...new Intl.Segmenter(lang || "ko", { granularity: "word" }).segment(text)];
+      } catch (e) {
+        /* fall through */
+      }
+    }
+    return text.split(/(\s+)/).filter(Boolean).map((s) => ({ segment: s, isWordLike: !/^\s+$/.test(s) }));
+  }
+
+  function wrapWordsPreservingTags(root, lang) {
+    function walk(node) {
+      if (node.nodeType === Node.TEXT_NODE) {
+        const frag = document.createDocumentFragment();
+        segmentText(node.textContent, lang).forEach(({ segment, isWordLike }) => {
+          if (isWordLike) {
+            const span = document.createElement("span");
+            span.className = "sw";
+            span.textContent = segment;
+            frag.appendChild(span);
+          } else {
+            frag.appendChild(document.createTextNode(segment));
+          }
+        });
+        node.replaceWith(frag);
+      } else if (node.nodeType === Node.ELEMENT_NODE) {
+        [...node.childNodes].forEach(walk);
+      }
+    }
+    [...root.childNodes].forEach(walk);
+  }
+
+  let ledeObserver = null;
+  function enableWordReveal(el) {
+    if (!el || reduceMotion || !("IntersectionObserver" in window)) return;
+    if (ledeObserver) ledeObserver.disconnect();
+    wrapWordsPreservingTags(el, window.getLang ? window.getLang() : "ko");
+    const words = el.querySelectorAll(".sw");
+    if (!words.length) return;
+    const thresholds = Array.from({ length: 21 }, (_, i) => i / 20);
+    ledeObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const progress = Math.min(1, entry.intersectionRatio / 0.8);
+          const revealCount = Math.round(progress * words.length);
+          words.forEach((w, i) => w.classList.toggle("sw-active", i < revealCount));
+        });
+      },
+      { threshold: thresholds }
+    );
+    ledeObserver.observe(el);
+  }
+
   // ---------- 모달 ----------
   const backdrop = document.getElementById("modal-backdrop");
   const modalBody = document.getElementById("modal-body");
@@ -230,17 +286,19 @@
   renderFilters();
   renderSkills();
 
+  const ledeEl = document.querySelector(".gallery-section .section-lede");
+  enableWordReveal(ledeEl);
+
   window.addEventListener("langchange", () => {
     renderFilters();
+    enableWordReveal(ledeEl);
   });
 
   playHeroEntrance();
   enableHeroTilt();
 
   observeReveal(
-    document.querySelectorAll(
-      ".gallery-section .section-eyebrow, .gallery-section .section-lede, .gallery-section .filter-row"
-    ),
+    document.querySelectorAll(".gallery-section .section-eyebrow, .gallery-section .filter-row"),
     0
   );
   observeReveal(document.querySelectorAll(".gallery-section .section-title"), 0, "title");
@@ -248,6 +306,9 @@
   observeReveal(document.querySelectorAll(".skills-section .section-title"), 0, "title");
   observeReveal(document.querySelectorAll(".skill-chip"), 40);
   observeReveal(document.querySelectorAll(".site-footer"), 0);
+
+  const metaYearEl = document.getElementById("meta-year");
+  if (metaYearEl) metaYearEl.textContent = new Date().getFullYear();
 
   // ---------- 방문자 카운터 ----------
   let visitCount = null;
