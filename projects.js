@@ -52,5 +52,47 @@ const PROJECTS = [
       github: "https://github.com/kumori0042-sketch/reverse-engineering-study-app",
       caseStudy: "https://claude.ai/code/artifact/5db5e871-4dd1-40d7-bfb0-1e003d6f33b6"
     }
+  },
+  {
+    id: "dev-goods-shop",
+    name: "버그없음 마켓",
+    tagline: "개발자를 위한, 개발자가 만든 굿즈 데모 쇼핑몰",
+    year: "2026",
+    tags: ["Web App", "E-commerce", "Solo"],
+    accent: "#3182F6",
+    accent2: "#12B886",
+    cover: { type: "iframe", src: "https://dev-goods-shop.vercel.app" },
+    description:
+      "상품 목록 + 장바구니 + 체크아웃까지 실제로 눌러볼 수 있는 이커머스 데모입니다. 결제·배송은 처리하지 않지만, 주문 접수 자체는 서버리스 함수로 실제 동작해 주문번호가 발급됩니다.",
+    stats: [
+      { n: "8종", l: "개발자 굿즈 상품" },
+      { n: "1개", l: "서버리스 함수" },
+      { n: "0원", l: "실제 결제, 완전 데모", isNull: true },
+      { n: "100%", l: "실제로 작동하는 주문 흐름" }
+    ],
+    pivots: [
+      {
+        n: "01",
+        title: "실제 결제 대신 모의 체크아웃",
+        body: "포트폴리오 데모에 진짜 결제 연동은 과하다고 판단 — 대신 주문 접수 자체는 서버로 실제 전송되고 주문번호가 발급되도록 만들어 '진짜 동작하는 절반'과 '데모인 절반'을 명확히 나눴습니다."
+      },
+      {
+        n: "02",
+        title: "덮어쓰기 대신 append-only 저장",
+        body: "이전 프로젝트(Q&A 게시판)에서 Vercel Blob 덮어쓰기가 CDN 캐시 때문에 즉시 반영 안 되는 문제를 겪어서, 주문 데이터도 처음부터 새 파일만 추가하는 방식으로 설계했습니다."
+      }
+    ],
+    skills: [
+      "장바구니 상태 관리 (localStorage)",
+      "체크아웃 플로우 설계",
+      "서버리스 주문 접수 API",
+      "Vercel Blob 영구 저장",
+      "일관된 디자인 시스템 재사용",
+      "Vercel 배포 · CI 연결"
+    ],
+    links: {
+      live: "https://dev-goods-shop.vercel.app",
+      github: "https://github.com/kumori0042-sketch/dev-goods-shop"
+    }
   }
 ];
