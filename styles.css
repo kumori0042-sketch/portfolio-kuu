@@ -12,6 +12,7 @@
   --null-soft:#FFEEEF;
   --shadow-card:0 1px 2px rgba(15,23,42,.04), 0 8px 24px rgba(15,23,42,.05);
   --shadow-pop:0 4px 14px rgba(49,130,246,.25);
+  --glare:rgba(255,255,255,.35);
   --r-lg:20px;
   --r-md:14px;
   --r-sm:10px;
@@ -24,6 +25,7 @@
     --null:#FF6B75; --null-soft:#3A1E20;
     --shadow-card:0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.28);
     --shadow-pop:0 4px 16px rgba(69,147,252,.3);
+    --glare:rgba(255,255,255,.14);
   }
 }
 :root[data-theme="dark"]{
@@ -32,6 +34,7 @@
   --null:#FF6B75; --null-soft:#3A1E20;
   --shadow-card:0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.28);
   --shadow-pop:0 4px 16px rgba(69,147,252,.3);
+  --glare:rgba(255,255,255,.14);
 }
 
 *{box-sizing:border-box;}
@@ -72,12 +75,12 @@ a{color:var(--accent-ink); text-decoration:none; font-weight:600;}
 .br-desktop{display:none;}
 @media (min-width:640px){ .br-desktop{display:inline;} }
 
-.hero-preview{position:relative;}
+.hero-preview{position:relative; perspective:900px;}
 .hero-frame{
   margin-bottom:0; transform:rotate(1.2deg); box-shadow:0 24px 56px rgba(15,23,42,.14);
-  transition:transform .35s ease, box-shadow .35s ease;
+  transition:transform .25s ease-out, box-shadow .35s ease; will-change:transform;
 }
-.hero-frame:hover{transform:rotate(0deg) scale(1.01); box-shadow:0 30px 64px rgba(15,23,42,.18);}
+.hero-frame:hover{box-shadow:0 30px 64px rgba(15,23,42,.18);}
 .hero-iframe{height:340px;}
 .hero-live-badge{
   display:inline-flex; align-items:center; gap:8px; margin-top:18px;
@@ -118,11 +121,17 @@ section{padding:72px 0;}
 /* ================= gallery: project cards ================= */
 .project-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:20px;}
 .project-card{
-  border-radius:var(--r-lg); overflow:hidden; cursor:pointer; border:1px solid var(--line);
+  position:relative; border-radius:var(--r-lg); overflow:hidden; cursor:pointer; border:1px solid var(--line);
   background:var(--card); box-shadow:var(--shadow-card);
-  transition:transform .2s ease, box-shadow .2s ease;
+  transition:transform .2s ease, box-shadow .2s ease; will-change:transform;
 }
 .project-card:hover{transform:translateY(-4px); box-shadow:0 16px 32px rgba(15,23,42,.1);}
+.project-card::after{
+  content:""; position:absolute; inset:0; z-index:2; pointer-events:none; opacity:0; border-radius:inherit;
+  background:radial-gradient(220px circle at var(--mx,50%) var(--my,50%), var(--glare), transparent 60%);
+  transition:opacity .25s ease;
+}
+.project-card.tilt-active::after{opacity:1;}
 .card-cover{
   position:relative; aspect-ratio:16/10; display:flex; align-items:flex-end; padding:20px;
   background:var(--accent-soft); overflow:hidden;
@@ -231,3 +240,7 @@ section{padding:72px 0;}
 @media (prefers-reduced-motion: reduce){
   .reveal-init{opacity:1; transform:none; transition:none;}
 }
+
+/* 제목이 왼쪽에서 오른쪽으로 드러나는 텍스트 리빌 */
+.title-reveal{clip-path:inset(0 100% 0 -2%);}
+.title-reveal.reveal-visible{clip-path:inset(0 0 0 -2%); transition:clip-path .85s cubic-bezier(.16,.84,.2,1);}

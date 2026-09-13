@@ -51,6 +51,7 @@
         </div>
       `;
       card.addEventListener("click", () => openModal(p));
+      enableCardTilt(card);
       grid.appendChild(card);
     });
     observeReveal(grid.querySelectorAll(".project-card"), 80);
@@ -62,8 +63,9 @@
     skillGrid.innerHTML = [...set].map((s) => `<div class="skill-chip">${s}</div>`).join("");
   }
 
-  // ---------- 스크롤 등장 애니메이션 ----------
+  // ---------- 스크롤 등장 애니메이션 / 마우스 반응형 ----------
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
   const revealObserver =
     !reduceMotion && "IntersectionObserver" in window
       ? new IntersectionObserver(
@@ -79,12 +81,68 @@
         )
       : null;
 
-  function observeReveal(elements, stagger) {
+  function observeReveal(elements, stagger, variant) {
     if (!revealObserver) return; // reduced-motion이거나 미지원 브라우저면 그냥 기본 상태로 보임
+    const cls = variant === "title" ? "title-reveal" : "reveal-init";
     elements.forEach((el, i) => {
-      el.classList.add("reveal-init");
+      el.classList.add(cls);
       if (stagger) el.style.transitionDelay = `${i * stagger}ms`;
       revealObserver.observe(el);
+    });
+  }
+
+  // 히어로는 스크롤 없이 바로 보이는 영역이라 IntersectionObserver 대신 로드 시 바로 재생
+  function playHeroEntrance() {
+    if (!revealObserver) return;
+    const titleEls = document.querySelectorAll(".hero-copy .eyebrow, .hero-copy .wordmark");
+    const fadeEls = document.querySelectorAll(".hero-copy .hero-sub, .hero-copy .cta-row");
+    titleEls.forEach((el, i) => {
+      el.classList.add("title-reveal");
+      el.style.transitionDelay = `${i * 110}ms`;
+    });
+    fadeEls.forEach((el, i) => {
+      el.classList.add("reveal-init");
+      el.style.transitionDelay = `${titleEls.length * 110 + i * 110}ms`;
+    });
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        titleEls.forEach((el) => el.classList.add("reveal-visible"));
+        fadeEls.forEach((el) => el.classList.add("reveal-visible"));
+      });
+    });
+  }
+
+  // 히어로 브라우저 목업: 마우스 위치에 따라 살짝 기울어지는 패럴랙스
+  function enableHeroTilt() {
+    const preview = document.querySelector(".hero-preview");
+    const frame = document.querySelector(".hero-frame");
+    if (!preview || !frame || !finePointer || reduceMotion) return;
+    preview.addEventListener("mousemove", (e) => {
+      const rect = preview.getBoundingClientRect();
+      const px = (e.clientX - rect.left) / rect.width - 0.5;
+      const py = (e.clientY - rect.top) / rect.height - 0.5;
+      frame.style.transform = `perspective(900px) rotateX(${(-py * 8).toFixed(2)}deg) rotateY(${(px * 10).toFixed(2)}deg) scale(1.015)`;
+    });
+    preview.addEventListener("mouseleave", () => {
+      frame.style.transform = "";
+    });
+  }
+
+  // 프로젝트 카드: 마우스 위치에 따라 기울어지고 은은한 하이라이트가 따라다님
+  function enableCardTilt(card) {
+    if (!finePointer || reduceMotion) return;
+    card.addEventListener("mousemove", (e) => {
+      const rect = card.getBoundingClientRect();
+      const px = (e.clientX - rect.left) / rect.width;
+      const py = (e.clientY - rect.top) / rect.height;
+      card.style.transform = `perspective(700px) rotateX(${(-(py - 0.5) * 10).toFixed(2)}deg) rotateY(${((px - 0.5) * 10).toFixed(2)}deg) translateY(-4px)`;
+      card.style.setProperty("--mx", `${(px * 100).toFixed(1)}%`);
+      card.style.setProperty("--my", `${(py * 100).toFixed(1)}%`);
+      card.classList.add("tilt-active");
+    });
+    card.addEventListener("mouseleave", () => {
+      card.style.transform = "";
+      card.classList.remove("tilt-active");
     });
   }
 
@@ -176,16 +234,18 @@
     renderFilters();
   });
 
+  playHeroEntrance();
+  enableHeroTilt();
+
   observeReveal(
     document.querySelectorAll(
-      ".gallery-section .section-eyebrow, .gallery-section .section-title, .gallery-section .section-lede, .gallery-section .filter-row"
+      ".gallery-section .section-eyebrow, .gallery-section .section-lede, .gallery-section .filter-row"
     ),
     0
   );
-  observeReveal(
-    document.querySelectorAll(".skills-section .section-eyebrow, .skills-section .section-title"),
-    0
-  );
+  observeReveal(document.querySelectorAll(".gallery-section .section-title"), 0, "title");
+  observeReveal(document.querySelectorAll(".skills-section .section-eyebrow"), 0);
+  observeReveal(document.querySelectorAll(".skills-section .section-title"), 0, "title");
   observeReveal(document.querySelectorAll(".skill-chip"), 40);
   observeReveal(document.querySelectorAll(".site-footer"), 0);
 
