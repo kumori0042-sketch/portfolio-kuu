@@ -279,9 +279,41 @@
   backdrop.addEventListener("click", (e) => {
     if (e.target === backdrop) closeModal();
   });
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && !backdrop.hidden) closeModal();
+
+  // ---------- 첫 방문 환영 모달 ----------
+  const LS_INTRO_SEEN = "kuu_intro_seen";
+  const introBackdrop = document.getElementById("intro-backdrop");
+  const introClose = document.getElementById("intro-close");
+  const introCta = document.getElementById("intro-cta");
+  const introReplayBtn = document.getElementById("btn-intro-replay");
+
+  function openIntro() {
+    introBackdrop.hidden = false;
+    document.body.style.overflow = "hidden";
+  }
+  function closeIntro() {
+    introBackdrop.hidden = true;
+    document.body.style.overflow = "";
+    localStorage.setItem(LS_INTRO_SEEN, "1");
+  }
+  introClose.addEventListener("click", closeIntro);
+  introCta.addEventListener("click", closeIntro);
+  introBackdrop.addEventListener("click", (e) => {
+    if (e.target === introBackdrop) closeIntro();
   });
+  introReplayBtn.addEventListener("click", openIntro);
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key !== "Escape") return;
+    if (!introBackdrop.hidden) closeIntro();
+    else if (!backdrop.hidden) closeModal();
+  });
+
+  try {
+    if (!localStorage.getItem(LS_INTRO_SEEN)) openIntro();
+  } catch (e) {
+    /* localStorage 접근 불가 환경이면 그냥 스킵 */
+  }
 
   renderFilters();
   renderSkills();
