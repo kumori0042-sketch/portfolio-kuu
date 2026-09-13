@@ -119,6 +119,32 @@ a{color:var(--accent-ink); text-decoration:none; font-weight:600;}
 .btn-ghost{background:var(--card); color:var(--ink); border-color:var(--line);}
 .btn-ghost:hover{border-color:var(--accent);}
 
+/* ================= about ================= */
+.now-badge{
+  display:inline-flex; align-items:center; gap:10px; margin-top:22px; padding:10px 16px;
+  border:1px solid var(--line); border-radius:var(--r-pill); background:var(--card);
+  font-family:"Gothic A1"; font-size:.86rem; font-weight:600; color:var(--ink-soft);
+}
+
+/* ================= writing ================= */
+.writing-list{display:flex; flex-direction:column;}
+.writing-item{
+  display:flex; align-items:baseline; gap:24px; padding:20px 6px; border-bottom:1px solid var(--line);
+  text-decoration:none; transition:background .15s ease;
+}
+.writing-item:first-child{border-top:1px solid var(--line);}
+.writing-item:hover{background:var(--accent-soft);}
+.writing-date{flex:0 0 auto; font-size:.78rem; color:var(--ink-faint);}
+.writing-body{flex:1; display:flex; flex-direction:column; gap:5px; min-width:0;}
+.writing-title{font-family:"Gothic A1"; font-weight:800; color:var(--ink); font-size:1rem;}
+.writing-summary{font-size:.85rem; color:var(--ink-soft); line-height:1.6;}
+.writing-arrow{flex:0 0 auto; color:var(--ink-faint); transition:transform .15s ease, color .15s ease;}
+.writing-item:hover .writing-arrow{transform:translateX(4px); color:var(--accent-ink);}
+@media (max-width:560px){
+  .writing-item{flex-wrap:wrap; gap:6px 24px;}
+  .writing-date{order:-1; flex-basis:100%;}
+}
+
 /* ================= shared section chrome ================= */
 section{padding:72px 0;}
 .section-eyebrow{font-family:"Gothic A1"; font-size:.78rem; font-weight:700; letter-spacing:-.005em; color:var(--accent-ink); margin:0 0 12px;}

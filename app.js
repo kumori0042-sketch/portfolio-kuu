@@ -181,15 +181,16 @@
     [...root.childNodes].forEach(walk);
   }
 
-  let ledeObserver = null;
+  const ledeObservers = new Map();
   function enableWordReveal(el) {
     if (!el || reduceMotion || !("IntersectionObserver" in window)) return;
-    if (ledeObserver) ledeObserver.disconnect();
+    const prev = ledeObservers.get(el);
+    if (prev) prev.disconnect();
     wrapWordsPreservingTags(el, window.getLang ? window.getLang() : "ko");
     const words = el.querySelectorAll(".sw");
     if (!words.length) return;
     const thresholds = Array.from({ length: 21 }, (_, i) => i / 20);
-    ledeObserver = new IntersectionObserver(
+    const obs = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           const progress = Math.min(1, entry.intersectionRatio / 0.8);
@@ -199,7 +200,26 @@
       },
       { threshold: thresholds }
     );
-    ledeObserver.observe(el);
+    obs.observe(el);
+    ledeObservers.set(el, obs);
+  }
+
+  // ---------- 회고 · 노트 ----------
+  function renderWritings() {
+    const list = document.getElementById("writing-list");
+    if (!list || typeof WRITINGS === "undefined") return;
+    list.innerHTML = WRITINGS.map(
+      (w) => `
+      <a class="writing-item" href="${w.url}" target="_blank" rel="noopener">
+        <span class="writing-date mono">${w.date}</span>
+        <span class="writing-body">
+          <span class="writing-title">${w.title}</span>
+          <span class="writing-summary">${w.summary}</span>
+        </span>
+        <span class="writing-arrow">→</span>
+      </a>`
+    ).join("");
+    observeReveal(list.querySelectorAll(".writing-item"), 60);
   }
 
   // ---------- 모달 ----------
@@ -317,18 +337,24 @@
 
   renderFilters();
   renderSkills();
+  renderWritings();
 
-  const ledeEl = document.querySelector(".gallery-section .section-lede");
-  enableWordReveal(ledeEl);
+  const wordRevealEls = [
+    document.querySelector(".about-section .section-lede"),
+    document.querySelector(".gallery-section .section-lede")
+  ].filter(Boolean);
+  wordRevealEls.forEach(enableWordReveal);
 
   window.addEventListener("langchange", () => {
     renderFilters();
-    enableWordReveal(ledeEl);
+    wordRevealEls.forEach(enableWordReveal);
   });
 
   playHeroEntrance();
   enableHeroTilt();
 
+  observeReveal(document.querySelectorAll(".about-section .section-eyebrow, .about-section .now-badge"), 0);
+  observeReveal(document.querySelectorAll(".about-section .section-title"), 0, "title");
   observeReveal(
     document.querySelectorAll(".gallery-section .section-eyebrow, .gallery-section .filter-row"),
     0
@@ -337,6 +363,8 @@
   observeReveal(document.querySelectorAll(".skills-section .section-eyebrow"), 0);
   observeReveal(document.querySelectorAll(".skills-section .section-title"), 0, "title");
   observeReveal(document.querySelectorAll(".skill-chip"), 40);
+  observeReveal(document.querySelectorAll(".writing-section .section-eyebrow"), 0);
+  observeReveal(document.querySelectorAll(".writing-section .section-title"), 0, "title");
   observeReveal(document.querySelectorAll(".site-footer"), 0);
 
   const metaYearEl = document.getElementById("meta-year");
