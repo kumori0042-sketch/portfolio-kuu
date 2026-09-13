@@ -1,6 +1,7 @@
 // 한국어/일본어/영어 3개국어 전환. localStorage에 저장하고, 없으면 브라우저 언어로 추정한다.
 const I18N = {
   ko: {
+    "site.title": "개발자KUU — 자기소개 및 포트폴리오",
     "meta.origin": "[ 한국 출신 · 일본에서 만듭니다 ]",
     "hero.eyebrow": "PORTFOLIO",
     "hero.wordmark.prefix": "개발자",
@@ -68,6 +69,7 @@ const I18N = {
     "qna.answerNeedText": "답변을 입력해주세요."
   },
   ja: {
+    "site.title": "開発者KUU — 自己紹介・ポートフォリオ",
     "meta.origin": "[ 韓国出身 · 日本で開発中 ]",
     "hero.eyebrow": "ポートフォリオ",
     "hero.wordmark.prefix": "開発者",
@@ -135,6 +137,7 @@ const I18N = {
     "qna.answerNeedText": "回答を入力してください。"
   },
   en: {
+    "site.title": "Developer KUU — About & Portfolio",
     "meta.origin": "[ Korean · building from Japan ]",
     "hero.eyebrow": "PORTFOLIO",
     "hero.wordmark.prefix": "Developer",
