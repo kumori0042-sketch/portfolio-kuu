@@ -6,19 +6,22 @@
   const filterRow = document.getElementById("filter-row");
   const skillGrid = document.getElementById("skill-grid");
 
+  const ALL_TAG = "__all__";
+
   function allTags() {
     const set = new Set();
-    PROJECTS.forEach((p) => p.tags.forEach((t) => set.add(t)));
-    return ["전체", ...set];
+    PROJECTS.forEach((p) => p.tags.forEach((tag) => set.add(tag)));
+    return [ALL_TAG, ...set];
   }
 
   function renderFilters() {
+    const activeTag = filterRow.querySelector(".filter-chip.active")?.dataset.tag || ALL_TAG;
     filterRow.innerHTML = "";
-    allTags().forEach((tag, i) => {
+    allTags().forEach((tag) => {
       const chip = document.createElement("button");
       chip.type = "button";
-      chip.className = "filter-chip" + (i === 0 ? " active" : "");
-      chip.textContent = tag;
+      chip.className = "filter-chip" + (tag === activeTag ? " active" : "");
+      chip.textContent = tag === ALL_TAG ? window.t("filter.all") : tag;
       chip.dataset.tag = tag;
       chip.addEventListener("click", () => {
         filterRow.querySelectorAll(".filter-chip").forEach((c) => c.classList.remove("active"));
@@ -27,11 +30,12 @@
       });
       filterRow.appendChild(chip);
     });
+    renderCards(activeTag);
   }
 
   function renderCards(filterTag) {
     grid.innerHTML = "";
-    const list = !filterTag || filterTag === "전체" ? PROJECTS : PROJECTS.filter((p) => p.tags.includes(filterTag));
+    const list = !filterTag || filterTag === ALL_TAG ? PROJECTS : PROJECTS.filter((p) => p.tags.includes(filterTag));
     list.forEach((p) => {
       const card = document.createElement("article");
       card.className = "project-card";
@@ -166,8 +170,11 @@
   });
 
   renderFilters();
-  renderCards("전체");
   renderSkills();
+
+  window.addEventListener("langchange", () => {
+    renderFilters();
+  });
 
   observeReveal(
     document.querySelectorAll(
@@ -183,6 +190,12 @@
   observeReveal(document.querySelectorAll(".site-footer"), 0);
 
   // ---------- 방문자 카운터 ----------
+  let visitCount = null;
+  function renderVisitCount() {
+    const el = document.getElementById("visit-count");
+    if (!el || visitCount == null) return;
+    el.textContent = window.t("footer.visits", visitCount);
+  }
   (async function trackVisit() {
     const el = document.getElementById("visit-count");
     if (!el) return;
@@ -191,11 +204,13 @@
       const res = await fetch("/api/visits", { method: alreadyCounted ? "GET" : "POST" });
       const data = await res.json();
       sessionStorage.setItem("kuu_visit_counted", "1");
-      el.textContent = `누적 방문 ${data.count.toLocaleString()}명`;
+      visitCount = data.count;
+      renderVisitCount();
     } catch (e) {
       el.textContent = "";
     }
   })();
+  window.addEventListener("langchange", renderVisitCount);
 
   // ---------- 링크 복사 ----------
   const copyBtn = document.getElementById("btn-copy-link");
@@ -204,10 +219,10 @@
       try {
         await navigator.clipboard.writeText(location.href);
         const original = copyBtn.textContent;
-        copyBtn.textContent = "복사됐어요!";
+        copyBtn.textContent = window.t("footer.copied");
         setTimeout(() => (copyBtn.textContent = original), 1500);
       } catch (e) {
-        copyBtn.textContent = "복사 실패";
+        copyBtn.textContent = window.t("footer.copyFailed");
       }
     });
   }

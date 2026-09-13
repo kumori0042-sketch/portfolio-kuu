@@ -46,6 +46,19 @@ a{color:var(--accent-ink); text-decoration:none; font-weight:600;}
 .mono{font-family:"IBM Plex Mono",ui-monospace,monospace; font-variant-numeric:tabular-nums;}
 .wrap{max-width:1040px; margin:0 auto; padding:0 24px;}
 
+/* ================= top bar (brand + language switch) ================= */
+.site-topbar{border-bottom:1px solid var(--line); background:var(--card);}
+.topbar-inner{display:flex; align-items:center; justify-content:space-between; padding:14px 24px;}
+.brand{font-family:"Gothic A1"; font-weight:800; font-size:1.02rem; color:var(--ink);}
+
+.lang-switch{display:flex; gap:2px; background:var(--paper); border:1px solid var(--line); border-radius:var(--r-pill); padding:3px;}
+.lang-switch button{
+  font-family:"Gothic A1"; font-size:.8rem; font-weight:700; color:var(--ink-faint);
+  background:transparent; border:none; border-radius:var(--r-pill); padding:6px 12px; cursor:pointer;
+}
+.lang-switch button.active{background:var(--accent); color:#fff;}
+.lang-switch button:hover:not(.active){color:var(--ink);}
+
 /* ================= hero ================= */
 .hero{padding:80px 0 88px; border-bottom:1px solid var(--line); overflow:hidden;}
 .hero-grid{display:grid; grid-template-columns:1.05fr .95fr; gap:52px; align-items:center;}

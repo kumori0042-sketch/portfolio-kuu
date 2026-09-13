@@ -14,13 +14,19 @@
 </head>
 <body>
 <script src="common.js"></script>
+<script src="i18n.js"></script>
 
   <header class="qna-header">
     <div class="wrap qna-header-inner">
       <a class="qna-brand" href="index.html">개발자KUU</a>
       <div class="qna-header-right">
+        <div class="lang-switch">
+          <button type="button" data-lang="ko">한</button>
+          <button type="button" data-lang="ja">日</button>
+          <button type="button" data-lang="en">EN</button>
+        </div>
         <div id="auth-area" class="auth-area"></div>
-        <a class="qna-back" href="index.html">← 포트폴리오로</a>
+        <a class="qna-back" href="index.html" data-i18n="qna.back">← 포트폴리오로</a>
       </div>
     </div>
   </header>
@@ -28,9 +34,9 @@
   <main>
     <section class="qna-hero">
       <div class="wrap">
-        <p class="section-eyebrow">Q&amp;A</p>
-        <h1 class="section-title" style="font-size:clamp(1.9rem,4.5vw,2.6rem);">무엇이든 물어보세요</h1>
-        <p class="section-lede">프로젝트, 기술 선택, 혹은 그냥 궁금한 것. 여기 남기시면 직접 답합니다.</p>
+        <p class="section-eyebrow" data-i18n="qna.eyebrow">Q&amp;A</p>
+        <h1 class="section-title" style="font-size:clamp(1.9rem,4.5vw,2.6rem);" data-i18n="qna.title">무엇이든 물어보세요</h1>
+        <p class="section-lede" data-i18n="qna.lede">프로젝트, 기술 선택, 혹은 그냥 궁금한 것. 여기 남기시면 직접 답합니다.</p>
       </div>
     </section>
 
@@ -38,15 +44,15 @@
       <div class="wrap">
         <div class="ask-card">
           <div class="field" id="ask-name-field">
-            <label class="k" for="ask-name">이름 (선택)</label>
-            <input type="text" id="ask-name" placeholder="익명이어도 괜찮아요">
+            <label class="k" for="ask-name" data-i18n="qna.nameLabel">이름 (선택)</label>
+            <input type="text" id="ask-name" placeholder="익명이어도 괜찮아요" data-i18n-placeholder="qna.namePlaceholder">
           </div>
           <p id="ask-as" class="ask-as" hidden></p>
           <div class="field">
-            <label class="k" for="ask-question">질문</label>
-            <textarea id="ask-question" rows="3" placeholder="궁금한 걸 편하게 적어주세요."></textarea>
+            <label class="k" for="ask-question" data-i18n="qna.questionLabel">질문</label>
+            <textarea id="ask-question" rows="3" placeholder="궁금한 걸 편하게 적어주세요." data-i18n-placeholder="qna.questionPlaceholder"></textarea>
           </div>
-          <button type="button" id="btn-ask-submit" class="btn btn-primary">질문 남기기</button>
+          <button type="button" id="btn-ask-submit" class="btn btn-primary" data-i18n="qna.submit">질문 남기기</button>
           <p id="ask-status" class="status-line" hidden></p>
         </div>
       </div>
@@ -55,11 +61,11 @@
     <section class="qna-list-section">
       <div class="wrap">
         <div class="qna-list-head">
-          <p class="section-eyebrow" style="margin:0;">ALL QUESTIONS</p>
+          <p class="section-eyebrow" style="margin:0;" data-i18n="qna.listHead">ALL QUESTIONS</p>
           <span id="qna-count" class="qna-count mono"></span>
         </div>
         <div id="qna-empty" class="empty-state" hidden>
-          <p>아직 질문이 없어요. 첫 질문을 남겨보세요.</p>
+          <p data-i18n="qna.empty">아직 질문이 없어요. 첫 질문을 남겨보세요.</p>
         </div>
         <div id="qna-list" class="qna-list"></div>
       </div>
@@ -70,7 +76,7 @@
     <div class="wrap footer-inner">
       <div class="footer-brand">개발자KUU</div>
       <div class="footer-links">
-        <a href="index.html">포트폴리오</a>
+        <a href="index.html" data-i18n="footer.portfolio">포트폴리오</a>
         <a href="https://github.com/kumori0042-sketch" target="_blank" rel="noopener">GitHub</a>
       </div>
     </div>

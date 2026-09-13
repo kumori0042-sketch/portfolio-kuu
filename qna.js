@@ -41,7 +41,7 @@
 
   function renderAuth() {
     if (!currentUser) {
-      authArea.innerHTML = `<a class="gh-login-btn" href="/api/auth/login">GitHub으로 로그인</a>`;
+      authArea.innerHTML = `<a class="gh-login-btn" href="/api/auth/login">${window.t("qna.login")}</a>`;
       nameField.hidden = false;
       askAs.hidden = true;
       return;
@@ -52,14 +52,14 @@
         <span>${escapeHtml(currentUser.name)}</span>
         ${isOwner ? '<span class="owner-badge">OWNER</span>' : ""}
       </div>
-      <button type="button" class="auth-logout" id="btn-logout">로그아웃</button>
+      <button type="button" class="auth-logout" id="btn-logout">${window.t("qna.logout")}</button>
     `;
     document.getElementById("btn-logout").addEventListener("click", () => {
       window.location.href = "/api/auth/logout";
     });
     nameField.hidden = true;
     askAs.hidden = false;
-    askAs.textContent = `"${currentUser.name}"(GitHub) 이름으로 질문을 남깁니다.`;
+    askAs.textContent = window.t("qna.askAs", currentUser.name);
   }
 
   // ---------- 목록 렌더 ----------
@@ -81,36 +81,36 @@
   }
 
   function renderAnswer(p) {
-    return `<div class="qna-answer"><div class="k">개발자KUU의 답변</div><p>${escapeHtml(p.answer)}</p></div>`;
+    return `<div class="qna-answer"><div class="k">${window.t("qna.answerBy")}</div><p>${escapeHtml(p.answer)}</p></div>`;
   }
 
   function renderPending(p) {
     if (isOwner) {
       // 소유자로 로그인한 경우 키 입력 없이 바로 답변 작성
       return `
-        <p class="qna-pending">아직 답변 대기 중이에요.</p>
-        <button type="button" class="answer-toggle" data-id="${p.id}">답변 작성</button>
+        <p class="qna-pending">${window.t("qna.pending")}</p>
+        <button type="button" class="answer-toggle" data-id="${p.id}">${window.t("qna.answerToggleOwner")}</button>
         <div class="answer-form" hidden data-id="${p.id}">
           <div class="field">
-            <textarea rows="2" class="answer-text" placeholder="답변을 적어주세요."></textarea>
+            <textarea rows="2" class="answer-text" placeholder="${window.t("qna.answerContentPlaceholder")}"></textarea>
           </div>
-          <button type="button" class="btn btn-primary answer-submit" data-id="${p.id}">답변 등록</button>
+          <button type="button" class="btn btn-primary answer-submit" data-id="${p.id}">${window.t("qna.answerSubmit")}</button>
           <p class="status-line answer-status" hidden></p>
         </div>`;
     }
     return `
-      <p class="qna-pending">아직 답변 대기 중이에요.</p>
-      <button type="button" class="answer-toggle" data-id="${p.id}">답변하기 (관리자)</button>
+      <p class="qna-pending">${window.t("qna.pending")}</p>
+      <button type="button" class="answer-toggle" data-id="${p.id}">${window.t("qna.answerToggleGuest")}</button>
       <div class="answer-form" hidden data-id="${p.id}">
         <div class="field">
-          <label class="k">관리자 키</label>
-          <input type="password" class="admin-key-input" placeholder="키 입력">
+          <label class="k">${window.t("qna.adminKeyLabel")}</label>
+          <input type="password" class="admin-key-input" placeholder="${window.t("qna.adminKeyPlaceholder")}">
         </div>
         <div class="field">
-          <label class="k">답변 내용</label>
-          <textarea rows="2" class="answer-text" placeholder="답변을 적어주세요."></textarea>
+          <label class="k">${window.t("qna.answerContentLabel")}</label>
+          <textarea rows="2" class="answer-text" placeholder="${window.t("qna.answerContentPlaceholder")}"></textarea>
         </div>
-        <button type="button" class="btn btn-primary answer-submit" data-id="${p.id}">답변 등록</button>
+        <button type="button" class="btn btn-primary answer-submit" data-id="${p.id}">${window.t("qna.answerSubmit")}</button>
         <p class="status-line answer-status" hidden></p>
       </div>`;
   }
@@ -127,7 +127,7 @@
       const answer = item.querySelector(".answer-text").value.trim();
       const statusEl = item.querySelector(".answer-status");
       if (!answer || (!isOwner && !key)) {
-        showStatus(statusEl, isOwner ? "답변을 입력해주세요." : "키와 답변을 모두 입력해주세요.", true);
+        showStatus(statusEl, isOwner ? window.t("qna.answerNeedText") : window.t("qna.answerNeedBoth"), true);
         return;
       }
       const btn = e.currentTarget;
@@ -155,15 +155,16 @@
       listEl.innerHTML = "";
       if (!data.posts || data.posts.length === 0) {
         emptyEl.hidden = false;
+        emptyEl.querySelector("p").textContent = window.t("qna.empty");
         countEl.textContent = "";
         return;
       }
       emptyEl.hidden = true;
-      countEl.textContent = `${data.posts.length}개`;
+      countEl.textContent = window.t("qna.count", data.posts.length);
       data.posts.forEach((p) => listEl.appendChild(renderPost(p)));
     } catch (e) {
       emptyEl.hidden = false;
-      emptyEl.querySelector("p").textContent = "질문을 불러오지 못했어요. 새로고침해주세요.";
+      emptyEl.querySelector("p").textContent = window.t("qna.loadError");
     }
   }
 
@@ -172,13 +173,13 @@
     const question = document.getElementById("ask-question").value.trim();
     const statusEl = document.getElementById("ask-status");
     if (!question) {
-      showStatus(statusEl, "질문을 입력해주세요.", true);
+      showStatus(statusEl, window.t("qna.needQuestion"), true);
       return;
     }
     const btn = document.getElementById("btn-ask-submit");
     btn.disabled = true;
     const original = btn.textContent;
-    btn.textContent = "등록 중...";
+    btn.textContent = window.t("qna.submitting");
     try {
       const res = await fetch("/api/qna", {
         method: "POST",
@@ -189,7 +190,7 @@
       if (!res.ok) throw new Error(data.error || "전송 실패");
       document.getElementById("ask-name").value = "";
       document.getElementById("ask-question").value = "";
-      showStatus(statusEl, "질문이 등록됐어요. 답변을 기다려주세요!", false);
+      showStatus(statusEl, window.t("qna.submitted"), false);
       await loadPosts();
     } catch (err) {
       showStatus(statusEl, "등록하지 못했어요: " + err.message, true);
@@ -197,6 +198,11 @@
       btn.disabled = false;
       btn.textContent = original;
     }
+  });
+
+  window.addEventListener("langchange", () => {
+    renderAuth();
+    loadPosts();
   });
 
   (async function init() {

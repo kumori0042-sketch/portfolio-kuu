@@ -15,18 +15,30 @@
 </head>
 <body>
 <script src="common.js"></script>
+<script src="i18n.js"></script>
+
+  <div class="site-topbar">
+    <div class="wrap topbar-inner">
+      <a class="brand" href="#">개발자KUU</a>
+      <div class="lang-switch">
+        <button type="button" data-lang="ko">한</button>
+        <button type="button" data-lang="ja">日</button>
+        <button type="button" data-lang="en">EN</button>
+      </div>
+    </div>
+  </div>
 
   <!-- ===== HERO ===== -->
   <header class="hero">
     <div class="wrap hero-grid">
       <div class="hero-copy">
-        <p class="eyebrow">PORTFOLIO</p>
-        <h1 class="wordmark">개발자<span>KUU</span></h1>
-        <p class="hero-sub">아이디어 하나를 <strong>리서치 → 설계 → 빌드 → 배포 → 회고</strong>까지<br class="br-desktop"> 혼자 완주합니다. 반응이 없어도 그 과정을 그대로 보여줍니다.</p>
+        <p class="eyebrow" data-i18n="hero.eyebrow">PORTFOLIO</p>
+        <h1 class="wordmark"><span class="wm-prefix" data-i18n="hero.wordmark.prefix">개발자</span><span data-i18n="hero.wordmark.name">KUU</span></h1>
+        <p class="hero-sub" data-i18n="hero.sub">아이디어 하나를 <strong>리서치 → 설계 → 빌드 → 배포 → 회고</strong>까지<br class="br-desktop"> 혼자 완주합니다. 반응이 없어도 그 과정을 그대로 보여줍니다.</p>
         <div class="cta-row">
-          <a class="btn btn-primary" href="#projects">프로젝트 보기 ↓</a>
-          <a class="btn btn-ghost" href="qna.html">Q&amp;A</a>
-          <a class="btn btn-ghost" href="https://github.com/kumori0042-sketch" target="_blank" rel="noopener">GitHub</a>
+          <a class="btn btn-primary" href="#projects" data-i18n="hero.cta.projects">프로젝트 보기 ↓</a>
+          <a class="btn btn-ghost" href="qna.html" data-i18n="hero.cta.qna">Q&amp;A</a>
+          <a class="btn btn-ghost" href="https://github.com/kumori0042-sketch" target="_blank" rel="noopener" data-i18n="hero.cta.github">GitHub</a>
         </div>
       </div>
       <div class="hero-preview">
@@ -37,7 +49,7 @@
           </div>
           <iframe class="browser-iframe hero-iframe" src="https://reverseengineeringstudyapp.vercel.app" title="오늘의 역기획 라이브 미리보기" loading="lazy"></iframe>
         </div>
-        <span class="hero-live-badge"><span class="live-dot"></span>지금 실제로 작동하는 앱입니다</span>
+        <span class="hero-live-badge"><span class="live-dot"></span><span data-i18n="hero.liveBadge">지금 실제로 작동하는 앱입니다</span></span>
       </div>
     </div>
   </header>
@@ -47,9 +59,9 @@
     <!-- ===== PROJECTS GALLERY ===== -->
     <section class="gallery-section" id="projects">
       <div class="wrap">
-        <p class="section-eyebrow">PROJECTS</p>
-        <h2 class="section-title">만든 것들</h2>
-        <p class="section-lede">완성도보다 과정을 먼저 봅니다. 카드를 누르면 어떻게 만들었는지까지 볼 수 있습니다.</p>
+        <p class="section-eyebrow" data-i18n="projects.eyebrow">PROJECTS</p>
+        <h2 class="section-title" data-i18n="projects.title">만든 것들</h2>
+        <p class="section-lede" data-i18n="projects.lede">완성도보다 과정을 먼저 봅니다. 카드를 누르면 어떻게 만들었는지까지 볼 수 있습니다.</p>
 
         <div class="filter-row" id="filter-row"></div>
         <div class="project-grid" id="project-grid"></div>
@@ -59,8 +71,8 @@
     <!-- ===== SKILLS ===== -->
     <section class="skills-section">
       <div class="wrap">
-        <p class="section-eyebrow">CROSS-PROJECT</p>
-        <h2 class="section-title">반복해서 하는 것들</h2>
+        <p class="section-eyebrow" data-i18n="skills.eyebrow">CROSS-PROJECT</p>
+        <h2 class="section-title" data-i18n="skills.title">반복해서 하는 것들</h2>
         <div class="skill-grid" id="skill-grid"></div>
       </div>
     </section>
@@ -72,15 +84,15 @@
       <div>
         <div class="footer-brand">개발자KUU</div>
         <p class="footer-meta">
-          <span id="visit-count">방문 집계 중...</span> ·
-          <a href="https://github.com/kumori0042-sketch/portfolio-kuu" target="_blank" rel="noopener">이 사이트 코드 보기</a>
+          <span id="visit-count">...</span> ·
+          <a href="https://github.com/kumori0042-sketch/portfolio-kuu" target="_blank" rel="noopener" data-i18n="footer.viewCode">이 사이트 코드 보기</a>
         </p>
       </div>
       <div class="footer-links">
-        <button type="button" id="btn-copy-link" class="footer-link-btn">🔗 링크 복사</button>
-        <a href="qna.html">Q&amp;A</a>
-        <a href="https://github.com/kumori0042-sketch" target="_blank" rel="noopener">GitHub</a>
-        <a href="https://disquiet.io/products/0f22c5c3-7692-448e-85d8-485b7a8598f0" target="_blank" rel="noopener">디스콰이엇</a>
+        <button type="button" id="btn-copy-link" class="footer-link-btn" data-i18n="footer.copyLink">🔗 링크 복사</button>
+        <a href="qna.html" data-i18n="footer.qna">Q&amp;A</a>
+        <a href="https://github.com/kumori0042-sketch" target="_blank" rel="noopener" data-i18n="footer.github">GitHub</a>
+        <a href="https://disquiet.io/products/0f22c5c3-7692-448e-85d8-485b7a8598f0" target="_blank" rel="noopener" data-i18n="footer.disquiet">디스콰이엇</a>
       </div>
     </div>
   </footer>
