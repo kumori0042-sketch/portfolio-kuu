@@ -2,15 +2,22 @@
 .qna-header-inner{display:flex; align-items:center; justify-content:space-between;}
 .qna-header-right{display:flex; align-items:center; gap:18px;}
 .qna-brand{font-family:"Gothic A1"; font-weight:800; color:var(--ink); letter-spacing:-.01em;}
-.qna-back{font-size:.86rem; font-weight:600; color:var(--ink-soft);}
+.qna-back{position:relative; font-size:.86rem; font-weight:600; color:var(--ink-soft); padding-bottom:2px;}
+.qna-back::after{
+  content:""; position:absolute; left:0; right:100%; bottom:0; height:1px; background:var(--accent-ink);
+  transition:right .2s ease;
+}
 .qna-back:hover{color:var(--accent-ink);}
+.qna-back:hover::after{right:0;}
 
 .auth-area{display:flex; align-items:center; gap:10px;}
 .gh-login-btn{
   display:inline-flex; align-items:center; gap:8px; font-family:"Gothic A1"; font-weight:700; font-size:.84rem;
   color:#fff; background:#171A21; border:none; border-radius:999px; padding:9px 16px; cursor:pointer; text-decoration:none;
+  transition:filter .15s ease, transform .18s cubic-bezier(.2,.8,.2,1), box-shadow .18s ease;
 }
-.gh-login-btn:hover{filter:brightness(1.2);}
+.gh-login-btn:hover{filter:brightness(1.2); transform:translateY(-2px); box-shadow:0 8px 18px rgba(0,0,0,.18);}
+.gh-login-btn:active{transform:translateY(0) scale(.97);}
 .auth-user{display:flex; align-items:center; gap:8px; font-size:.86rem; color:var(--ink-soft); font-weight:600;}
 .auth-user img{width:26px; height:26px; border-radius:50%;}
 .owner-badge{font-family:"IBM Plex Mono"; font-size:.66rem; font-weight:700; color:var(--accent-ink); background:var(--accent-soft); border-radius:999px; padding:2px 9px;}
@@ -39,7 +46,11 @@
 .qna-list-head{display:flex; align-items:baseline; justify-content:space-between; margin-bottom:20px;}
 .qna-count{font-size:.8rem; color:var(--ink-faint);}
 .qna-list{display:flex; flex-direction:column; gap:16px; max-width:760px;}
-.qna-item{border:1px solid var(--line); border-radius:18px; background:var(--card); box-shadow:var(--shadow-card); padding:24px;}
+.qna-item{
+  border:1px solid var(--line); border-radius:18px; background:var(--card); box-shadow:var(--shadow-card); padding:24px;
+  transition:transform .18s ease, box-shadow .18s ease;
+}
+.qna-item:hover{transform:translateY(-3px); box-shadow:0 14px 28px rgba(15,23,42,.09);}
 .qna-meta{display:flex; gap:10px; align-items:baseline; margin-bottom:10px; font-size:.78rem; color:var(--ink-faint);}
 .qna-meta .name{font-family:"Gothic A1"; font-weight:700; color:var(--ink-soft);}
 .qna-question{font-size:1rem; font-weight:700; color:var(--ink); margin:0 0 14px; line-height:1.6;}
