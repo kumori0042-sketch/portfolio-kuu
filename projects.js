@@ -94,5 +94,50 @@ const PROJECTS = [
       live: "https://dev-goods-shop.vercel.app",
       github: "https://github.com/kumori0042-sketch/dev-goods-shop"
     }
+  },
+  {
+    id: "crypto-trading-bot",
+    name: "크립토 자동매매 봇",
+    tagline: "실거래 자금으로 8개월 돌린 바이낸스 선물 자동매매 시스템",
+    year: "2026",
+    tags: ["Python", "Automation", "Solo"],
+    accent: "#3182F6",
+    accent2: "#F04452",
+    cover: { type: "image", src: "crypto-bot-pipeline.svg" },
+    description:
+      "실제 자금(소액)으로 바이낸스 선물 자동매매 봇을 8개월간 운영했습니다. AI 신호 블렌딩, 다축 필터, 텔레그램 원격제어까지 17번 넘게 버전을 갈아엎었지만, 목표했던 손익분기 승률에는 끝내 도달하지 못했습니다. 그 과정을 그대로 남겼습니다.",
+    stats: [
+      { n: "8개월", l: "실거래 운영 기간" },
+      { n: "17+", l: "전략 버전 반복 (v8~v9)" },
+      { n: "8개", l: "동시 모니터링 심볼" },
+      { n: "미달성", l: "목표 손익분기 승률 — 숨기지 않음", isNull: true }
+    ],
+    pivots: [
+      {
+        n: "01",
+        title: "단일 기술지표 → AI 신호 블렌딩",
+        body: "ADX·RSI·DI 같은 기술적 지표만으로는 부족하다고 판단해, Groq API로 공포·탐욕지수·펀딩비·BTC 상관관계 같은 실시간 시장 컨텍스트를 반영하는 AI 점수를 기술점수와 블렌딩하는 구조로 바꿨습니다."
+      },
+      {
+        n: "02",
+        title: "추세추종 전용 → 횡보장 대응 추가",
+        body: "ADX가 낮은 횡보장에서 손실이 집중되는 걸 로그로 확인하고, 볼린저밴드 평균회귀 기반 RANGE 전략을 추가해 공포·탐욕 지수에 따라 진입 크기를 동적으로 조절하도록 만들었습니다."
+      },
+      {
+        n: "03",
+        title: "수수료가 손실의 41% 차지 → Maker 진입으로 전환",
+        body: "10배 레버리지 + Taker 수수료 기준으로는 손익분기 승률이 43~48%까지 올라간다는 걸 계산하고, 왕복 수수료를 0.10%에서 0.04%로 낮추는 Maker(GTX) 진입을 필수 조건으로 바꿨습니다."
+      }
+    ],
+    skills: [
+      "실거래 자동매매 시스템 설계",
+      "티어별 리스크 관리 (레버리지 · SL/TP)",
+      "AI 신호 블렌딩 (Groq API)",
+      "실거래 로그 기반 파라미터 튜닝",
+      "Telegram 원격 제어 (/pause /closeall)",
+      "장애 감지 · 워치독 구성",
+      "데이터 기반 정직한 회고"
+    ],
+    links: {}
   }
 ];
