@@ -255,7 +255,7 @@
 
       ${coverMarkup(p)}
 
-      <div class="stat-grid" style="margin-bottom:40px;">
+      <div class="stat-grid" style="margin-bottom:40px; --stat-cols:${p.stats.length};">
         ${p.stats
           .map(
             (s) => `
