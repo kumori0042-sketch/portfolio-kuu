@@ -330,8 +330,8 @@
       <a class="writing-item" href="${w.url}" target="_blank" rel="noopener">
         <span class="writing-date mono">${w.date}</span>
         <span class="writing-body">
-          <span class="writing-title">${w.title}</span>
-          <span class="writing-summary">${w.summary}</span>
+          <span class="writing-title">${L(w.title)}</span>
+          <span class="writing-summary">${L(w.summary)}</span>
         </span>
         <span class="writing-arrow">→</span>
       </a>`
@@ -352,7 +352,7 @@
             <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
             <span class="browser-url mono">${p.cover.src.replace(/^https?:\/\//, "")}</span>
           </div>
-          <iframe class="browser-iframe" src="${p.cover.src}" title="${p.name} 라이브 데모" loading="lazy"></iframe>
+          <iframe class="browser-iframe" src="${p.cover.src}" title="${window.t("a11y.demo", nm(p))}" loading="lazy"></iframe>
         </div>`;
     }
     if (p.cover.type === "video") {
@@ -361,7 +361,7 @@
           <video class="browser-iframe" src="${p.cover.src}" controls playsinline></video>
         </div>`;
     }
-    return `<div class="browser-frame"><img class="browser-iframe" src="${p.cover.src}" alt="${p.name} 스크린샷" style="object-fit:cover;"></div>`;
+    return `<div class="browser-frame"><img class="browser-iframe" src="${p.cover.src}" alt="${window.t("a11y.shot", nm(p))}" style="object-fit:cover;"></div>`;
   }
 
   let currentModal = null;

@@ -266,7 +266,13 @@ Object.assign(I18N.ko, {
   "modal.live": "라이브 데모 →",
   "modal.caseStudy": "케이스 스터디",
   "modal.prd": "기획서 1장 보기",
-  "modal.koOnly": ""
+  "modal.koOnly": "",
+  "a11y.theme": "테마 전환",
+  "a11y.themeTitle": "라이트/다크 전환",
+  "a11y.close": "닫기",
+  "a11y.heroPreview": "補助金かんたん検索 라이브 미리보기",
+  "a11y.demo": (name) => `${name} 라이브 데모`,
+  "a11y.shot": (name) => `${name} 스크린샷`
 });
 
 Object.assign(I18N.ja, {
@@ -328,7 +334,13 @@ Object.assign(I18N.ja, {
   "modal.live": "ライブデモ →",
   "modal.caseStudy": "ケーススタディ",
   "modal.prd": "企画書（1枚）を見る",
-  "modal.koOnly": ""
+  "modal.koOnly": "",
+  "a11y.theme": "テーマ切り替え",
+  "a11y.themeTitle": "ライト／ダーク切り替え",
+  "a11y.close": "閉じる",
+  "a11y.heroPreview": "補助金かんたん検索 ライブプレビュー",
+  "a11y.demo": (name) => `${name} ライブデモ`,
+  "a11y.shot": (name) => `${name} スクリーンショット`
 });
 
 Object.assign(I18N.en, {
@@ -390,7 +402,13 @@ Object.assign(I18N.en, {
   "modal.live": "Live demo →",
   "modal.caseStudy": "Case study",
   "modal.prd": "One-page brief",
-  "modal.koOnly": ""
+  "modal.koOnly": "",
+  "a11y.theme": "Switch theme",
+  "a11y.themeTitle": "Switch light/dark",
+  "a11y.close": "Close",
+  "a11y.heroPreview": "補助金かんたん検索 live preview",
+  "a11y.demo": (name) => `${name} live demo`,
+  "a11y.shot": (name) => `${name} screenshot`
 });
 
 
@@ -433,6 +451,11 @@ Object.assign(I18N.en, {
     document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
       const key = el.getAttribute("data-i18n-placeholder");
       el.setAttribute("placeholder", window.t(key));
+    });
+    ["aria-label", "title", "alt"].forEach((attr) => {
+      document.querySelectorAll(`[data-i18n-${attr}]`).forEach((el) => {
+        el.setAttribute(attr, window.t(el.getAttribute(`data-i18n-${attr}`)));
+      });
     });
     document.querySelectorAll(".lang-switch button").forEach((btn) => {
       btn.classList.toggle("active", btn.dataset.lang === currentLang);
