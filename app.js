@@ -35,7 +35,7 @@
           <div class="card-status">${statusMarkup(p)}<span class="card-year mono">${p.year}</span></div>
           <p class="card-oneliner">${esc(L(p.oneLiner))}</p>
           <ul class="card-proof">
-            <li>${esc(L(p.proof))}</li>
+            ${String(L(p.proof)).split(" · ").map((x) => `<li>${esc(x)}</li>`).join("")}
             ${p.statusNote ? `<li class="note">${esc(L(p.statusNote))}</li>` : ""}
           </ul>
           <div class="card-role"><span class="k">${window.t("card.role")}</span>${esc(L(p.role))}</div>
@@ -378,7 +378,7 @@
             (pv) => `
           <div class="pivot-card">
             <div class="pivot-n mono">${pv.n}</div>
-            <h3>${pv.title}</h3>
+            <h3>${pv.title.replace(/ → /g, "\u00a0→ ")}</h3>
             <p>${pv.body}</p>
           </div>`
           )
