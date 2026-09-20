@@ -15,6 +15,7 @@ for (const p of PROJECTS) {
     for (const l of langs) if (!p[f] || !p[f][l]) errors.push(`${p.id}.${f}.${l} 누락`);
   }
   if (p.statusNote) for (const l of langs) if (!p.statusNote[l]) errors.push(`${p.id}.statusNote.${l} 누락`);
+  if (p.links && p.links.prd && !fs.existsSync(p.links.prd)) errors.push(`${p.id}.links.prd 파일 없음: ${p.links.prd}`);
   for (const sig of p.signals || []) {
     const backed = (EVIDENCE[sig] || []).some((e) => e.project === p.id);
     if (!backed) errors.push(`${p.id}의 역량 태그 "${sig}"에 EVIDENCE 근거가 없음`);

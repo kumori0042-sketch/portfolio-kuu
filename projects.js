@@ -75,7 +75,8 @@ const PROJECTS = [
     ],
     links: {
       live: "https://jgrants-matching.vercel.app",
-      github: "https://github.com/kumori0042-sketch/jgrants-matching"
+      github: "https://github.com/kumori0042-sketch/jgrants-matching",
+      prd: "prd-jgrants.html"
     }
   },
   {

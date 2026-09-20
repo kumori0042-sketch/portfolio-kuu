@@ -265,6 +265,7 @@ Object.assign(I18N.ko, {
   "modal.howBuilt": "어떻게 만들었나",
   "modal.live": "라이브 데모 →",
   "modal.caseStudy": "케이스 스터디",
+  "modal.prd": "기획서 1장 보기",
   "modal.koOnly": ""
 });
 
@@ -326,6 +327,7 @@ Object.assign(I18N.ja, {
   "modal.howBuilt": "どう作ったか",
   "modal.live": "ライブデモ →",
   "modal.caseStudy": "ケーススタディ",
+  "modal.prd": "企画書（1枚）を見る",
   "modal.koOnly": "※ 詳細な説明は韓国語のみです。"
 });
 
@@ -387,6 +389,7 @@ Object.assign(I18N.en, {
   "modal.howBuilt": "How it was built",
   "modal.live": "Live demo →",
   "modal.caseStudy": "Case study",
+  "modal.prd": "One-page brief",
   "modal.koOnly": "Note: the detailed write-up is in Korean only."
 });
 

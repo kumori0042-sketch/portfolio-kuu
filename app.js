@@ -388,6 +388,7 @@
       <div class="cta-row" style="justify-content:flex-start;">
         ${p.links.live ? `<a class="btn btn-primary" href="${p.links.live}" target="_blank" rel="noopener">${window.t("modal.live")}</a>` : ""}
         ${p.links.github ? `<a class="btn btn-ghost btn-ghost" href="${p.links.github}" target="_blank" rel="noopener">GitHub</a>` : ""}
+        ${p.links.prd ? `<a class="btn btn-ghost" href="${p.links.prd}">${window.t("modal.prd")}</a>` : ""}
         ${p.links.caseStudy ? `<a class="btn btn-ghost btn-ghost" href="${p.links.caseStudy}" target="_blank" rel="noopener">${window.t("modal.caseStudy")}</a>` : ""}
       </div>
     `;
