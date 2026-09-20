@@ -6,11 +6,22 @@ const { PROJECTS, EVIDENCE, CONTACT } = new Function(load("projects.js") + "; re
 const I18N_SRC = load("i18n.js").split("\n(function () {")[0] + "\n; return I18N;";
 const I18N = new Function(I18N_SRC)();
 
+const { PROJECT_I18N } = new Function(load("projects-i18n.js") + "; return { PROJECT_I18N };")();
 const errors = [];
 const ids = new Set(PROJECTS.map((p) => p.id));
 const langs = ["ko", "ja", "en"];
 
 for (const p of PROJECTS) {
+  for (const l of ["ja", "en"]) {
+    const x = (PROJECT_I18N[p.id] || {})[l];
+    if (!x) { errors.push(`${p.id}: ${l} 상세 번역 없음`); continue; }
+    if (!x.description) errors.push(`${p.id}.${l}.description 누락`);
+    if ((x.stats || []).length !== p.stats.length) errors.push(`${p.id}.${l}.stats 개수 불일치`);
+    else x.stats.forEach((s, i) => { if (!s.n || !s.l) errors.push(`${p.id}.${l}.stats[${i}] 누락`); });
+    if ((x.pivots || []).length !== p.pivots.length) errors.push(`${p.id}.${l}.pivots 개수 불일치`);
+    else x.pivots.forEach((v, i) => { if (!v.title || !v.body) errors.push(`${p.id}.${l}.pivots[${i}] 누락`); });
+    if ((x.skills || []).length !== p.skills.length) errors.push(`${p.id}.${l}.skills 개수 불일치`);
+  }
   for (const f of ["oneLiner", "proof", "role", "nameL"]) {
     for (const l of langs) if (!p[f] || !p[f][l]) errors.push(`${p.id}.${f}.${l} 누락`);
   }

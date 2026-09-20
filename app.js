@@ -56,9 +56,23 @@
     observeReveal(grid.querySelectorAll(".project-card"), 80);
   }
 
+  // 상세(모달)는 한국어 원문 + projects-i18n.js의 번역을 합쳐서 보여준다
+  function localized(p) {
+    const l = window.getLang();
+    const x = l !== "ko" && typeof PROJECT_I18N !== "undefined" && PROJECT_I18N[p.id] && PROJECT_I18N[p.id][l];
+    if (!x) return p;
+    return {
+      ...p,
+      description: x.description || p.description,
+      stats: p.stats.map((s, i) => ({ ...s, ...(x.stats && x.stats[i]) })),
+      pivots: p.pivots.map((pv, i) => ({ ...pv, ...(x.pivots && x.pivots[i]) })),
+      skills: x.skills || p.skills
+    };
+  }
+
   function renderSkills() {
     const set = new Set();
-    PROJECTS.forEach((p) => p.skills.forEach((s) => set.add(s)));
+    PROJECTS.forEach((p) => localized(p).skills.forEach((s) => set.add(s)));
     skillGrid.innerHTML = [...set].map((s) => `<div class="skill-chip">${esc(s)}</div>`).join("");
   }
 
@@ -350,7 +364,10 @@
     return `<div class="browser-frame"><img class="browser-iframe" src="${p.cover.src}" alt="${p.name} 스크린샷" style="object-fit:cover;"></div>`;
   }
 
-  function openModal(p) {
+  let currentModal = null;
+  function openModal(p0) {
+    currentModal = p0;
+    const p = localized(p0);
     modalBody.innerHTML = `
       <p class="section-eyebrow">${p.year} · ${p.tags.join(" · ")}</p>
       <h2 class="section-title" id="modal-title">${esc(nm(p))}</h2>
@@ -396,6 +413,7 @@
     document.body.style.overflow = "hidden";
   }
   function closeModal() {
+    currentModal = null;
     backdrop.hidden = true;
     document.body.style.overflow = "";
     modalBody.innerHTML = "";
@@ -437,6 +455,7 @@
   renderAll();
   // 소개 문단은 스크롤로 글자가 서서히 진해지는 효과를 쓰지 않는다. 처음 보는 사람이 바로 읽을 수 있어야 해서.
   window.addEventListener("langchange", renderAll);
+  window.addEventListener("langchange", () => { if (currentModal && !backdrop.hidden) openModal(currentModal); });
 
   playHeroEntrance();
   enableHeroTilt();

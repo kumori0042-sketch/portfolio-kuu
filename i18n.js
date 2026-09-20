@@ -328,7 +328,7 @@ Object.assign(I18N.ja, {
   "modal.live": "ライブデモ →",
   "modal.caseStudy": "ケーススタディ",
   "modal.prd": "企画書（1枚）を見る",
-  "modal.koOnly": "※ 詳細な説明は韓国語のみです。"
+  "modal.koOnly": ""
 });
 
 Object.assign(I18N.en, {
@@ -390,7 +390,7 @@ Object.assign(I18N.en, {
   "modal.live": "Live demo →",
   "modal.caseStudy": "Case study",
   "modal.prd": "One-page brief",
-  "modal.koOnly": "Note: the detailed write-up is in Korean only."
+  "modal.koOnly": ""
 });
 
 
