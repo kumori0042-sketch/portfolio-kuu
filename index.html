@@ -3,10 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title data-i18n="site.title">개발자KUU — 자기소개 및 포트폴리오</title>
-<meta name="description" content="아이디어 하나를 리서치부터 배포, 회고까지 혼자 완주하는 개발자 KUU의 자기소개 및 포트폴리오.">
-<meta property="og:title" content="개발자KUU — 자기소개 및 포트폴리오">
-<meta property="og:description" content="리서치→설계→빌드→배포→회고. 직접 만든 프로젝트들을 모아둔 자기소개 및 포트폴리오.">
+<title data-i18n="site.title">KUU — PM·서비스기획 지망 포트폴리오</title>
+<meta name="description" content="PM·서비스기획 지망 KUU의 포트폴리오. 일본 중소기업용 보조금 서비스 등 프로젝트를 문제 정의부터 배포·회고까지 직접 완주했습니다.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="KUU — PM·서비스기획 지망 포트폴리오">
+<meta property="og:description" content="일본 중소기업용 보조금 서비스를 포함한 프로젝트를 문제 정의 → 범위 결정 → 개발 → 출시 → 회고까지 직접 완주. 성과가 없었던 것도 그대로 기록합니다.">
 <meta name="theme-color" content="#3182F6">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -28,82 +29,99 @@
     </div>
   </div>
 
-  <div class="meta-bar">
-    <div class="wrap meta-bar-inner">
-      <span data-i18n="meta.origin">[ 한국 출신 · 일본에서 만듭니다 ]</span>
-      <span class="meta-line"></span>
-      <span class="mono" id="meta-year">2026</span>
-    </div>
-  </div>
-
-  <!-- ===== HERO ===== -->
+  <!-- ===== HERO: 누구 / 어떤 직무 / 증거 3개 / 연락 — 첫 화면에서 다 보여야 한다 ===== -->
   <header class="hero">
     <div class="wrap hero-grid">
       <div class="hero-copy">
-        <p class="eyebrow" data-i18n="hero.eyebrow">PORTFOLIO</p>
+        <p class="eyebrow hero-role" data-i18n="hero.eyebrow">PM · 서비스기획 지망 · 일본 거주</p>
         <h1 class="wordmark"><span class="wm-prefix" data-i18n="hero.wordmark.prefix">개발자</span><span data-i18n="hero.wordmark.name">KUU</span></h1>
-        <p class="hero-sub" data-i18n="hero.sub">아이디어 하나를 <strong>리서치 → 설계 → 빌드 → 배포 → 회고</strong>까지<br class="br-desktop"> 혼자 완주합니다. 반응이 없어도 그 과정을 그대로 보여줍니다.</p>
+        <p class="hero-sub" data-i18n="hero.sub">일본 중소기업용 보조금 서비스를 포함한 프로젝트를 <strong>문제 정의 → 범위 결정 → 개발 → 출시 → 회고</strong>까지 직접 완주했습니다. 성과가 없었던 것도 그대로 기록합니다.</p>
+        <div class="hero-chips" id="hero-chips"></div>
         <div class="cta-row">
-          <a class="btn btn-primary" href="#projects" data-i18n="hero.cta.projects">프로젝트 보기 ↓</a>
-          <a class="btn btn-ghost" href="qna.html" data-i18n="hero.cta.qna">Q&amp;A</a>
-          <a class="btn btn-ghost" href="https://github.com/kumori0042-sketch" target="_blank" rel="noopener" data-i18n="hero.cta.github">GitHub</a>
+          <button type="button" class="btn btn-primary" id="cta-featured" data-i18n="hero.cta.featured">대표작 보기 →</button>
+          <a class="btn btn-ghost" href="#guide" data-i18n="hero.cta.guide">3분 가이드</a>
+          <a class="btn btn-ghost" href="#contact" data-i18n="hero.cta.contact">연락하기</a>
         </div>
       </div>
       <div class="hero-preview">
         <div class="browser-frame hero-frame">
           <div class="browser-bar">
             <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
-            <span class="browser-url mono">reverseengineeringstudyapp.vercel.app</span>
+            <span class="browser-url mono">jgrants-matching.vercel.app</span>
           </div>
-          <iframe class="browser-iframe hero-iframe" src="https://reverseengineeringstudyapp.vercel.app" title="오늘의 역기획 라이브 미리보기" loading="lazy"></iframe>
+          <iframe class="browser-iframe hero-iframe" src="https://jgrants-matching.vercel.app" title="補助金かんたん検索 라이브 미리보기" loading="lazy"></iframe>
         </div>
-        <span class="hero-live-badge"><span class="live-dot"></span><span data-i18n="hero.liveBadge">지금 실제로 작동하는 앱입니다</span></span>
+        <span class="hero-live-badge"><span class="live-dot"></span><span data-i18n="hero.liveBadge">지금 실제로 작동하는 대표작입니다</span></span>
+        <p class="hero-preview-note" data-i18n="hero.previewNote">일본 중소기업의 보조금 신청을 돕는 서비스 · jGrants 공식 API 연동</p>
       </div>
     </div>
   </header>
 
-  <!-- ===== ABOUT ===== -->
-  <section class="about-section">
+  <!-- ===== 3분 가이드 (면접관용) ===== -->
+  <section class="guide-section" id="guide">
     <div class="wrap">
-      <p class="section-eyebrow" data-i18n="about.eyebrow">ABOUT</p>
-      <h2 class="section-title" data-i18n="about.title">저는</h2>
-      <p class="section-lede" data-i18n="about.body">한국에서 나고, 지금은 일본에서 개발하고 있습니다. PM/서비스기획 직무를 목표로, 아이디어 하나를 리서치부터 배포까지 혼자 완주하며 실력을 증명하는 방식을 택했습니다. 여기 모인 프로젝트들은 전부 그 과정의 기록입니다.</p>
-      <div class="now-badge">
-        <span class="live-dot"></span>
-        <span data-i18n="about.now">지금은 새 프로젝트를 만들고, 기존 프로젝트를 다듬는 중이에요.</span>
-      </div>
+      <p class="section-eyebrow" data-i18n="guide.eyebrow">FOR REVIEWERS</p>
+      <h2 class="section-title" data-i18n="guide.title">면접관님께 · 3분 가이드</h2>
+      <p class="section-lede" data-i18n="guide.lede">처음 보시는 분이 이 순서로 보시면 3분 안에 어떤 사람인지 확인할 수 있게 구성했어요.</p>
+      <ol class="guide-steps" id="guide-steps"></ol>
     </div>
   </section>
 
   <main>
 
-    <!-- ===== PROJECTS GALLERY ===== -->
+    <!-- ===== PROJECTS ===== -->
     <section class="gallery-section" id="projects">
       <div class="wrap">
         <p class="section-eyebrow" data-i18n="projects.eyebrow">PROJECTS</p>
         <h2 class="section-title" data-i18n="projects.title">만든 것들</h2>
-        <p class="section-lede" data-i18n="projects.lede">완성도보다 과정을 먼저 봅니다. 카드를 누르면 어떻게 만들었는지까지 볼 수 있습니다.</p>
-
-        <div class="filter-row" id="filter-row"></div>
+        <p class="section-lede" data-i18n="projects.lede">카드마다 무엇을 하는 서비스인지, 제가 한 일, 그 증거를 먼저 적었습니다. 누르면 결정 과정까지 볼 수 있어요.</p>
         <div class="project-grid" id="project-grid"></div>
       </div>
     </section>
 
-    <!-- ===== SKILLS ===== -->
-    <section class="skills-section">
+    <!-- ===== EVIDENCE: PM 역량 ↔ 증거 ===== -->
+    <section class="matrix-section" id="evidence">
       <div class="wrap">
-        <p class="section-eyebrow" data-i18n="skills.eyebrow">CROSS-PROJECT</p>
-        <h2 class="section-title" data-i18n="skills.title">반복해서 하는 것들</h2>
-        <div class="skill-grid" id="skill-grid"></div>
+        <p class="section-eyebrow" data-i18n="matrix.eyebrow">EVIDENCE</p>
+        <h2 class="section-title" data-i18n="matrix.title">PM 일을 어떻게 하는지, 증거로</h2>
+        <p class="section-lede" data-i18n="matrix.lede">말이 아니라 프로젝트에서 실제로 한 일입니다. 항목을 누르면 해당 프로젝트가 열려요.</p>
+        <div class="matrix" id="matrix"></div>
+        <details class="tools-details">
+          <summary data-i18n="matrix.tools">사용한 기술·도구 전체 보기</summary>
+          <div class="skill-grid" id="skill-grid"></div>
+        </details>
+      </div>
+    </section>
+
+    <!-- ===== ABOUT ===== -->
+    <section class="about-section">
+      <div class="wrap">
+        <p class="section-eyebrow" data-i18n="about.eyebrow">ABOUT</p>
+        <h2 class="section-title" data-i18n="about.title">저는</h2>
+        <p class="section-lede" data-i18n="about.body">한국에서 나고, 지금은 일본에서 개발합니다. 일본에서 PM·서비스기획으로 일하는 것을 목표로, 문제를 정의하고 범위를 정하고 직접 만들어 출시하는 과정을 프로젝트로 증명하고 있습니다. 반응이 없었던 결과도 숨기지 않고 남깁니다.</p>
+        <div class="now-badge">
+          <span class="live-dot"></span>
+          <span data-i18n="about.now">지금은 새 프로젝트를 만들고, 기존 프로젝트를 다듬는 중이에요.</span>
+        </div>
       </div>
     </section>
 
     <!-- ===== WRITING ===== -->
-    <section class="writing-section">
+    <section class="writing-section" id="writing">
       <div class="wrap">
         <p class="section-eyebrow" data-i18n="writing.eyebrow">WRITING</p>
         <h2 class="section-title" data-i18n="writing.title">회고 · 노트</h2>
         <div class="writing-list" id="writing-list"></div>
+      </div>
+    </section>
+
+    <!-- ===== CONTACT ===== -->
+    <section class="contact-section" id="contact">
+      <div class="wrap">
+        <p class="section-eyebrow" data-i18n="contact.eyebrow">CONTACT</p>
+        <h2 class="section-title" data-i18n="contact.title">연락 · 질문</h2>
+        <p class="section-lede" data-i18n="contact.lede">가장 빠른 방법은 Q&amp;A예요. 남겨주시면 직접 답합니다.</p>
+        <div class="cta-row" id="contact-links"></div>
       </div>
     </section>
 
@@ -130,7 +148,7 @@
 
   <button type="button" id="theme-toggle" class="theme-toggle" aria-label="테마 전환" title="라이트/다크 전환">🌓</button>
 
-  <!-- ===== 첫 방문 환영 모달 ===== -->
+  <!-- ===== 사이트 소개 모달 (자동으로 뜨지 않고, 푸터의 "이 사이트는?"으로만 연다) ===== -->
   <div class="modal-backdrop" id="intro-backdrop" hidden>
     <div class="modal modal-sm" role="dialog" aria-modal="true" aria-labelledby="intro-title">
       <button type="button" class="modal-close" id="intro-close" aria-label="닫기">✕</button>

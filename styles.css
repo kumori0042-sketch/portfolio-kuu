@@ -347,3 +347,75 @@ section{padding:72px 0;}
 .sw{opacity:.28; transition:opacity .2s linear;}
 .sw.sw-active{opacity:1;}
 @media (prefers-reduced-motion: reduce){ .sw{opacity:1; transition:none;} }
+
+/* ================= 처음 보는 사람을 위한 추가 (첫 화면 / 3분 가이드 / 카드 / 증거 / 연락) ================= */
+.hero-role{font-size:.9rem; margin-bottom:14px;}
+.hero-chips{display:flex; flex-wrap:wrap; gap:8px; margin:0 0 26px;}
+.hero-chip{
+  font-family:"Gothic A1"; font-weight:800; font-size:.84rem; color:var(--ink); background:var(--card);
+  border:1px solid var(--line); border-radius:var(--r-pill); padding:8px 14px; box-shadow:var(--shadow-card);
+}
+.hero-preview-note{margin:8px 0 0; font-size:.8rem; color:var(--ink-faint);}
+
+.guide-section{padding:56px 0 8px;}
+.guide-steps{list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(4,1fr); gap:14px;}
+.guide-step{
+  background:var(--card); border:1px solid var(--line); border-radius:var(--r-md); padding:20px 18px;
+  display:flex; flex-direction:column; gap:8px; box-shadow:var(--shadow-card);
+}
+.guide-head{display:flex; align-items:center; justify-content:space-between;}
+.guide-n{width:26px; height:26px; border-radius:50%; background:var(--accent); color:#fff; display:flex; align-items:center; justify-content:center; font-size:.8rem; font-weight:700;}
+.guide-time{font-size:.74rem; color:var(--ink-faint); background:var(--paper); border-radius:var(--r-pill); padding:3px 10px;}
+.guide-step h3{font-family:"Gothic A1"; font-size:1rem; font-weight:800; margin:4px 0 0; line-height:1.4;}
+.guide-step p{font-size:.86rem; color:var(--ink-soft); margin:0; flex:1; line-height:1.65;}
+.guide-btn{
+  align-self:flex-start; margin-top:6px; font-family:"Gothic A1"; font-weight:700; font-size:.82rem; color:var(--accent-ink);
+  background:var(--accent-soft); border:none; border-radius:var(--r-pill); padding:8px 14px; cursor:pointer;
+}
+.guide-btn:hover{filter:brightness(.97);}
+@media (max-width:980px){ .guide-steps{grid-template-columns:repeat(2,1fr);} }
+@media (max-width:560px){ .guide-steps{grid-template-columns:1fr;} }
+
+.project-grid{grid-template-columns:repeat(auto-fill,minmax(320px,1fr));}
+.project-card:focus-visible{outline:3px solid var(--accent); outline-offset:3px;}
+.project-card.featured{border-color:var(--accent); box-shadow:0 0 0 1px var(--accent), var(--shadow-card);}
+.flag{
+  position:absolute; top:14px; left:14px; z-index:1; font-family:"Gothic A1"; font-weight:800; font-size:.72rem;
+  color:#fff; background:var(--accent); border-radius:var(--r-pill); padding:5px 11px;
+}
+.card-status{display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;}
+.card-status .card-year{margin:0;}
+.status-pill{display:inline-flex; align-items:center; gap:6px; font-family:"Gothic A1"; font-size:.72rem; font-weight:800; border-radius:var(--r-pill); padding:4px 10px;}
+.status-pill.live{color:var(--accent-ink); background:var(--accent-soft);}
+.status-pill.record{color:var(--ink-soft); background:var(--paper); border:1px solid var(--line);}
+.card-oneliner{font-family:"Gothic A1"; font-weight:800; font-size:1.02rem; line-height:1.5; color:var(--ink); margin:0 0 12px;}
+.card-proof{list-style:none; padding:0; margin:0 0 12px; display:flex; flex-direction:column; gap:6px;}
+.card-proof li{position:relative; padding-left:20px; font-size:.84rem; color:var(--ink-soft); line-height:1.6;}
+.card-proof li::before{content:"✓"; position:absolute; left:0; color:var(--accent-ink); font-weight:800;}
+.card-proof li.note::before{content:"!"; color:#B45309;}
+.card-role{font-size:.8rem; color:var(--ink-soft); margin-bottom:12px;}
+.card-role .k{font-family:"IBM Plex Mono"; font-size:.7rem; color:var(--ink-faint); margin-right:8px;}
+.card-signals{display:flex; flex-wrap:wrap; gap:6px; margin-bottom:14px;}
+.sig{font-family:"Gothic A1"; font-size:.72rem; font-weight:700; color:var(--accent-ink); background:var(--accent-soft); border-radius:var(--r-pill); padding:4px 10px;}
+.card-open{font-family:"Gothic A1"; font-size:.84rem; font-weight:800; color:var(--accent-ink);}
+.modal-note{font-size:.82rem; color:var(--ink-faint); margin:-6px 0 14px;}
+
+.matrix{display:flex; flex-direction:column; gap:14px; margin-bottom:28px;}
+.matrix-row{display:grid; grid-template-columns:200px 1fr; gap:18px; background:var(--card); border:1px solid var(--line); border-radius:var(--r-md); padding:18px 20px;}
+.matrix-label{font-family:"Gothic A1"; font-weight:900; font-size:1rem; color:var(--ink);}
+.matrix-items{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:6px;}
+.matrix-item{width:100%; text-align:left; display:flex; flex-direction:column; gap:3px; background:none; border:0; padding:8px 10px; border-radius:var(--r-sm); cursor:pointer; font:inherit; color:inherit;}
+.matrix-item:hover{background:var(--accent-soft);}
+.matrix-proj{font-family:"IBM Plex Mono"; font-size:.72rem; font-weight:600; color:var(--accent-ink);}
+.matrix-text{font-size:.9rem; color:var(--ink-soft); line-height:1.65;}
+@media (max-width:760px){ .matrix-row{grid-template-columns:1fr; gap:8px;} }
+.tools-details summary{cursor:pointer; font-family:"Gothic A1"; font-weight:700; color:var(--ink-soft); padding:10px 0;}
+.tools-details[open] summary{margin-bottom:14px;}
+.contact-section{padding-top:24px;}
+
+/* 카드 정보가 한 화면에 더 많이 보이도록 커버를 낮춘다 */
+.card-cover{aspect-ratio:16/7;}
+@media (max-width:480px){
+  .card-cover{aspect-ratio:16/6;}
+  .hero .cta-row .btn{padding:12px 15px; font-size:.88rem;}
+}

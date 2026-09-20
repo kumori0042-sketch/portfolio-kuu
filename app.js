@@ -3,54 +3,53 @@
 
   // ---------- 프로젝트 갤러리 (PROJECTS 배열만 늘리면 자동 반영) ----------
   const grid = document.getElementById("project-grid");
-  const filterRow = document.getElementById("filter-row");
   const skillGrid = document.getElementById("skill-grid");
 
-  const ALL_TAG = "__all__";
+  const lang = () => (window.getLang ? window.getLang() : "ko");
+  // {ko, ja, en} 형태의 다국어 필드와 일반 문자열을 모두 받는다
+  const L = (v) => (v && typeof v === "object" ? (v[lang()] ?? v.ko ?? "") : v ?? "");
+  const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const projectById = (id) => PROJECTS.find((p) => p.id === id);
+  const nm = (p) => L(p.nameL) || p.name;
+  const featured = () => PROJECTS.find((p) => p.featured) || PROJECTS[0];
 
-  function allTags() {
-    const set = new Set();
-    PROJECTS.forEach((p) => p.tags.forEach((tag) => set.add(tag)));
-    return [ALL_TAG, ...set];
+  function statusMarkup(p) {
+    if (p.status === "record") return `<span class="status-pill record">${window.t("status.record")}</span>`;
+    return `<span class="status-pill live"><span class="live-dot"></span>${window.t("status.live")}</span>`;
   }
 
-  function renderFilters() {
-    const activeTag = filterRow.querySelector(".filter-chip.active")?.dataset.tag || ALL_TAG;
-    filterRow.innerHTML = "";
-    allTags().forEach((tag) => {
-      const chip = document.createElement("button");
-      chip.type = "button";
-      chip.className = "filter-chip" + (tag === activeTag ? " active" : "");
-      chip.textContent = tag === ALL_TAG ? window.t("filter.all") : tag;
-      chip.dataset.tag = tag;
-      chip.addEventListener("click", () => {
-        filterRow.querySelectorAll(".filter-chip").forEach((c) => c.classList.remove("active"));
-        chip.classList.add("active");
-        renderCards(tag);
-      });
-      filterRow.appendChild(chip);
-    });
-    renderCards(activeTag);
-  }
-
-  function renderCards(filterTag) {
+  function renderCards() {
     grid.innerHTML = "";
-    const list = !filterTag || filterTag === ALL_TAG ? PROJECTS : PROJECTS.filter((p) => p.tags.includes(filterTag));
-    list.forEach((p) => {
+    PROJECTS.forEach((p) => {
       const card = document.createElement("article");
-      card.className = "project-card";
+      card.className = "project-card" + (p.featured ? " featured" : "");
+      card.tabIndex = 0;
+      card.setAttribute("role", "button");
+      card.setAttribute("aria-label", nm(p));
       card.innerHTML = `
         <div class="card-cover">
-          ${p.cover.type === "iframe" ? '<span class="live-badge"><span class="live-dot"></span>LIVE</span>' : ""}
-          <span class="card-cover-name">${p.name}</span>
+          ${p.featured ? `<span class="flag">${window.t("card.flagship")}</span>` : ""}
+          <span class="card-cover-name">${esc(nm(p))}</span>
         </div>
         <div class="card-body">
-          <div class="card-year mono">${p.year}</div>
-          <p class="card-tagline">${p.tagline}</p>
-          <div class="card-tags">${p.tags.map((t) => `<span class="card-tag">${t}</span>`).join("")}</div>
-        </div>
-      `;
-      card.addEventListener("click", () => openModal(p));
+          <div class="card-status">${statusMarkup(p)}<span class="card-year mono">${p.year}</span></div>
+          <p class="card-oneliner">${esc(L(p.oneLiner))}</p>
+          <ul class="card-proof">
+            <li>${esc(L(p.proof))}</li>
+            ${p.statusNote ? `<li class="note">${esc(L(p.statusNote))}</li>` : ""}
+          </ul>
+          <div class="card-role"><span class="k">${window.t("card.role")}</span>${esc(L(p.role))}</div>
+          <div class="card-signals">${(p.signals || []).map((k) => `<span class="sig">${window.t("sig." + k)}</span>`).join("")}</div>
+          <div class="card-open">${window.t("card.open")}</div>
+        </div>`;
+      const open = () => openModal(p);
+      card.addEventListener("click", open);
+      card.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          open();
+        }
+      });
       enableCardTilt(card);
       grid.appendChild(card);
     });
@@ -60,7 +59,110 @@
   function renderSkills() {
     const set = new Set();
     PROJECTS.forEach((p) => p.skills.forEach((s) => set.add(s)));
-    skillGrid.innerHTML = [...set].map((s) => `<div class="skill-chip">${s}</div>`).join("");
+    skillGrid.innerHTML = [...set].map((s) => `<div class="skill-chip">${esc(s)}</div>`).join("");
+  }
+
+  // 첫 화면 증거 칩: 숫자는 데이터에서 세어서 항상 실제와 맞는다
+  function renderHeroChips() {
+    const el = document.getElementById("hero-chips");
+    if (!el) return;
+    const decisions = PROJECTS.reduce((sum, p) => sum + p.pivots.length, 0);
+    const live = PROJECTS.filter((p) => p.links && p.links.live).length;
+    el.innerHTML = [
+      window.t("hero.chip.projects", PROJECTS.length),
+      window.t("hero.chip.live", live),
+      window.t("hero.chip.decisions", decisions)
+    ]
+      .map((x) => `<span class="hero-chip">${x}</span>`)
+      .join("");
+  }
+
+  // 면접관용 3분 가이드
+  function renderGuide() {
+    const ol = document.getElementById("guide-steps");
+    if (!ol) return;
+    const steps = [
+      { k: "s1", act: "live" },
+      { k: "s2", act: "open" },
+      { k: "s3", act: "writing" },
+      { k: "s4", act: "contact" }
+    ];
+    ol.innerHTML = steps
+      .map(
+        (st, i) => `
+      <li class="guide-step">
+        <div class="guide-head"><span class="guide-n mono">${i + 1}</span><span class="guide-time mono">${window.t("guide." + st.k + ".time")}</span></div>
+        <h3>${window.t("guide." + st.k + ".title")}</h3>
+        <p>${window.t("guide." + st.k + ".body")}</p>
+        <button type="button" class="guide-btn" data-act="${st.act}">${window.t("guide." + st.k + ".btn")}</button>
+      </li>`
+      )
+      .join("");
+  }
+
+  // PM 역량 ↔ 증거 (EVIDENCE는 projects.js)
+  function renderMatrix() {
+    const el = document.getElementById("matrix");
+    if (!el || typeof EVIDENCE === "undefined") return;
+    el.innerHTML = ["define", "scope", "ship", "learn", "uat"]
+      .map((key) => {
+        const items = (EVIDENCE[key] || [])
+          .map((r) => {
+            const p = projectById(r.project);
+            if (!p) return "";
+            return `<li><button type="button" class="matrix-item" data-project="${p.id}"><span class="matrix-proj">${esc(nm(p))}</span><span class="matrix-text">${esc(L(r.text))}</span></button></li>`;
+          })
+          .join("");
+        return `<div class="matrix-row"><div class="matrix-label">${window.t("sig." + key)}</div><ul class="matrix-items">${items}</ul></div>`;
+      })
+      .join("");
+  }
+
+  // 연락 수단: CONTACT(projects.js)에 값이 있는 것만 보여준다
+  function renderContact() {
+    const el = document.getElementById("contact-links");
+    if (!el) return;
+    const c = typeof CONTACT !== "undefined" ? CONTACT : {};
+    const items = [`<a class="btn btn-primary" href="qna.html">${window.t("contact.qna")}</a>`];
+    if (c.email) items.push(`<a class="btn btn-ghost" href="mailto:${esc(c.email)}">${window.t("contact.email")}</a>`);
+    if (c.linkedin) items.push(`<a class="btn btn-ghost" href="${esc(c.linkedin)}" target="_blank" rel="noopener">${window.t("contact.linkedin")}</a>`);
+    if (c.resume) items.push(`<a class="btn btn-ghost" href="${esc(c.resume)}" target="_blank" rel="noopener">${window.t("contact.resume")}</a>`);
+    items.push(`<a class="btn btn-ghost" href="https://github.com/kumori0042-sketch" target="_blank" rel="noopener">${window.t("contact.github")}</a>`);
+    el.innerHTML = items.join("");
+  }
+
+  function scrollToId(id) {
+    const target = document.getElementById(id);
+    if (target) target.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+  }
+
+  document.addEventListener("click", (e) => {
+    const act = e.target.closest("[data-act]");
+    if (act) {
+      const a = act.dataset.act;
+      if (a === "live") window.open(featured().links.live, "_blank", "noopener");
+      else if (a === "open") openModal(featured());
+      else if (a === "writing") scrollToId("writing");
+      else if (a === "contact") scrollToId("contact");
+      return;
+    }
+    const proj = e.target.closest("[data-project]");
+    if (proj) {
+      const p = projectById(proj.dataset.project);
+      if (p) openModal(p);
+    }
+  });
+  const ctaFeatured = document.getElementById("cta-featured");
+  if (ctaFeatured) ctaFeatured.addEventListener("click", () => openModal(featured()));
+
+  function renderAll() {
+    renderHeroChips();
+    renderGuide();
+    renderCards();
+    renderMatrix();
+    renderSkills();
+    renderWritings();
+    renderContact();
   }
 
   // ---------- 스크롤 등장 애니메이션 / 마우스 반응형 ----------
@@ -94,8 +196,9 @@
   // 히어로는 스크롤 없이 바로 보이는 영역이라 IntersectionObserver 대신 로드 시 바로 재생
   function playHeroEntrance() {
     if (!revealObserver) return;
-    const titleEls = document.querySelectorAll(".hero-copy .eyebrow, .hero-copy .wordmark");
-    const fadeEls = document.querySelectorAll(".hero-copy .hero-sub, .hero-copy .cta-row");
+    // 역할 줄(eyebrow)은 처음부터 바로 읽혀야 해서 애니메이션에서 뺀다
+    const titleEls = document.querySelectorAll(".hero-copy .wordmark");
+    const fadeEls = document.querySelectorAll(".hero-copy .hero-sub, .hero-copy .hero-chips, .hero-copy .cta-row");
     titleEls.forEach((el, i) => {
       el.classList.add("title-reveal");
       el.style.transitionDelay = `${i * 110}ms`;
@@ -250,7 +353,8 @@
   function openModal(p) {
     modalBody.innerHTML = `
       <p class="section-eyebrow">${p.year} · ${p.tags.join(" · ")}</p>
-      <h2 class="section-title" id="modal-title">${p.name}</h2>
+      <h2 class="section-title" id="modal-title">${esc(nm(p))}</h2>
+      ${window.t("modal.koOnly") ? `<p class="modal-note">${window.t("modal.koOnly")}</p>` : ""}
       <p class="section-lede">${p.description}</p>
 
       ${coverMarkup(p)}
@@ -267,7 +371,7 @@
           .join("")}
       </div>
 
-      <h3 class="section-title" style="font-size:1.2rem;">어떻게 만들었나</h3>
+      <h3 class="section-title" style="font-size:1.2rem;">${window.t("modal.howBuilt")}</h3>
       <div class="pivot-grid" style="margin-bottom:40px;">
         ${p.pivots
           .map(
@@ -282,9 +386,9 @@
       </div>
 
       <div class="cta-row" style="justify-content:flex-start;">
-        ${p.links.live ? `<a class="btn btn-primary" href="${p.links.live}" target="_blank" rel="noopener">라이브 데모 →</a>` : ""}
+        ${p.links.live ? `<a class="btn btn-primary" href="${p.links.live}" target="_blank" rel="noopener">${window.t("modal.live")}</a>` : ""}
         ${p.links.github ? `<a class="btn btn-ghost btn-ghost" href="${p.links.github}" target="_blank" rel="noopener">GitHub</a>` : ""}
-        ${p.links.caseStudy ? `<a class="btn btn-ghost btn-ghost" href="${p.links.caseStudy}" target="_blank" rel="noopener">케이스 스터디</a>` : ""}
+        ${p.links.caseStudy ? `<a class="btn btn-ghost btn-ghost" href="${p.links.caseStudy}" target="_blank" rel="noopener">${window.t("modal.caseStudy")}</a>` : ""}
       </div>
     `;
     backdrop.hidden = false;
@@ -329,26 +433,9 @@
     else if (!backdrop.hidden) closeModal();
   });
 
-  try {
-    if (!localStorage.getItem(LS_INTRO_SEEN)) openIntro();
-  } catch (e) {
-    /* localStorage 접근 불가 환경이면 그냥 스킵 */
-  }
-
-  renderFilters();
-  renderSkills();
-  renderWritings();
-
-  const wordRevealEls = [
-    document.querySelector(".about-section .section-lede"),
-    document.querySelector(".gallery-section .section-lede")
-  ].filter(Boolean);
-  wordRevealEls.forEach(enableWordReveal);
-
-  window.addEventListener("langchange", () => {
-    renderFilters();
-    wordRevealEls.forEach(enableWordReveal);
-  });
+  renderAll();
+  // 소개 문단은 스크롤로 글자가 서서히 진해지는 효과를 쓰지 않는다. 처음 보는 사람이 바로 읽을 수 있어야 해서.
+  window.addEventListener("langchange", renderAll);
 
   playHeroEntrance();
   enableHeroTilt();
