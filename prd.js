@@ -166,7 +166,7 @@ const PRD = {
             { tag: "done", text: { ko: "심사기준 불일치: 참고 기준을 쓸 때 경고 배너를 띄우고, 공모요령 추출은 사용자가 직접 켜는 옵트인", ja: "審査基準の不一致：参考基準を使うときは警告バナーを表示し、公募要領からの抽出はユーザーが自分で有効化するオプトイン", en: "Criteria mismatch: a warning banner whenever reference criteria are used; extraction from the real call is opt-in" } },
             { tag: "done", text: { ko: "AI 비용 폭주: 하루 호출 상한, 무료 모델 우선", ja: "AIコストの急増：1日の呼び出し上限、無料モデルを優先", en: "Runaway AI cost: a daily call cap, free model first" } },
             { tag: "done", text: { ko: "개인정보: 로그인은 선택이고, 회사 정보는 로그인했을 때만 서버에 저장", ja: "個人情報：ログインは任意で、会社情報はログインしたときだけサーバーに保存", en: "Privacy: login is optional, and company info is stored on the server only when logged in" } },
-            { tag: "none", text: { ko: "jGrants 공식 API의 일시 오류(관찰된 적 있음): 다시 시도하면 복구됐고, 자동 재시도는 아직 없음", ja: "jGrants公式APIの一時的なエラー（観測あり）：再試行で復旧したが、自動再試行はまだない", en: "Transient errors from the official jGrants API (seen once): recovered on retry; no automatic retry yet" } }
+            { tag: "done", text: { ko: "jGrants 공식 API의 일시 오류(관찰된 적 있음): 서버에서 5xx·네트워크 오류에 한해 최대 2회 자동 재시도, 그래도 실패하면 기존 오류 안내를 그대로 보여줌", ja: "jGrants公式APIの一時的なエラー（観測あり）：サーバー側で5xx・ネットワークエラーに限り最大2回まで自動再試行し、それでも失敗した場合は従来どおりのエラー表示", en: "Transient errors from the official jGrants API (seen once): the server now retries up to twice, but only for 5xx or network errors; if it still fails, the existing error message is shown as before" } }
           ]
         }
       ]
