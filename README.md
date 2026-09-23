@@ -2,6 +2,10 @@
 
 **🔗 Live: [portfolio-kuu-beta.vercel.app](https://portfolio-kuu-beta.vercel.app)**
 
+**日本語**: PM・サービス企画職を志望するKUUのポートフォリオサイト。日本の中小企業向け補助金サービスなど、各プロジェクトを課題定義から公開・振り返りまで一人で完走した記録です。成果が出なかった結果もそのまま公開しています。ko/ja/en の3言語に対応（右上の言語切り替え）。
+
+**English**: Portfolio site for KUU, aiming for a PM / service-planning role. Documents projects — including a subsidy-matching service for Japanese SMEs — built solo from problem definition through launch and retrospective. Results with no traction are shown as-is. Available in Korean, Japanese and English (language switch, top right).
+
 PM·서비스기획 지망 포트폴리오. 프로젝트를 문제 정의 → 범위 결정 → 개발 → 출시 → 회고까지 직접 완주한 기록을 모아둔다. 빌드 도구 없는 정적 사이트(+ 방문자 수·Q&A용 서버리스 함수).
 
 ## 목표
