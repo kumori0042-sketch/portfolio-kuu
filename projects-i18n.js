@@ -4,12 +4,12 @@ const PROJECT_I18N = {
   "jgrants-matching": {
     ja: {
       description:
-        "経済産業省のjGrants公式APIで募集中の補助金を検索し、会社情報をもとにおすすめを受け取り、質問に答えながら申請書の下書きを作り、審査基準チェックリストで点検してからWordファイルでダウンロードするサービスです。検索・企業情報・ログイン・端末間同期・文書ダウンロードは実際に動作します。AI生成機能（構成案・下書き・評価・おすすめ）はAPIキーを接続する前の段階です。",
+        "経済産業省のjGrants公式APIで募集中の補助金を検索し、会社情報をもとにおすすめを受け取り、質問に答えながら申請書の下書きを作り、審査基準チェックリストで点検してからWordファイルでダウンロードするサービスです。検索・企業情報・ログイン・端末間同期・文書ダウンロードはもちろん、AI生成機能（構成案・下書き・評価・おすすめ・PDF審査基準抽出）も無料モデル（Groq）で実際に接続して確認しました。",
       stats: [
         { n: "7ステップ", l: "検索から書類ダウンロードまで" },
         { n: "13項目", l: "実際の公募要領から抽出した審査基準" },
         { n: "4案", l: "比較した候補アイデアから1つを選定" },
-        { n: "未接続", l: "AI生成機能 — APIキー接続前" }
+        { n: "5機能", l: "実際に呼び出して確認した無料AI機能" }
       ],
       pivots: [
         {
@@ -27,6 +27,10 @@ const PROJECT_I18N = {
         {
           title: "顧客視点のUATで見つけた致命的な問題",
           body: "初めて訪れた顧客になったつもりで最後まで操作すると、AI呼び出しが失敗したときに次のステップへ進む手段がなく、内部の設定エラー文がそのまま表示されていました。「AIなしで続ける」という逃げ道を追加し、顧客には一般的な案内だけが見えるよう直しました。"
+        },
+        {
+          title: "無料キー接続初日に見つけたバグ：下書き5回中4回が空文字",
+          body: "無料のGroqキーを受け取って接続してみると、コードに入れていたモデルがいつの間にか廃止されていました。代替モデルに変えると、今度は下書き生成が5回中4回空の結果で返ってくる問題が発生。追跡すると、「推論型」モデルが答えを書く前の思考にトークン予算をすべて使ってしまうことが原因でした。推論の強度を低く固定して5回とも安定して答えが出るように直したあと、実際の企業情報で構成案・下書き・チェックリスト・おすすめ・PDF審査基準抽出の5機能すべてを実際の呼び出しで確認しました。"
         }
       ],
       skills: [
@@ -36,18 +40,19 @@ const PROJECT_I18N = {
         "プロンプト設計（事実のみ使用）",
         "AIコスト上限の設計",
         "顧客視点のUAT",
+        "無料LLM連携・障害原因の追跡",
         "Next.js · TypeScript · Tailwind",
         "独自認証 · 端末間同期"
       ]
     },
     en: {
       description:
-        "A service that searches open subsidies through the Ministry of Economy, Trade and Industry's official jGrants API, recommends matches from your company profile, walks you through questions to draft an application, checks it against a review-criteria checklist, and exports a Word file. Search, company info, login, cross-device sync and document download work for real. The AI generation features (outline, draft, evaluation, recommendations) are built but not yet connected to an API key.",
+        "A service that searches open subsidies through the Ministry of Economy, Trade and Industry's official jGrants API, recommends matches from your company profile, walks you through questions to draft an application, checks it against a review-criteria checklist, and exports a Word file. Search, company info, login, cross-device sync and document download work for real — and so does the AI (outline, draft, evaluation, recommendations, PDF criteria extraction), now actually connected and verified with a free model (Groq).",
       stats: [
         { n: "7 steps", l: "from search to document download" },
         { n: "13", l: "review criteria extracted from a real call for proposals" },
         { n: "4", l: "candidate ideas compared, 1 chosen" },
-        { n: "Not connected", l: "AI generation — no API key yet" }
+        { n: "5", l: "free AI features verified with real calls" }
       ],
       pivots: [
         {
@@ -65,6 +70,10 @@ const PROJECT_I18N = {
         {
           title: "A critical problem found in customer-side UAT",
           body: "Clicking through to the end like a first-time customer, I found there was no way to reach the next step if an AI call failed, and an internal configuration error message was shown as-is. I added a \"continue without AI\" way out and changed it so customers only see a generic message."
+        },
+        {
+          title: "Day-one bug with the free key: drafts came back empty 4 times out of 5",
+          body: "The moment I got a free Groq key and connected it, I found the model I'd coded against had been discontinued in the meantime. Switching to a replacement model, draft generation then came back empty 4 out of 5 times. Tracing it down, the \"reasoning\" model was spending its whole token budget thinking before it ever wrote an answer. I pinned reasoning effort to low so all 5 runs came back reliably, then verified all five AI features — outline, draft, checklist, recommendations, and PDF criteria extraction — with real company data and real calls."
         }
       ],
       skills: [
@@ -74,6 +83,7 @@ const PROJECT_I18N = {
         "Prompt design (facts only)",
         "AI cost-cap design",
         "Customer-side UAT",
+        "Free-LLM integration · failure diagnosis",
         "Next.js · TypeScript · Tailwind",
         "Custom auth · cross-device sync"
       ]

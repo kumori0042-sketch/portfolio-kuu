@@ -4,11 +4,6 @@ const PROJECTS = [
     id: "jgrants-matching",
     featured: true,
     status: "live",
-    statusNote: {
-      ko: "AI 생성 기능은 아직 API 키 연결 전이에요",
-      ja: "AI生成機能はまだAPIキー接続前です",
-      en: "AI generation is not connected to an API key yet"
-    },
     role: {
       ko: "기획 · 설계 · 개발 · 배포 (1인)",
       ja: "企画・設計・開発・公開（1人）",
@@ -24,7 +19,7 @@ const PROJECTS = [
       ja: "jGrants公式APIでリアルタイム検索 · 実際の公募要領から審査基準13項目を抽出 · ログインと端末間同期まで実装",
       en: "Live search on the official jGrants API · 13 review criteria extracted from a real call for proposals · login and cross-device sync"
     },
-    signals: ["define", "scope", "ship", "uat"],
+    signals: ["define", "scope", "ship", "uat", "learn"],
     name: "補助金かんたん検索",
     nameL: { ko: "補助金かんたん検索", ja: "補助金かんたん検索", en: "補助金かんたん検索 (Easy Subsidy Search)" },
     tagline: "일본 중소기업의 보조금 신청서 작성을 돕는 7단계 웹서비스",
@@ -34,12 +29,12 @@ const PROJECTS = [
     accent2: "#12B886",
     cover: { type: "iframe", src: "https://jgrants-matching.vercel.app" },
     description:
-      "경제산업성 jGrants 공식 API로 모집 중인 보조금을 검색하고, 회사 정보를 바탕으로 맞춤 추천을 받고, 질문에 답하면서 신청서 초안을 쓰고, 심사기준 체크리스트로 점검한 뒤 Word 파일로 내려받는 서비스입니다. 검색·기업 정보·로그인·기기 간 동기화·문서 다운로드는 실제로 동작하고, AI 생성 기능(구성안·초안·평가·추천)은 API 키를 연결하기 전 단계입니다.",
+      "경제산업성 jGrants 공식 API로 모집 중인 보조금을 검색하고, 회사 정보를 바탕으로 맞춤 추천을 받고, 질문에 답하면서 신청서 초안을 쓰고, 심사기준 체크리스트로 점검한 뒤 Word 파일로 내려받는 서비스입니다. 검색·기업 정보·로그인·기기 간 동기화·문서 다운로드는 물론, AI 생성 기능(구성안·초안·평가·추천·PDF 심사기준 추출)도 무료 모델(Groq)로 실제 연결해 확인했습니다.",
     stats: [
       { n: "7단계", l: "검색에서 서류 다운로드까지" },
       { n: "13개", l: "실제 공모요령에서 추출한 심사기준" },
       { n: "4개", l: "비교한 후보 아이템 중 1개 선정" },
-      { n: "미연결", l: "AI 생성 기능 — API 키 연결 전", isNull: true }
+      { n: "5개", l: "실제 호출로 검증한 무료 AI 기능" }
     ],
     pivots: [
       {
@@ -61,6 +56,11 @@ const PROJECTS = [
         n: "04",
         title: "고객 관점 UAT에서 발견한 치명적 문제",
         body: "처음 방문한 고객처럼 끝까지 눌러보니, AI 호출이 실패하면 다음 단계로 갈 방법이 아예 없었고 내부 설정 오류 문구가 그대로 노출되고 있었습니다. 'AI 없이 계속 진행' 탈출구를 추가하고, 고객에게는 일반 안내만 보이도록 고쳤습니다."
+      },
+      {
+        n: "05",
+        title: "무료 키 연결 첫날 발견한 버그: 초안 5번 중 4번이 빈 문자열",
+        body: "무료 Groq 키를 받아 연결해보니 코드에 넣어뒀던 모델이 그새 단종돼 있었습니다. 대체 모델로 바꾸자 이번엔 초안 생성 5번 중 4번이 빈 결과로 돌아왔는데, 추적해보니 '추론형' 모델이 답을 쓰기 전 하는 생각에 토큰 예산을 전부 써버리는 문제였습니다. 추론 강도를 낮게 고정해 5번 모두 안정적으로 답이 나오게 고친 뒤, 실제 기업 정보로 구성안·초안·체크리스트·추천·PDF 심사기준 추출 5개 기능 전부를 실제 호출로 확인했습니다."
       }
     ],
     skills: [
@@ -70,6 +70,7 @@ const PROJECTS = [
       "프롬프트 설계 (사실만 사용)",
       "AI 비용 상한 설계",
       "고객 관점 UAT",
+      "무료 LLM 연동 · 장애 원인 추적",
       "Next.js · TypeScript · Tailwind",
       "자체 인증 · 기기 간 동기화"
     ],
@@ -441,6 +442,14 @@ const EVIDENCE = {
     }
   ],
   learn: [
+    {
+      project: "jgrants-matching",
+      text: {
+        ko: "무료 모델로 바꾼 뒤 초안 생성이 5번 중 4번 실패하는 걸 발견해 원인(추론 토큰 소진)을 추적하고 수정",
+        ja: "無料モデルに切り替えた後、下書き生成が5回中4回失敗する不具合を発見し、原因（推論トークンの消費）を突き止めて修正",
+        en: "After switching to a free model, found draft generation failing 4 out of 5 times, traced it to reasoning tokens eating the budget, and fixed it"
+      }
+    },
     {
       project: "crypto-trading-bot",
       text: {
