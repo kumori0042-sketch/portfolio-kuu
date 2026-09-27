@@ -149,7 +149,7 @@ const PRD = {
             { tag: "done", text: { ko: "완료: 7개 화면, 로그인·기기 간 동기화, 고객 관점 UAT와 수정, AI 생성 기능을 무료 모델(Groq)로 연결·검증, 비밀번호 변경", ja: "完了：7つの画面、ログイン・端末間同期、顧客視点のUATと修正、AI生成機能を無料モデル（Groq）に接続・検証、パスワード変更", en: "Done: seven screens, login and cross-device sync, customer-side UAT and fixes, AI generation connected to a free model (Groq) and verified, password change" } },
             { tag: "plan", text: { ko: "지금: 중소기업 3~5곳 베타 모집·관찰, 성공 지표 계측 추가", ja: "今：中小企業3〜5社のベータ募集・観察、成功指標の計測を追加", en: "Now: recruit and observe 3–5 SMEs in beta, add tracking for the success metrics" } },
             { tag: "plan", text: { ko: "다음: 다른 보조금 공모요령까지 심사기준 자동 추출 범위 확대", ja: "次：他の補助金の公募要領まで審査基準の自動抽出範囲を拡大", en: "Next: widen automatic criteria extraction to other subsidies' calls" } },
-            { tag: "plan", text: { ko: "그다음: 이메일로 비밀번호 재설정 (메일 발송 서비스 연결 필요)", ja: "その次：メールによるパスワード再設定（メール送信サービスの接続が必要）", en: "Later: email-based password reset (needs a transactional-email service)" } }
+            { tag: "plan", text: { ko: "그다음: Groq 무료 티어 호출 제한 대응 (대기열 또는 안내 문구 보강)", ja: "その次：Groq無料枠の呼び出し制限への対応（待機列または案内文の補強）", en: "Later: handle Groq's free-tier rate limits (a queue, or better messaging)" } }
           ]
         }
       ]
