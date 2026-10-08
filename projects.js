@@ -289,6 +289,87 @@ const PROJECTS = [
     }
   },
   {
+    id: "kuchikomiban",
+    role: {
+      ko: "기획 · 설계 · 개발 · 배포 (1인)",
+      ja: "企画・設計・開発・公開（1人）",
+      en: "Planning · design · dev · deploy (solo)"
+    },
+    status: "live",
+    statusNote: {
+      ko: "사전 등록 단계 — 구글 API 승인과 점주 인터뷰 전이라 서비스 본체는 아직 만들지 않았습니다",
+      ja: "事前登録の段階 — Google APIの承認とオーナーへのインタビュー前のため、サービス本体はまだ作っていません",
+      en: "Pre-launch waitlist stage — the core service is not built yet, pending Google API approval and owner interviews"
+    },
+    oneLiner: {
+      ko: "일본 소상공인에게 ★1~2 구글 리뷰를 LINE으로 알리고 답글 초안까지 보내는 서비스의 사전 등록 페이지",
+      ja: "日本の小規模店舗に、Googleの★1〜2クチコミをLINEで知らせ、返信案まで届けるサービスの先行登録ページ",
+      en: "A waitlist page for a service that alerts small Japanese shops to 1–2★ Google reviews on LINE and drafts the reply"
+    },
+    proof: {
+      ko: "가치를 '알림'이 아닌 '답글 스트레스 제거'로 재정의 · 개발 착수·폐기 조건을 먼저 문서화 · 개인 메일 없이 문의 창구를 갖춘 개인정보 처리방침",
+      ja: "価値を「通知」ではなく「返信の負担をなくすこと」に定義し直し · 開発着手と撤退の条件を先に文書化 · 個人メールを出さずに窓口を備えたプライバシーポリシー",
+      en: "Reframed the value from “alerts” to “removing the stress of replying” · wrote the go/kill conditions before building · privacy policy with a contact channel that does not expose a personal email"
+    },
+    signals: ["define", "scope", "ship"],
+    name: "クチコミ番",
+    nameL: { ko: "クチコミ番", ja: "クチコミ番", en: "Kuchikomi-ban" },
+    tagline: "일본 소상공인용 구글 리뷰 알림·답글 서비스의 사전 등록 페이지",
+    year: "2026",
+    tags: ["Web App", "SaaS", "Solo"],
+    accent: "#3182F6",
+    accent2: "#06C755",
+    cover: { type: "iframe", src: "https://kuchikomiban.vercel.app" },
+    description:
+      "구글맵에 ★1~2 리뷰가 달리면 LINE으로 알려주고, AI가 쓴 답글 초안을 원탭으로 게시하게 하는 서비스를 구상해 먼저 사전 등록 페이지만 만들어 공개했습니다. 구글의 기본 알림이 무료라서 가치는 알림이 아니라 답글을 쓰는 부담을 없애는 데 있다고 보고, 개발은 점주 인터뷰에서 선결제나 확약을 받은 뒤에 시작하기로 조건을 정해 두었습니다. 지금 있는 것은 일본어 소개·요금 페이지와 사전 등록·문의 폼, 개인정보 처리방침이고, 서비스 본체는 아직 없습니다.",
+    stats: [
+      { n: "0건", l: "사전 등록 (2026-10-09 기준 · 공개 직후)" },
+      { n: "월 1,500엔", l: "1점포 요금 가설 (세금 포함 · 인터뷰 전)" },
+      { n: "3곳", l: "개발 착수 조건: 점주의 선결제·확약" },
+      { n: "4주 · 5건", l: "출시 후 유료 5건 미만이면 폐기" }
+    ],
+    pivots: [
+      {
+        n: "01",
+        title: "알림 서비스 → 답글 스트레스 제거",
+        body: "처음 컨셉은 저별점 리뷰를 빨리 알려주는 알림이었는데, 구글 기본 알림이 무료라서 알림만으로는 돈을 받을 이유가 약하다고 봤습니다. 점주가 실제로 힘들어하는 건 감정적으로 흔들리지 않으면서 정중한 답을 쓰는 일이라서, AI 답글 초안을 확인하고 원탭으로 게시하는 흐름을 핵심 가치로 정했습니다. 사전 등록 페이지의 첫 화면도 이 흐름(알림 → 초안 → 원탭 답글)을 그대로 보여줍니다."
+      },
+      {
+        n: "02",
+        title: "만들고 나서 팔기 → 확약 먼저, 폐기 조건도 미리",
+        body: "구글 비즈니스 프로필 API는 승인까지 최대 14일이 걸립니다. 그 사이에 본체를 먼저 만드는 대신, 점주 인터뷰에서 선결제나 확약을 3곳 이상 받기 전에는 개발에 들어가지 않고, 착수하면 3주 안에 핵심 기능만 내며, 출시 4주 안에 유료가 5건 미만이면 접는다는 기준을 먼저 적어 두었습니다. 그래서 지금 만든 건 사전 등록 페이지까지입니다."
+      },
+      {
+        n: "03",
+        title: "개인 메일 공개 → 사이트 안 문의 폼",
+        body: "개인정보를 받는 이상 열람·삭제 요청을 받을 창구가 필요한데, 개인 이메일 주소는 공개하고 싶지 않았습니다. 메일 대신 사이트 안 문의 폼(종류에 '등록 정보의 개시·정정·삭제')을 만들고, 내용은 도쿄 리전 DB에 저장하도록 했습니다. 한계는 새 문의가 와도 자동 알림이 없어서 대시보드를 직접 확인해야 한다는 점입니다."
+      },
+      {
+        n: "04",
+        title: "브라우저에서 DB 쓰기 → 서버 전용 열쇠로만 쓰기",
+        body: "사전 등록 정보(이메일)를 브라우저가 직접 DB에 쓰게 하지 않고, 서버 액션만 쓸 수 있게 했습니다. 두 테이블 모두 행 수준 보안(RLS)을 켜고 정책을 만들지 않았으며, 쓰기 권한이 있는 service_role 키는 서버 코드에서만 읽도록(server-only) 두었습니다. 봇 방지용 숨김 입력칸을 두고, 같은 이메일로 다시 등록하면 등록 여부를 알려주지 않고 성공으로 처리합니다. 공개한 주소에서 등록과 저장, 삭제를 각각 확인했습니다."
+      },
+      {
+        n: "05",
+        title: "요금 미정 → 월 1,500엔 가설",
+        body: "요금은 월 1,500엔(1점포·세금 포함)으로 잡았습니다. 낮은 가격은 문턱을 낮추지만 '있으면 좋은 것'으로 보여 확약을 받기 어려울 수 있어서, 인터뷰에서 확약을 받으며 검증해야 하는 가설로 둡니다. 페이지에는 요금을 싣되 '정식 출시 때 요금은 사전 등록자에게 가장 먼저 안내한다'는 문구도 함께 두었습니다."
+      }
+    ],
+    skills: [
+      "Next.js 15 (App Router) · Server Actions",
+      "Supabase (Postgres · RLS) · 도쿄 리전",
+      "서버 전용 비밀 키 · 봇 방지 · 중복 처리",
+      "개인정보 처리방침 · 문의 창구 구성",
+      "가설과 착수·폐기 조건 문서화",
+      "일본어 랜딩 카피 · 요금 표시",
+      "유입 경로 추적 (?src=)",
+      "Vercel · GitHub 자동 배포"
+    ],
+    links: {
+      live: "https://kuchikomiban.vercel.app"
+    }
+  },
+  {
     id: "crypto-trading-bot",
     role: {
       ko: "기획 · 설계 · 개발 · 배포 (1인)",
@@ -371,6 +452,14 @@ const EVIDENCE = {
         ja: "5週間39万ウォンのコホート型スタディの隙間を見つけ、企業ケース6件を自分でリサーチ",
         en: "Found a gap in a 5-week paid cohort program and researched six company cases myself"
       }
+    },
+    {
+      project: "kuchikomiban",
+      text: {
+        ko: "구글 기본 알림이 무료라는 점에서 출발해, 서비스의 가치를 '알림'이 아닌 '답글 스트레스 제거'로 다시 정의",
+        ja: "Google標準の通知が無料である点から出発し、サービスの価値を「通知」ではなく「返信の負担をなくすこと」に定義し直した",
+        en: "Started from the fact that Google's built-in alerts are free and redefined the value from “alerts” to “removing the stress of replying”"
+      }
     }
   ],
   scope: [
@@ -405,6 +494,14 @@ const EVIDENCE = {
         ja: "インタビュー先行からリリース先行へなど、3回方向転換して範囲を絞った",
         en: "Changed direction three times (e.g. interviews first → ship first) to narrow the scope"
       }
+    },
+    {
+      project: "kuchikomiban",
+      text: {
+        ko: "서비스 본체보다 사전 등록 페이지만 먼저 만들고, 개발 착수·폐기 조건(확약 3곳 · 출시 4주 내 유료 5건)을 미리 정함",
+        ja: "サービス本体より先に先行登録ページだけを作り、開発着手・撤退の条件（確約3店舗・公開後4週間で有料5件）を先に決めた",
+        en: "Built only the waitlist page before the service itself and fixed the go/kill conditions up front (three commitments; five paying customers within four weeks of launch)"
+      }
     }
   ],
   ship: [
@@ -438,6 +535,14 @@ const EVIDENCE = {
         ko: "퍼즐 6종을 하나의 사이트로 배포하고, 홈 화면 설치와 오프라인 캐시까지 추가",
         ja: "パズル6種を一つのサイトとして公開し、ホーム画面への追加とオフラインキャッシュまで実装",
         en: "Shipped six puzzles as one site, with home-screen install and an offline cache"
+      }
+    },
+    {
+      project: "kuchikomiban",
+      text: {
+        ko: "사전 등록 폼·문의 폼·개인정보 처리방침까지 갖춘 페이지를 도쿄 리전 DB와 함께 공개하고, 공개 주소에서 저장·삭제를 확인",
+        ja: "先行登録・お問い合わせフォームとプライバシーポリシーを備えたページを東京リージョンのDBと共に公開し、公開URLで保存と削除を確認",
+        en: "Published a page with a waitlist form, contact form and privacy policy on a Tokyo-region database, and checked saving and deleting on the live URL"
       }
     }
   ],

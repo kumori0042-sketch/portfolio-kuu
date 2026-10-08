@@ -313,6 +313,92 @@ const PROJECT_I18N = {
     }
   },
 
+  "kuchikomiban": {
+    ja: {
+      description:
+        "Googleマップに★1〜2のクチコミが付いたらLINEで知らせ、AIが書いた返信案をワンタップで投稿できるサービスを構想し、まず先行登録ページだけを作って公開しました。Googleの標準通知が無料なので、価値は通知ではなく返信を書く負担をなくすことにあると考え、開発はオーナーへのインタビューで前払いか確約を得てから始める条件を決めています。今あるのは日本語の紹介・料金ページと、先行登録・お問い合わせフォーム、プライバシーポリシーで、サービス本体はまだありません。",
+      stats: [
+        { n: "0件", l: "先行登録（2026-10-09時点・公開直後）" },
+        { n: "月1,500円", l: "1店舗あたりの料金仮説（税込・インタビュー前）" },
+        { n: "3店舗", l: "開発着手の条件：オーナーの前払い・確約" },
+        { n: "4週間・5件", l: "公開後、有料が5件に満たなければ撤退" }
+      ],
+      pivots: [
+        {
+          title: "通知サービス → 返信のストレスをなくす",
+          body: "最初のコンセプトは低評価クチコミをすぐ知らせる通知でしたが、Googleの標準通知が無料なので、通知だけでは対価をもらう理由が弱いと考えました。オーナーが本当に大変なのは、感情的にならず丁寧な返信を書くことなので、AIの返信案を確認してワンタップで投稿する流れを中核の価値に据えました。先行登録ページの最初の画面も、この流れ（通知 → 下書き → ワンタップ返信）をそのまま見せています。"
+        },
+        {
+          title: "作ってから売る → 先に確約、撤退条件も先に",
+          body: "Googleビジネスプロフィール APIは承認まで最長14日かかります。その待ち時間に本体を先に作るのではなく、オーナーへのインタビューで前払いか確約を3店舗以上得るまでは開発に入らず、着手したら3週間でコア機能だけを出し、公開後4週間で有料が5件に満たなければ撤退する、という基準を先に書きました。そのため今作ったのは先行登録ページまでです。"
+        },
+        {
+          title: "個人メールを公開 → サイト内のお問い合わせフォーム",
+          body: "個人情報を受け取る以上、開示・削除の依頼を受ける窓口が必要ですが、個人のメールアドレスは公開したくありませんでした。メールの代わりにサイト内のお問い合わせフォーム（種類に「登録情報の開示・訂正・削除」を用意）を作り、内容は東京リージョンのDBに保存するようにしました。限界は、新しい問い合わせが来ても自動通知がなく、ダッシュボードを自分で見に行く必要があることです。"
+        },
+        {
+          title: "ブラウザからDB書き込み → サーバー専用の鍵でのみ書き込み",
+          body: "先行登録の情報（メール）をブラウザから直接DBに書かせず、サーバーアクションだけが書けるようにしました。2つのテーブルとも行レベルセキュリティ（RLS）を有効にしてポリシーは作らず、書き込み権限のあるservice_roleキーはサーバーのコードからだけ読めるように（server-only）しています。ボット対策の隠し入力欄を置き、同じメールで再登録された場合は登録済みかどうかを知らせず成功として扱います。公開したURLで、登録・保存・削除をそれぞれ確認しました。"
+        },
+        {
+          title: "料金未定 → 月1,500円の仮説",
+          body: "料金は月1,500円（1店舗・税込）としました。低い価格は入りやすい一方で「あるといいもの」に見えやすく、確約を得にくくなる可能性があるため、インタビューで確約を取りながら検証する仮説として扱います。ページには料金を載せつつ、「正式リリース時の料金は先行登録者に最初にお知らせします」という文言も添えています。"
+        }
+      ],
+      skills: [
+        "Next.js 15（App Router）· Server Actions",
+        "Supabase（Postgres · RLS）· 東京リージョン",
+        "サーバー専用のシークレットキー · ボット対策 · 重複登録の処理",
+        "プライバシーポリシー · 問い合わせ窓口の設計",
+        "仮説と着手・撤退条件の文書化",
+        "日本語のランディングコピー · 料金表示",
+        "流入経路の計測（?src=）",
+        "Vercel · GitHub連携の自動デプロイ"
+      ]
+    },
+    en: {
+      description:
+        "I conceived a service that alerts a shop on LINE when a 1–2★ Google review appears and lets the owner post an AI-drafted reply with one tap, and built and published only the waitlist page first. Because Google's built-in notifications are free, I see the value not in alerts but in removing the burden of writing the reply, and I set the condition that development starts only after owners give a prepayment or firm commitment in interviews. What exists now is a Japanese intro and pricing page, a waitlist form, a contact form and a privacy policy; the core service does not exist yet.",
+      stats: [
+        { n: "0", l: "waitlist signups (as of 2026-10-09, just after launch)" },
+        { n: "¥1,500/mo", l: "price hypothesis per shop (tax incl., before interviews)" },
+        { n: "3", l: "shops that must prepay or commit before development starts" },
+        { n: "4 wk · 5", l: "drop it if fewer than 5 paying customers after launch" }
+      ],
+      pivots: [
+        {
+          title: "Alert service → removing the stress of replying",
+          body: "The first concept was an alert for low-star reviews, but Google's built-in notifications are free, so alerts alone were a weak reason to charge. What owners actually struggle with is writing a polite reply without getting emotional, so I made “review an AI-drafted reply and post it with one tap” the core value. The first screen of the waitlist page shows exactly that flow: alert → draft → one-tap reply."
+        },
+        {
+          title: "Build then sell → commitments first, kill criteria in writing",
+          body: "The Google Business Profile API can take up to 14 days to approve. Instead of building the core service while waiting, I wrote the rules first: no development until at least three owners give a prepayment or firm commitment in interviews; once started, ship only the core in three weeks; and drop it if there are fewer than five paying customers four weeks after launch. So what exists is the waitlist page only."
+        },
+        {
+          title: "Public personal email → on-site contact form",
+          body: "Collecting personal data means I need a channel for access and deletion requests, but I did not want to publish my personal email address. I built an on-site contact form (one option is “access, correction or deletion of my data”) and store submissions in the Tokyo-region database. The limitation is that new inquiries trigger no automatic notification, so I have to check the dashboard myself."
+        },
+        {
+          title: "Browser writes to the DB → writes only through a server-only key",
+          body: "I did not let the browser write signup data (emails) straight to the database; only a server action can. Both tables have row-level security on with no policies, and the service_role key that can write is readable only from server code (server-only). A hidden honeypot field blocks simple bots, and a repeat signup with the same email is treated as a success without revealing whether it was already registered. On the live URL I checked that a signup is saved and can be deleted."
+        },
+        {
+          title: "No price → a ¥1,500/month hypothesis",
+          body: "I set the price at ¥1,500 per month (one shop, tax included). A low price lowers the barrier but can make the product look like a nice-to-have and make firm commitments harder to get, so I treat it as a hypothesis to test in interviews. The page shows the price alongside a line saying the final price will be announced to waitlist members first."
+        }
+      ],
+      skills: [
+        "Next.js 15 (App Router) · Server Actions",
+        "Supabase (Postgres · RLS) · Tokyo region",
+        "Server-only secret keys · bot protection · duplicate handling",
+        "Privacy policy and contact channel design",
+        "Writing down hypotheses and go/kill conditions",
+        "Japanese landing copy · price display",
+        "Traffic-source tracking (?src=)",
+        "Vercel · GitHub auto deploy"
+      ]
+    }
+  },
   "crypto-trading-bot": {
     ja: {
       description:
