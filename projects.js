@@ -229,6 +229,82 @@ const PROJECTS = [
     }
   },
   {
+    id: "space-guessr",
+    role: {
+      ko: "기획 · 설계 · 개발 · 배포 (1인)",
+      ja: "企画・設計・開発・公開（1人）",
+      en: "Planning · design · dev · deploy (solo)"
+    },
+    status: "live",
+    oneLiner: {
+      ko: "위성사진 속 지형을 보고 지구 어디인지 맞히는 웹게임 — 4개 모드와 공유 리더보드",
+      ja: "衛星写真の地形を見て、地球のどこかを当てるウェブゲーム — 4つのモードと共有ランキング",
+      en: "A web game: guess where on Earth a satellite image is — four modes and a shared leaderboard"
+    },
+    proof: {
+      ko: "라운드 전환 때 지도가 엉뚱한 곳에 멈추던 원인을 라이브러리 내부 동작까지 추적해 수정 · 서버가 점수·닉네임·도배를 검증하는 리더보드 · 날짜로 문제가 고정되는 오늘의 챌린지",
+      ja: "ラウンド切り替え時に地図が別の場所で止まる原因をライブラリ内部の挙動まで追って修正 · サーバーがスコア・ニックネーム・連投を検証するランキング · 日付で問題が固定される今日のチャレンジ",
+      en: "Traced a bug where the map stopped at the wrong place between rounds down to the library's internal behavior · a leaderboard whose server validates scores, names and spam · a daily challenge whose puzzles are fixed by the date"
+    },
+    signals: ["scope", "ship", "learn"],
+    name: "Space Guessr",
+    nameL: { ko: "Space Guessr", ja: "Space Guessr", en: "Space Guessr" },
+    tagline: "위성사진 속 지형으로 지구 어디인지 맞히는 웹게임",
+    year: "2026",
+    tags: ["Web App", "Game", "Solo"],
+    accent: "#3182F6",
+    accent2: "#06B6D4",
+    cover: { type: "iframe", src: "https://space-guessr.vercel.app" },
+    description:
+      "확대된 위성사진 조각을 보고 지구 어디인지 지도에서 찍어 맞히는 게임입니다. 단일 HTML 파일(Leaflet · 위성 타일)로 시작해 힌트, 제한시간과 속도 보너스, 난이도 세 단계, 모두가 같은 5문제를 푸는 오늘의 챌린지, 정답 위치로 줌아웃하는 공개 연출, 난이도별 공유 리더보드까지 붙였습니다. 리더보드 서버는 Cloudflare Workers와 D1로 만들었고 닉네임·점수 범위·도배를 서버에서 검증합니다. 점수는 브라우저에서 계산되므로 조작이 가능하다는 한계가 있어, 친구끼리 겨루는 용도로만 씁니다.",
+    stats: [
+      { n: "20곳", l: "지형 (한눈에 알아보는 곳부터 단서가 필요한 곳까지 3등급)" },
+      { n: "4개", l: "모드 (오늘의 챌린지 · 쉬움 · 보통 · 어려움)" },
+      { n: "0건", l: "리더보드 등록 (2026-10-10 기준 · 테스트 기록은 모두 삭제)" },
+      { n: "185회 · 0건", l: "라운드 전환 자동 점검 횟수와 지도 위치 오류" }
+    ],
+    pivots: [
+      {
+        n: "01",
+        title: "그냥 지도 맞히기 → 위성사진 속 지형으로",
+        body: "처음 구상은 위성사진의 확대된 조각만 보고 지구 어디인지 맞히는 미니 게임이었고, 백엔드 없이 HTML과 오픈소스 지도 라이브러리만으로 첫 버전을 만드는 것이 목표였습니다. 위성 타일은 API 키 없이 쓸 수 있는 소스를 쓰고, 정답과의 거리는 두 좌표 사이의 대원 거리로 계산해 점수를 매겼습니다. 소개 화면과 조작 설명, 점수 구간별 코멘트와 탐험가 등급을 붙여 규칙을 몰라도 바로 시작할 수 있게 했습니다."
+      },
+      {
+        n: "02",
+        title: "'사진이 너무 커서 감이 안 온다' → 줌 완화, 지형 5곳 → 20곳",
+        body: "직접 해보니 확대가 너무 심해서 질감만 보이고 단서가 없다는 느낌과, 같은 사진이 반복된다는 느낌이 있었습니다. 지형마다 시작 줌을 1~2단계 낮춰 주변 맥락이 보이게 하고, 지형을 5곳에서 10곳, 다시 20곳으로 늘려 판마다 무작위로 뽑게 했습니다. 장소마다 '알고 계셨나요?' 설명을 붙여 맞힌 뒤에도 얻는 게 있게 했습니다."
+      },
+      {
+        n: "03",
+        title: "'같은 사진 반복'의 진짜 원인 → 지도 라이브러리의 숨은 애니메이션",
+        body: "사진이 반복되는 줄 알았지만 실제로는 라운드가 바뀔 때 지도가 새 위치로 가지 못하고 이전 위치나 기본 위치에 멈추는 버그였습니다. 처음에는 애니메이션을 끄면 된다고 판단했는데 고쳐지지 않았고, 화면이 그려지지 않는 상태에서 한 번만 읽는 제 테스트가 문제를 놓치고 있었습니다. 원인은 최소 줌을 올리면 라이브러리가 '이전 중심으로 줌 이동'을 다음 화면 갱신에 예약해 두었다가, 제가 지정한 위치를 덮어쓰는 것이었습니다. 호출 순서를 바꾸고 그런 예약이 생기는지 직접 감시하는 검증으로 바꿔서, 185회 라운드 전환에서 위치 오류 0건을 확인했습니다."
+      },
+      {
+        n: "04",
+        title: "Firebase → Cloudflare Workers + D1 리더보드",
+        body: "공유 리더보드를 위해 먼저 Firebase를 시도했지만 구글 클라우드 이용약관 동의 단계에서 계속 막혀 방향을 바꿨습니다. 이미 로그인돼 있던 Cloudflare의 Workers와 D1로 만들고, 서버가 닉네임 길이·점수 범위·힌트 횟수를 검증하고, IP를 해시해 분당 3회·하루 50회로 도배를 제한하며, 허용한 도메인에서 온 요청만 받게 했습니다. 점수를 브라우저가 계산하는 구조라 조작은 막지 못한다는 한계를 그대로 두고, 친구끼리 겨루는 용도로 명시했습니다."
+      },
+      {
+        n: "05",
+        title: "하나의 순위 → 난이도 · 오늘의 챌린지 · 속도 보너스",
+        body: "플레이가 반복되면 순위가 금방 포화되고 새로움이 줄어서 모드를 나눴습니다. 난이도(쉬움·보통·어려움)는 지형 풀, 제한시간, 점수 감쇠 곡선, 힌트 횟수를 다르게 하고 순위표도 따로 둡니다. 오늘의 챌린지는 일본·한국 시간 날짜를 시드로 모두가 같은 5문제를 풀며, 같은 닉네임은 하루 한 번만 등록됩니다. 남은 시간에 따라 라운드 점수에 최대 20%를 더하는 속도 보너스를 넣으면서 라운드 최고점이 5,000점에서 6,000점으로 늘어, 서버의 점수 상한도 같이 바꿨습니다."
+      }
+    ],
+    skills: [
+      "단일 파일 웹앱 (Tailwind · Leaflet)",
+      "지도 · 위성 타일 · 대원 거리 계산",
+      "서버리스 API 설계 (Cloudflare Workers · D1)",
+      "서버 측 입력 검증 · 도배 제한 · CORS",
+      "날짜 시드 기반 공통 문제 (PRNG)",
+      "라이브러리 내부 동작 추적과 버그 원인 분석",
+      "모바일 우선 레이아웃",
+      "Vercel 배포 · 자동 점검 스크립트"
+    ],
+    links: {
+      live: "https://space-guessr.vercel.app"
+    }
+  },
+  {
     id: "dev-goods-shop",
     role: {
       ko: "기획 · 설계 · 개발 · 배포 (1인)",
@@ -431,6 +507,85 @@ const PROJECTS = [
       "데이터 기반 정직한 회고"
     ],
     links: {}
+  },
+  {
+    id: "suumo-alert",
+    role: {
+      ko: "기획 · 설계 · 개발 · 운영 (1인)",
+      ja: "企画・設計・開発・運用（1人）",
+      en: "Planning · design · dev · operation (solo)"
+    },
+    status: "record",
+    statusNote: {
+      ko: "개인용 도구라 공개 데모가 없고 저장소도 비공개입니다 · 가동 중이지만 저평가 판정은 아직 한 번도 나오지 않았습니다",
+      ja: "個人用ツールのため公開デモはなくリポジトリも非公開です · 稼働中ですが、割安判定はまだ一度も出ていません",
+      en: "A personal tool, so there is no public demo and the repository is private · it runs, but has not flagged an underpriced listing yet"
+    },
+    oneLiner: {
+      ko: "중고 맨션 매물을 조건별로 감시해 저평가·가격 인하를 Discord로 알려주는 자동화",
+      ja: "中古マンションの物件を条件別に監視し、割安・値下げをDiscordで知らせる自動化",
+      en: "Automation that watches used-condo listings per search and flags underpriced or price-cut ones on Discord"
+    },
+    proof: {
+      ko: "robots.txt의 요청 간격(30초)을 확인해 설계를 고침 · 새 매물과 가격 변동만 상세 조회해 실행 시간을 줄임 · 조건마다 알림 채널과 기준을 분리",
+      ja: "robots.txtの要求間隔（30秒）を確認して設計を修正 · 新着と価格変動だけ詳細取得して実行時間を短縮 · 条件ごとに通知チャンネルと基準を分離",
+      en: "Checked robots.txt's 30-second crawl delay and reworked the design · fetched details only for new or changed listings to cut runtime · separated notification channels and thresholds per search"
+    },
+    signals: ["define", "scope", "learn"],
+    name: "중고 맨션 저평가 탐지 봇",
+    nameL: { ko: "중고 맨션 저평가 탐지 봇", ja: "中古マンション割安検知ボット", en: "Used-Condo Deal Watcher" },
+    tagline: "조건별 채널로 저평가·가격 인하를 알려주는 매물 감시 자동화",
+    year: "2026",
+    tags: ["Python", "Automation", "Solo"],
+    accent: "#3182F6",
+    accent2: "#5865F2",
+    cover: { type: "image", src: "suumo-alert-pipeline.svg" },
+    description:
+      "SUUMO 중고 맨션 검색 결과를 하루 몇 차례 읽어, 조건(면적·준공연도·역 도보·세대수 등)에 맞는 매물을 SQLite에 쌓고 신규·가격 인하·저평가를 Discord로 알려주는 도구입니다. 저평가는 같은 역 매물의 ㎡당 가격 중앙값보다 10% 이상 싼 경우로 판정하고, 알림에는 ⭐저장·🗑삭제 버튼이 붙어 바로 정리할 수 있습니다. GitHub Actions에서 돌고 버튼 클릭은 Cloudflare Worker가 받으며, 사이트의 robots.txt 요청 간격을 지킵니다. 개인용 도구라 공개 데모는 없습니다.",
+    stats: [
+      { n: "4건 · 6건", l: "조건 통과 매물 · 상세 조건 탈락 매물 (2026-10-10 기준)" },
+      { n: "0건", l: "저평가 · 가격 인하 알림 (역별 표본 5건 미만이라 아직 판정 불가)" },
+      { n: "30초", l: "요청 간격 (robots.txt의 Crawl-delay 준수)" },
+      { n: "2~3회", l: "하루 실제 실행 횟수 (예약은 4회, GitHub가 지연·누락)" }
+    ],
+    pivots: [
+      {
+        n: "01",
+        title: "신규 매물 알림 → 저평가 판정 (역별 중앙값)",
+        body: "처음에는 조건에 맞는 새 매물을 알려주는 단순 알림이었습니다. 목적이 싸게 나온 매물을 가려내는 것이라서, 매물을 DB에 계속 쌓고 같은 역의 ㎡당 가격 중앙값보다 10% 이상 싼 것만 '저평가'로 따로 알리고, 같은 매물의 가격이 내려가면 인하 횟수와 함께 알리도록 바꿨습니다. 역별 표본이 5건 미만이면 판정을 보류하는데, 지금은 그 기준을 채운 역이 없어 저평가 알림이 한 번도 나오지 않았습니다."
+      },
+      {
+        n: "02",
+        title: "요청 3초 간격 → robots.txt 확인 후 30초",
+        body: "초기 스크립트는 요청 사이에 3초만 쉬었는데, robots.txt를 직접 확인해 보니 Crawl-delay가 30초였습니다. 간격을 30초로 지키면 후보 매물의 상세 페이지를 매번 전부 읽는 방식은 한 번에 약 27분이 걸려, 하루 여러 번 돌리면 무료 실행 분량을 넘길 수 있다고 계산했습니다. 그래서 새 매물이거나 목록 가격이 바뀐 매물만 상세 조회하고, 상세 조건에서 탈락한 매물은 7일간 다시 조회하지 않게 바꿨습니다. 최근 14번 실행 중 13번이 2~5분이었고 한 번(DB 초기화 직후)이 15분이었습니다. 후보가 많을 때 앞쪽 40건만 반복 조회되고 나머지는 영영 처리되지 않던 문제도 같이 사라졌습니다."
+      },
+      {
+        n: "03",
+        title: "하드 필터로 제외 → 경고 태그로 표시",
+        body: "1층 매물을 아예 제외했더니 조건 통과 매물이 거의 없어 알림이 한 번도 오지 않았습니다. 걸러지던 매물을 로그로 확인해 보니, 다른 조건은 모두 통과하고 1층이라서만 제외되던 경우가 있었습니다. 1층은 걸러내지 않고 '1층' 경고 태그만 붙여 판단은 직접 하게 바꾸자 첫 알림이 왔습니다. 적립금이 낮거나 월 고정비가 높거나 오래된 건물도 같은 방식으로 태그만 붙입니다."
+      },
+      {
+        n: "04",
+        title: "여러 조건을 한 채널에 → 조건별 채널·기준값 분리",
+        body: "검색 조건을 하나 더 추가하면서 URL을 한 목록으로 합쳐 돌렸더니, 두 번째 조건의 매물 31건이 첫 번째 조건의 채널에 한꺼번에 올라갔습니다. 조건마다 URL·알림 채널·기준값(예: 도보 분수)을 따로 갖는 설정 파일로 바꾸고, DB도 조건별로 상태를 따로 기록해 같은 매물이 두 조건에 걸려도 각자 알림을 받게 했습니다. 잘못 올라간 메시지 35건은 봇으로 삭제했습니다. 두 번째 조건은 채널이 정해질 때까지 꺼 둔 상태입니다."
+      },
+      {
+        n: "05",
+        title: "일반 웹훅 → 봇 + 버튼 클릭을 받는 서버",
+        body: "알림에 ⭐저장·🗑삭제 버튼을 달려고 했는데, 버튼 클릭을 받으려면 메시지를 봇이 보내야 하고 클릭 요청의 서명을 검증해 응답하는 서버가 필요해서, 웹훅 대신 봇으로 전환하고 서버는 Cloudflare Worker로 만들었습니다. 저장은 다른 채널로 복사하고 삭제는 원본 메시지를 지웁니다. 도중에 봇이 보낸 요청이 403으로 막히는 일이 있었는데, 기본 요청 헤더(User-Agent)가 의심 트래픽으로 분류된 것이어서 헤더를 명시해 해결했습니다."
+      }
+    ],
+    skills: [
+      "웹 스크래핑 · robots.txt 준수 설계",
+      "SQLite 스키마 설계와 마이그레이션",
+      "통계 기반 판정 (중앙값 · 표본 기준)",
+      "GitHub Actions 예약 실행 · 비밀값 관리",
+      "Discord 봇 · 버튼 인터랙션 (Cloudflare Workers)",
+      "조건별 설정 분리 (설정 파일 · 기준값 덮어쓰기)",
+      "오프라인 시나리오 테스트 (가짜 응답)",
+      "실행 비용·시간 최적화"
+    ],
+    links: {}
   }
 ];
 
@@ -459,6 +614,14 @@ const EVIDENCE = {
         ko: "구글 기본 알림이 무료라는 점에서 출발해, 서비스의 가치를 '알림'이 아닌 '답글 스트레스 제거'로 다시 정의",
         ja: "Google標準の通知が無料である点から出発し、サービスの価値を「通知」ではなく「返信の負担をなくすこと」に定義し直した",
         en: "Started from the fact that Google's built-in alerts are free and redefined the value from “alerts” to “removing the stress of replying”"
+      }
+    },
+    {
+      project: "suumo-alert",
+      text: {
+        ko: "단순 신규 알림을 '같은 역의 중앙값보다 싼 매물과 가격 인하'를 찾는 도구로 문제를 다시 정의",
+        ja: "単なる新着通知を、「同じ駅の中央値より安い物件と値下げ」を見つけるツールとして問題を定義し直した",
+        en: "Redefined a plain new-listing alert as a tool that finds listings below the station median and price cuts"
       }
     }
   ],
@@ -502,6 +665,22 @@ const EVIDENCE = {
         ja: "サービス本体より先に先行登録ページだけを作り、開発着手・撤退の条件（確約3店舗・公開後4週間で有料5件）を先に決めた",
         en: "Built only the waitlist page before the service itself and fixed the go/kill conditions up front (three commitments; five paying customers within four weeks of launch)"
       }
+    },
+    {
+      project: "space-guessr",
+      text: {
+        ko: "하나의 순위로 시작해 모드·난이도·오늘의 챌린지로 나누고, 서버 검증이 필요한 부분만 서버리스로 분리",
+        ja: "ひとつのランキングから始め、モード・難易度・今日のチャレンジに分け、サーバー検証が必要な部分だけをサーバーレスに切り出した",
+        en: "Started with one ranking, split it into modes, difficulty levels and a daily challenge, and moved only the parts that need server validation to serverless"
+      }
+    },
+    {
+      project: "suumo-alert",
+      text: {
+        ko: "조건마다 URL·채널·기준값을 분리하고, 새 매물과 가격 변동만 상세 조회하도록 범위를 좁힘",
+        ja: "条件ごとにURL・チャンネル・基準値を分け、新着と価格変動の物件だけを詳細取得するよう範囲を絞った",
+        en: "Separated URL, channel and thresholds per search and narrowed detail fetching to new or price-changed listings"
+      }
     }
   ],
   ship: [
@@ -544,6 +723,14 @@ const EVIDENCE = {
         ja: "先行登録・お問い合わせフォームとプライバシーポリシーを備えたページを東京リージョンのDBと共に公開し、公開URLで保存と削除を確認",
         en: "Published a page with a waitlist form, contact form and privacy policy on a Tokyo-region database, and checked saving and deleting on the live URL"
       }
+    },
+    {
+      project: "space-guessr",
+      text: {
+        ko: "게임과 서버리스 리더보드를 공개 URL로 배포하고, 운영 DB에 등록·중복 거절·도배 제한이 동작하는 것을 실제 요청으로 확인",
+        ja: "ゲームとサーバーレスのランキングを公開URLで公開し、本番DBへの登録・重複の拒否・連投制限が動くことを実際のリクエストで確認",
+        en: "Shipped the game and a serverless leaderboard at a public URL and checked registration, duplicate rejection and spam limits against the production database with real requests"
+      }
     }
   ],
   learn: [
@@ -577,6 +764,22 @@ const EVIDENCE = {
         ko: "남긴 힌트 수로 나눈 난이도가 체감과 어긋나서, 풀이 기법으로 채점하는 방식으로 바꿈",
         ja: "残したヒント数で分けた難易度が体感とずれていたため、解法テクニックで採点する方式に変更",
         en: "Difficulty by clue count didn't match how puzzles felt, so it now grades by solving techniques"
+      }
+    },
+    {
+      project: "space-guessr",
+      text: {
+        ko: "'같은 사진 반복'이라는 피드백을 라이브러리의 숨은 애니메이션 문제로 추적하고, 잘못된 첫 수정과 검증 방식의 맹점까지 인정한 뒤 고침",
+        ja: "「同じ写真の繰り返し」というフィードバックをライブラリの隠れたアニメーションの問題として追跡し、最初の誤った修正と検証方法の盲点まで認めたうえで修正",
+        en: "Traced the “same image repeats” feedback to a hidden animation in the map library, and fixed it after admitting both the wrong first fix and the blind spot in my testing"
+      }
+    },
+    {
+      project: "suumo-alert",
+      text: {
+        ko: "robots.txt의 요청 간격을 확인해 설계를 고치고, 조건을 섞어 보낸 실수를 정리해 바로잡음. 저평가 알림이 아직 0건이라는 사실도 그대로 기록",
+        ja: "robots.txtの要求間隔を確認して設計を直し、条件を混ぜて送ってしまった失敗を整理して修正。割安の通知がまだ0件であることもそのまま記録",
+        en: "Checked the robots.txt crawl delay and fixed the design, and corrected the mistake of mixing searches in one channel; also recorded plainly that no underpriced alert has fired yet"
       }
     }
   ],

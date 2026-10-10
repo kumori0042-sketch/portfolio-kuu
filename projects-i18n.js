@@ -254,6 +254,92 @@ const PROJECT_I18N = {
     }
   },
 
+  "space-guessr": {
+    ja: {
+      description:
+        "拡大された衛星写真の一部を見て、地球のどこかを地図上で当てるゲームです。単一のHTMLファイル（Leaflet・衛星タイル）から始め、ヒント、制限時間とスピードボーナス、3段階の難易度、全員が同じ5問を解く今日のチャレンジ、正解位置へズームアウトする答え合わせの演出、難易度別の共有ランキングまで加えました。ランキングのサーバーはCloudflare WorkersとD1で作り、ニックネーム・スコア範囲・連投をサーバー側で検証します。スコアはブラウザで計算されるため改ざんできるという限界があり、友人同士で競う用途にとどめています。",
+      stats: [
+        { n: "20か所", l: "地形（一目で分かる場所から手がかりが要る場所まで3段階）" },
+        { n: "4つ", l: "モード（今日のチャレンジ · かんたん · ふつう · むずかしい）" },
+        { n: "0件", l: "ランキング登録（2026-10-10時点・テスト記録はすべて削除）" },
+        { n: "185回・0件", l: "ラウンド切り替えの自動点検回数と地図位置のずれ" }
+      ],
+      pivots: [
+        {
+          title: "ただの地図当て → 衛星写真の地形へ",
+          body: "最初の構想は、拡大した衛星写真の一部だけを見て地球のどこかを当てるミニゲームで、バックエンドなしにHTMLとオープンソースの地図ライブラリだけで最初のバージョンを作ることが目標でした。衛星タイルはAPIキー不要のものを使い、正解との距離は2点間の大円距離で計算して得点にしました。紹介画面と操作説明、得点帯ごとのコメントと探検家ランクを付け、ルールを知らなくてもすぐ始められるようにしました。"
+        },
+        {
+          title: "「写真が大きすぎて分からない」 → ズームを緩め、地形を5か所から20か所へ",
+          body: "実際に遊んでみると、拡大が強すぎて質感しか見えず手がかりがない感覚と、同じ写真が繰り返される感覚がありました。地形ごとの初期ズームを1〜2段階下げて周囲の様子が見えるようにし、地形を5か所から10か所、さらに20か所に増やして、毎回ランダムに選ぶようにしました。場所ごとに「知っていましたか？」の解説を付け、当てたあとにも得るものがあるようにしました。"
+        },
+        {
+          title: "「同じ写真の繰り返し」の本当の原因 → 地図ライブラリの隠れたアニメーション",
+          body: "写真が繰り返されていると思っていましたが、実際はラウンドが変わるときに地図が新しい位置へ移れず、前の位置や初期位置で止まるバグでした。最初はアニメーションを切れば直ると判断しましたが直らず、画面が描画されない状態で一度だけ読む私のテストが問題を見逃していました。原因は、最小ズームを上げると、ライブラリが「以前の中心へのズーム移動」を次の画面更新に予約し、あとから指定した位置を上書きすることでした。呼び出し順を変え、その予約が生まれるかを直接監視する検証に切り替え、185回のラウンド切り替えで位置のずれ0件を確認しました。"
+        },
+        {
+          title: "Firebase → Cloudflare Workers + D1 のランキング",
+          body: "共有ランキングのためにまずFirebaseを試しましたが、Google Cloudの利用規約への同意の段階で何度も止まったため方向を変えました。すでにログインしていたCloudflareのWorkersとD1で作り、サーバーがニックネームの長さ・スコア範囲・ヒント回数を検証し、IPをハッシュ化して1分3回・1日50回で連投を制限し、許可したドメインからのリクエストだけを受け付けます。スコアをブラウザが計算する構造のため改ざんは防げないという限界はそのままにし、友人同士で競う用途と明記しました。"
+        },
+        {
+          title: "ひとつのランキング → 難易度 · 今日のチャレンジ · スピードボーナス",
+          body: "遊び続けるとランキングがすぐ飽和し新鮮さが減るため、モードを分けました。難易度（かんたん・ふつう・むずかしい）は、地形のプール、制限時間、得点の減衰カーブ、ヒント回数を変え、ランキングも別にしています。今日のチャレンジは日本・韓国時間の日付をシードに全員が同じ5問を解き、同じニックネームは1日1回しか登録できません。残り時間に応じてラウンド得点に最大20%を加えるスピードボーナスを入れたことでラウンドの最高点が5,000点から6,000点になり、サーバーの得点上限も合わせて変えました。"
+        }
+      ],
+      skills: [
+        "単一ファイルのウェブアプリ（Tailwind · Leaflet）",
+        "地図 · 衛星タイル · 大円距離の計算",
+        "サーバーレスAPI設計（Cloudflare Workers · D1）",
+        "サーバー側の入力検証 · 連投制限 · CORS",
+        "日付シードによる共通問題（PRNG）",
+        "ライブラリ内部の挙動の追跡とバグ原因の分析",
+        "モバイルファーストのレイアウト",
+        "Vercelデプロイ · 自動点検スクリプト"
+      ]
+    },
+    en: {
+      description:
+        "A game where you look at a zoomed-in piece of satellite imagery and pin on a map where on Earth it is. It started as a single HTML file (Leaflet and satellite tiles) and grew to include hints, a time limit with a speed bonus, three difficulty levels, a daily challenge where everyone plays the same five puzzles, a zoom-out reveal of the answer, and shared leaderboards per difficulty. The leaderboard server runs on Cloudflare Workers and D1 and validates nicknames, score ranges and spam on the server. Scores are computed in the browser, so they can be tampered with; I limit it to friendly competition.",
+      stats: [
+        { n: "20", l: "locations (three levels, from instantly recognizable to clue-dependent)" },
+        { n: "4", l: "modes (Daily Challenge · Easy · Normal · Hard)" },
+        { n: "0", l: "leaderboard entries (as of 2026-10-10 · all test records deleted)" },
+        { n: "185 · 0", l: "automated round-transition checks and map position errors" }
+      ],
+      pivots: [
+        {
+          title: "Just guessing on a map → terrain in satellite imagery",
+          body: "The first idea was a mini game where you see only a zoomed-in piece of satellite imagery and guess where on Earth it is, with the goal of a first version using only HTML and an open-source map library, no backend. I used a satellite tile source that needs no API key and scored guesses by the great-circle distance between two coordinates. An intro screen with controls, per-score comments and explorer ranks let people start without knowing the rules."
+        },
+        {
+          title: "“The image is too zoomed to get a feel” → looser zoom, 5 → 20 locations",
+          body: "Playing it myself, the zoom was so tight that only texture showed with no clues, and the same images seemed to repeat. I lowered each location's starting zoom by one or two levels so the surroundings are visible, and grew the pool from 5 to 10 to 20 locations, drawn at random each game. Each place got a “Did you know?” note so there is something to take away even after guessing."
+        },
+        {
+          title: "The real cause of “the same image repeats” → a hidden animation in the map library",
+          body: "I thought images were repeating, but the real bug was that the map failed to move to the new location between rounds and stayed on the previous or default position. My first call was that turning off animation would fix it; it did not, and my test, which read the state once on a screen that was not being painted, was missing the problem. The cause: raising the minimum zoom made the library schedule a “zoom to the old center” for the next screen update, which later overwrote the position I had set. I changed the call order and switched to a check that directly watches whether such a scheduled animation is created, and confirmed zero position errors over 185 round transitions."
+        },
+        {
+          title: "Firebase → a Cloudflare Workers + D1 leaderboard",
+          body: "I tried Firebase first for the shared leaderboard, but it kept stopping at the Google Cloud Terms of Service step, so I changed direction. I built it on Cloudflare Workers and D1, where I was already logged in. The server validates nickname length, score range and hint count, hashes the IP to limit spam to three submissions per minute and 50 per day, and accepts requests only from the allowed domain. Because scores are computed in the browser, tampering is not prevented; I kept that limit explicit and describe it as for friendly competition."
+        },
+        {
+          title: "One ranking → difficulty levels, a daily challenge and a speed bonus",
+          body: "Repeated play saturated the ranking quickly and novelty faded, so I split it into modes. Difficulty (Easy, Normal, Hard) changes the location pool, time limit, score falloff curve and hint count, with separate leaderboards. The daily challenge seeds five puzzles from the Japan/Korea date so everyone plays the same ones, and one nickname can register once per day. The speed bonus adds up to 20% of a round's score by remaining time, which raised the per-round maximum from 5,000 to 6,000, so I changed the server's score ceiling to match."
+        }
+      ],
+      skills: [
+        "Single-file web app (Tailwind · Leaflet)",
+        "Maps · satellite tiles · great-circle distance",
+        "Serverless API design (Cloudflare Workers · D1)",
+        "Server-side validation · spam limits · CORS",
+        "Date-seeded shared puzzles (PRNG)",
+        "Tracing library internals to find a bug's cause",
+        "Mobile-first layout",
+        "Vercel deploy · automated check scripts"
+      ]
+    }
+  },
   "dev-goods-shop": {
     ja: {
       description:
@@ -464,6 +550,92 @@ const PROJECT_I18N = {
         "Telegram remote control (/pause /closeall)",
         "Failure detection · watchdog setup",
         "Honest, data-based retrospectives"
+      ]
+    }
+  },
+  "suumo-alert": {
+    ja: {
+      description:
+        "SUUMOの中古マンション検索結果を1日に数回読み取り、条件（面積・築年・駅徒歩・総戸数など）に合う物件をSQLiteに蓄積して、新着・値下げ・割安をDiscordで知らせるツールです。割安は、同じ駅の物件の㎡単価の中央値より10%以上安い場合と判定し、通知には⭐保存・🗑削除ボタンが付いてその場で整理できます。GitHub Actionsで動き、ボタンのクリックはCloudflare Workerが受け、サイトのrobots.txtの要求間隔を守ります。個人用ツールのため公開デモはありません。",
+      stats: [
+        { n: "4件・6件", l: "条件を通過した物件 · 詳細条件で除外した物件（2026-10-10時点）" },
+        { n: "0件", l: "割安・値下げの通知（駅ごとのサンプルが5件未満のため判定できない）" },
+        { n: "30秒", l: "リクエスト間隔（robots.txtのCrawl-delayを順守）" },
+        { n: "2〜3回", l: "1日の実際の実行回数（予約は4回、GitHub側の遅延・欠落）" }
+      ],
+      pivots: [
+        {
+          title: "新着通知 → 割安の判定（駅ごとの中央値）",
+          body: "最初は条件に合う新着を知らせるだけの単純な通知でした。目的は安く出ている物件を見分けることなので、物件をDBに貯め続け、同じ駅の㎡単価の中央値より10%以上安いものだけを「割安」として別に知らせ、同じ物件の価格が下がったら下げ幅と回数も合わせて知らせるよう変えました。駅ごとのサンプルが5件未満だと判定を保留しますが、今はその基準を満たす駅がなく、割安の通知は一度も出ていません。"
+        },
+        {
+          title: "リクエスト間隔3秒 → robots.txtを確認して30秒",
+          body: "初期のスクリプトはリクエストの間を3秒しか空けていませんでしたが、robots.txtを直接確認するとCrawl-delayは30秒でした。間隔を30秒守ると、候補物件の詳細ページを毎回すべて読む方式では1回に約27分かかり、1日に何度も動かすと無料の実行枠を超えかねないと計算しました。そこで、新着または一覧の価格が変わった物件だけ詳細を取得し、詳細条件で除外した物件は7日間再取得しないよう変えました。直近14回の実行のうち13回が2〜5分で、1回（DB初期化の直後）が15分でした。候補が多いときに先頭の40件だけが繰り返し取得され、残りが永遠に処理されない問題も同時に解消しました。"
+        },
+        {
+          title: "ハードフィルターで除外 → 警告タグで表示",
+          body: "1階の物件を丸ごと除外したところ、条件を通る物件がほとんどなく、通知が一度も来ませんでした。除外されていた物件をログで確認すると、ほかの条件はすべて通り、1階であることだけが理由で外れているものがありました。1階は除外せず「1階」の警告タグだけを付けて判断は自分でする形に変えると、最初の通知が来ました。積立金が低い、月の固定費が高い、築年が古い建物も、同じようにタグだけを付けます。"
+        },
+        {
+          title: "複数の条件を1つのチャンネルに → 条件別のチャンネル・基準値に分離",
+          body: "検索条件をもう1つ追加する際にURLを1つのリストにまとめて動かしたところ、2つ目の条件の物件31件が1つ目の条件のチャンネルにまとめて投稿されてしまいました。条件ごとにURL・通知チャンネル・基準値（例：徒歩の分数）を別々に持つ設定ファイルに変え、DBも条件別に状態を記録して、同じ物件が2つの条件に該当しても、それぞれに通知が届くようにしました。誤って投稿されたメッセージ35件はボットで削除しました。2つ目の条件は、チャンネルが決まるまで停止しています。"
+        },
+        {
+          title: "通常のWebhook → ボット + ボタンのクリックを受けるサーバー",
+          body: "通知に⭐保存・🗑削除ボタンを付けたかったのですが、ボタンのクリックを受けるにはメッセージをボットが送る必要があり、クリックの署名を検証して応答するサーバーも必要なため、Webhookからボットに切り替え、サーバーはCloudflare Workerで作りました。保存は別チャンネルへのコピー、削除は元のメッセージを消します。途中でボットのリクエストが403で弾かれることがありましたが、既定のリクエストヘッダー（User-Agent）が不審なトラフィックと判定されたためで、ヘッダーを明示して解決しました。"
+        }
+      ],
+      skills: [
+        "ウェブスクレイピング · robots.txtを守る設計",
+        "SQLiteのスキーマ設計とマイグレーション",
+        "統計に基づく判定（中央値 · サンプル基準）",
+        "GitHub Actionsの定期実行 · シークレット管理",
+        "Discordボット · ボタンインタラクション（Cloudflare Workers）",
+        "条件別の設定分離（設定ファイル · 基準値の上書き）",
+        "オフラインのシナリオテスト（偽のレスポンス）",
+        "実行コスト・時間の最適化"
+      ]
+    },
+    en: {
+      description:
+        "A tool that reads SUUMO used-condo search results several times a day, stores listings that match my criteria (area, build year, walking time, number of units and so on) in SQLite, and posts new, price-cut and underpriced listings to Discord. A listing counts as underpriced when its price per square meter is at least 10% below the median for the same station, and each alert carries Save and Delete buttons for quick triage. It runs on GitHub Actions, a Cloudflare Worker receives the button clicks, and it respects the site's robots.txt crawl delay. It is a personal tool, so there is no public demo.",
+      stats: [
+        { n: "4 · 6", l: "listings that passed the criteria · listings rejected at the detail stage (as of 2026-10-10)" },
+        { n: "0", l: "underpriced or price-cut alerts (no station has the five samples needed to judge yet)" },
+        { n: "30 s", l: "request interval (follows robots.txt Crawl-delay)" },
+        { n: "2–3", l: "actual runs per day (four are scheduled; GitHub delays or drops some)" }
+      ],
+      pivots: [
+        {
+          title: "New-listing alerts → underpriced detection (per-station median)",
+          body: "At first it was a simple alert for new listings matching my criteria. Since the goal is to spot listings priced low, I changed it to accumulate listings in a database, flag as “underpriced” only those at least 10% below the same station's median price per square meter, and report price cuts together with how many times a listing has dropped. Judgment is held back when a station has fewer than five samples; no station meets that yet, so no underpriced alert has ever fired."
+        },
+        {
+          title: "3-second request gaps → 30 seconds after checking robots.txt",
+          body: "The first script paused only three seconds between requests, but checking robots.txt myself showed a Crawl-delay of 30 seconds. At 30 seconds, reading every candidate's detail page on every run would take about 27 minutes, and I calculated that running several times a day could exceed the free run allowance. So I fetch details only for new listings or ones whose listed price changed, and skip rejected listings for seven days. In the last 14 runs, 13 took 2–5 minutes and one (right after a database reset) took 15. A problem where only the first 40 candidates were fetched repeatedly and the rest never got processed disappeared with it."
+        },
+        {
+          title: "Hard filter → a warning tag",
+          body: "Excluding ground-floor units outright left almost nothing passing, so no alert ever came. Checking the log for what was being filtered, some listings passed every other criterion and were rejected only for being on the first floor. I changed it to keep them and add a “1st floor” warning tag, leaving the call to me, and the first alert arrived. Low reserve funds, high monthly fixed costs and older buildings are tagged the same way."
+        },
+        {
+          title: "Several searches in one channel → separate channel and thresholds per search",
+          body: "When I added a second search I merged the URLs into one list, and 31 listings from the second search were posted at once to the first search's channel. I switched to a config file where each search has its own URL, channel and thresholds (for example, walking minutes), and the database now records state per search, so a listing matching both searches alerts each one. I deleted the 35 wrongly posted messages with the bot. The second search stays off until its channel is decided."
+        },
+        {
+          title: "Plain webhook → a bot plus a server for button clicks",
+          body: "I wanted Save and Delete buttons on each alert. Receiving button clicks requires the message to be sent by a bot and a server that verifies the click signature and responds, so I moved from a webhook to a bot and built the server as a Cloudflare Worker. Save copies the alert to another channel and Delete removes the original. Along the way the bot's requests were blocked with 403; the default request header (User-Agent) was being treated as suspicious traffic, and setting it explicitly fixed that."
+        }
+      ],
+      skills: [
+        "Web scraping · design that respects robots.txt",
+        "SQLite schema design and migration",
+        "Statistical judgment (median · minimum sample)",
+        "GitHub Actions scheduling · secrets management",
+        "Discord bot · button interactions (Cloudflare Workers)",
+        "Per-search config separation (config file · threshold overrides)",
+        "Offline scenario tests (fake responses)",
+        "Optimizing run cost and time"
       ]
     }
   }
