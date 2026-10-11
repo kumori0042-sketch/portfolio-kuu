@@ -364,6 +364,33 @@
     return `<div class="browser-frame"><img class="browser-iframe" src="${p.cover.src}" alt="${window.t("a11y.shot", nm(p))}" style="object-fit:cover;"></div>`;
   }
 
+  // 모달 열기/닫기 모션 (hidden 속성은 display 토글용으로 유지하고 .is-open/.is-closing 으로 전환)
+  const closeTimers = new WeakMap();
+  const closeMs = () => parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--modal-close-dur")) || 150;
+  function showBackdrop(el) {
+    clearTimeout(closeTimers.get(el));
+    el.classList.remove("is-closing");
+    const wasHidden = el.hidden;
+    el.hidden = false;
+    if (wasHidden) {
+      el.classList.remove("is-open");
+      void el.offsetWidth;                        // 시작 상태를 확정한 뒤 열림 클래스 추가
+      setTimeout(() => { if (!el.hidden && !el.classList.contains("is-closing")) el.classList.add("is-open"); }, 20);
+    } else {
+      el.classList.add("is-open");
+    }
+  }
+  function hideBackdrop(el, after) {
+    if (el.hidden || el.classList.contains("is-closing")) return;
+    el.classList.remove("is-open");
+    el.classList.add("is-closing");
+    closeTimers.set(el, setTimeout(() => {
+      el.hidden = true;
+      el.classList.remove("is-closing");
+      if (after) after();
+    }, closeMs()));
+  }
+
   let currentModal = null;
   function openModal(p0) {
     currentModal = p0;
@@ -409,14 +436,13 @@
         ${p.links.caseStudy ? `<a class="btn btn-ghost btn-ghost" href="${p.links.caseStudy}" target="_blank" rel="noopener">${window.t("modal.caseStudy")}</a>` : ""}
       </div>
     `;
-    backdrop.hidden = false;
+    showBackdrop(backdrop);
     document.body.style.overflow = "hidden";
   }
   function closeModal() {
     currentModal = null;
-    backdrop.hidden = true;
     document.body.style.overflow = "";
-    modalBody.innerHTML = "";
+    hideBackdrop(backdrop, () => { if (!currentModal) modalBody.innerHTML = ""; });
   }
   modalClose.addEventListener("click", closeModal);
   backdrop.addEventListener("click", (e) => {
@@ -431,11 +457,11 @@
   const introReplayBtn = document.getElementById("btn-intro-replay");
 
   function openIntro() {
-    introBackdrop.hidden = false;
+    showBackdrop(introBackdrop);
     document.body.style.overflow = "hidden";
   }
   function closeIntro() {
-    introBackdrop.hidden = true;
+    hideBackdrop(introBackdrop);
     document.body.style.overflow = "";
     localStorage.setItem(LS_INTRO_SEEN, "1");
   }
