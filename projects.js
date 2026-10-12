@@ -442,7 +442,8 @@ const PROJECTS = [
       "Vercel · GitHub 자동 배포"
     ],
     links: {
-      live: "https://kuchikomiban.vercel.app"
+      live: "https://kuchikomiban.vercel.app",
+      prd: "prd-kuchikomiban.html"
     }
   },
   {
