@@ -168,12 +168,12 @@ const PROJECT_I18N = {
   "daily-puzzles": {
     ja: {
       description:
-        "毎日みんなに同じ問題が出るデイリーパズルサイトです。最初の画面で、数独・ジグソー・ノノグラム・クイーンズ・バイナリ・スライドの中から今日遊ぶパズルを選びます。問題も絵もすべて日付をシードにブラウザ上で生成し、答えが一つだけか検証するため、サーバーもDBも画像ファイルもありません。",
+        "毎日みんなに同じ絵が出るジグソーサイトです。同じ絵を48・150・384ピースから選んで組み立て、拡大・移動できる机の上にピースが散らばった状態から始めます。隣のピースを合わせると1つの塊として動き、塊が正しい位置の近くに来ると盤に固定されます。絵とピースの形は日付をシードにブラウザ上で生成する（イラスト調で写真ではない）ため、サーバーもDBも画像ファイルもなく、進行はブラウザに自動保存されます。最初は数独など複数のパズルがありましたが、大きなジグソー1つに集中するため残りは削除しました。極上（384ピース）の「約3時間」は目安であり、実際に計った時間ではありません。",
       stats: [
-        { n: "6種", l: "一覧から選べるパズル" },
+        { n: "3段階", l: "同じ絵を48・150・384ピースで" },
         { n: "0個", l: "サーバー · DB · 画像ファイル" },
-        { n: "60/60", l: "検証した日付すべてで答えが一つだけ（数独・ノノグラム・クイーンズ・バイナリ）" },
-        { n: "3段階", l: "曜日ごとの難易度" }
+        { n: "3種", l: "日付で決まる絵の場面（夕焼けの湖・夜の街・サンゴ礁）" },
+        { n: "8種 → 1種", l: "パズルの種類（大型ジグソーに集中）" }
       ],
       pivots: [
         {
@@ -195,28 +195,31 @@ const PROJECT_I18N = {
         {
           title: "絵もピースも日付から生成、隣り合うピースは同じ曲線を共有",
           body: "ジグソーに写真を使うと著作権とファイル管理がついてくるため、日付をシードに絵を生成し、ピース同士が区別できるよう単色の領域ができないテクスチャ層を加えました。ピースの形は、各辺の曲線を一度だけ作って両側のピースが（片方は逆向きで）共有するので、隙間なく噛み合います。同じ絵の生成器をスライドパズルにも再利用しました。"
+        },
+        {
+          title: "小さなパズル8種 → 大型ジグソー1つ",
+          body: "前の01〜04は、パズルが複数あったときの判断です。実際に使ってみて、小さなパズルをたくさん並べるより、長く向き合える大きな絵のほうがよいと判断し、数独など7種を削除して、ジグソーを「1人で数時間」かかるサイズ（384ピース）まで大きくしました。ユーザーの反応データはまだなく、私の判断です。既存のジグソーエンジンは30ピースが1画面に収まる構造で384ピースには耐えられなかったため、拡大・移動できる机、隣のピースの塊の結合、盤への固定、外枠のみ表示、自動保存を新しく作りました。以前の版はgitタグで残してあり、所要時間は目安でまだ計れていません。"
         }
       ],
       skills: [
-        "シードベースの手続き的生成（PRNG）",
-        "バックトラッキング解法 · 一意解の検証",
-        "解法テクニックに基づく難易度採点",
-        "行・列単位の論理解法（ノノグラム）",
-        "解の検査で領域を直す生成（クイーンズ）",
-        "Canvas 2D · ベジェ曲線 · ポインタドラッグ",
-        "共通モジュールの抽出 · 複数ページの静的サイト",
-        "モバイルファーストのレスポンシブ · ダークモード",
+        "シード付き手続き生成（PRNG）・イラスト場面の生成",
+        "Canvas 2Dの大型描画・拡大/移動カメラ・カリング",
+        "ピースの塊の結合と盤への固定ロジック（グループ管理）",
+        "ベジェ曲線のピース形状・ポインター/ピンチ入力",
+        "サーバーなしの静的サイト · localStorageの自動保存",
+        "Service Worker · ホーム画面追加 · オフラインキャッシュ",
+        "範囲を絞る意思決定（8種 → 1種）",
         "Vercelデプロイ"
       ]
     },
     en: {
       description:
-        "A daily puzzle site where everyone gets the same puzzle each day. On the first screen you pick today's puzzle from Sudoku, Jigsaw, Nonogram, Queens, Binary and Slide. Every puzzle and picture is generated in the browser from the date as a seed and checked for a unique answer, so there is no server, no database and no image file.",
+        "A jigsaw site where everyone gets the same picture each day. You choose to assemble it in 48, 150 or 384 pieces, starting with pieces scattered on a table you can zoom and pan. Neighboring pieces join into a cluster that moves together, and a cluster placed near its spot locks onto the board. The picture and piece shapes are generated in the browser from the date (illustration-style, not photos), so there is no server, database or image file, and progress is saved automatically in the browser. It started with several puzzles such as Sudoku, but I removed the rest to focus on one large jigsaw. The 'about 3 hours' for Extreme (384 pieces) is an estimate, not a measured time.",
       stats: [
-        { n: "6", l: "puzzles to choose from" },
-        { n: "0", l: "servers · databases · image files" },
-        { n: "60/60", l: "tested dates all have exactly one answer (Sudoku, Nonogram, Queens, Binary)" },
-        { n: "3 levels", l: "difficulty by weekday" }
+        { n: "3 levels", l: "The same picture in 48, 150 or 384 pieces" },
+        { n: "0", l: "Servers, databases and image files" },
+        { n: "3", l: "Date-driven picture scenes (sunset lake, night city, coral reef)" },
+        { n: "8 → 1", l: "Kinds of puzzle (focused on the large jigsaw)" }
       ],
       pivots: [
         {
@@ -238,18 +241,21 @@ const PROJECT_I18N = {
         {
           title: "Pictures and pieces generated from the date; neighbors share one curve",
           body: "Using photos for the jigsaw would bring copyright and file management, so I generate the picture from the date seed and add a texture layer so no solid-color areas make pieces indistinguishable. Each edge's curve is created once and shared by both neighboring pieces (one of them reversed), so they interlock with no gaps. The same picture generator is reused for the slide puzzle."
+        },
+        {
+          title: "Eight small puzzles → one large jigsaw",
+          body: "Decisions 01–04 above were made when the site had several puzzles. Using it myself, I judged that one big picture you stay with beats many small puzzles, so I removed seven puzzles such as Sudoku and grew the jigsaw to a size meant to take one person hours (384 pieces). There is no usage data yet; this is my call. The old jigsaw engine assumed 30 pieces visible at once and could not handle 384, so I built a zoomable, pannable table, cluster merging for neighboring pieces, locking onto the board, an edges-only view and autosave. The previous version is kept as a git tag, and the time estimate has not been measured yet."
         }
       ],
       skills: [
-        "Seed-based procedural generation (PRNG)",
-        "Backtracking solver · unique-solution checks",
-        "Difficulty grading by solving techniques",
-        "Line-logic solving (Nonogram)",
-        "Generation that repairs regions using solution checks (Queens)",
-        "Canvas 2D · Bézier curves · pointer dragging",
-        "Extracting shared modules · multi-page static site",
-        "Mobile-first responsive · dark mode",
-        "Vercel deploy"
+        "Seeded procedural generation (PRNG) and illustrated scene generation",
+        "Large Canvas 2D rendering, zoom/pan camera and culling",
+        "Piece-cluster merging and board-locking logic (group management)",
+        "Bezier piece shapes and pointer/pinch input",
+        "Serverless static site with localStorage autosave",
+        "Service worker, home-screen install and offline cache",
+        "Scope-narrowing decision (8 puzzles → 1)",
+        "Vercel deployment"
       ]
     }
   },

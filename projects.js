@@ -160,31 +160,31 @@ const PROJECTS = [
     },
     status: "live",
     oneLiner: {
-      ko: "스도쿠·직소 등 6종을 골라서 푸는, 서버 없는 데일리 퍼즐 사이트",
-      ja: "数独・ジグソーなど6種から選んで遊ぶ、サーバーなしのデイリーパズルサイト",
-      en: "A serverless daily puzzle site with six puzzles to choose from"
+      ko: "날짜로 생성되는 그림을 48·150·384조각으로 맞추는, 서버 없는 대형 직소 사이트",
+      ja: "日付から生成される絵を48・150・384ピースで組み立てる、サーバーなしの大型ジグソーサイト",
+      en: "A serverless large-jigsaw site: a picture generated from the date, in 48, 150 or 384 pieces"
     },
     proof: {
-      ko: "문제를 날짜로 생성해 답이 하나인지 검증 · 난이도를 풀이 기법으로 채점 · 6개 게임이 공통 모듈 공유",
-      ja: "問題を日付から生成し、答えが一つか検証 · 難易度を解法テクニックで採点 · 6ゲームが共通モジュールを共有",
-      en: "Puzzles are generated from the date and checked for a unique answer · difficulty graded by solving techniques · six games share one module"
+      ko: "확대·이동하는 책상 위에서 이웃 조각이 덩어리로 붙는 직소 엔진을 직접 구현 · 그림과 조각 모양을 날짜로 생성 · 8종이던 퍼즐을 대형 직소 하나로 좁힘",
+      ja: "拡大・移動できる机の上で、隣のピースが塊としてくっつくジグソーエンジンを自作 · 絵とピースの形を日付から生成 · 8種あったパズルを大型ジグソー1つに絞った",
+      en: "Built a jigsaw engine from scratch where neighboring pieces join into clusters on a zoomable, pannable table · picture and piece shapes generated from the date · narrowed eight puzzles down to one large jigsaw"
     },
     signals: ["scope", "ship", "learn"],
     name: "오늘의 퍼즐",
     nameL: { ko: "오늘의 퍼즐", ja: "今日のパズル", en: "Daily Puzzles" },
-    tagline: "스도쿠·직소·노노그램 등 6종을 골라서 푸는, 서버 없는 데일리 퍼즐 사이트",
+    tagline: "날짜로 생성되는 그림을 최대 384조각으로 맞추는 서버 없는 직소 사이트",
     year: "2026",
     tags: ["Web App", "Game", "Solo"],
     accent: "#3182F6",
     accent2: "#7C5CFF",
     cover: { type: "iframe", src: "https://daily-puzzles-rho.vercel.app" },
     description:
-      "매일 모두에게 같은 문제가 나오는 데일리 퍼즐 사이트입니다. 첫 화면에서 스도쿠, 직소, 노노그램, 퀸즈, 이진 퍼즐, 슬라이드 중 오늘 풀 퍼즐을 고릅니다. 문제와 그림은 모두 날짜를 시드로 브라우저에서 생성하고 답이 하나인지 검증하기 때문에 서버도 DB도 이미지 파일도 없습니다.",
+      "매일 모두에게 같은 그림이 나오는 직소 사이트입니다. 같은 그림을 48·150·384조각 중에서 골라 맞추고, 확대·이동이 되는 책상 위에 조각을 흩어 놓고 시작합니다. 이웃 조각을 맞추면 한 덩어리로 움직이고, 덩어리가 제자리 근처에 오면 판에 고정됩니다. 그림과 조각 모양은 날짜를 시드로 브라우저에서 생성해서(일러스트 느낌이고 사진은 아님) 서버도 DB도 이미지 파일도 없고, 진행은 브라우저에 자동 저장됩니다. 처음에는 스도쿠 등 여러 퍼즐이 있었지만 큰 직소 하나에 집중하려고 나머지를 지웠습니다. 극상(384조각)의 '약 3시간'은 예상이고 직접 잰 시간은 아닙니다.",
     stats: [
-      { n: "6종", l: "목록에서 고르는 퍼즐" },
+      { n: "3단계", l: "같은 그림을 48 · 150 · 384조각으로" },
       { n: "0개", l: "서버 · DB · 이미지 파일" },
-      { n: "60/60", l: "검증한 날짜 모두 답이 하나뿐 (스도쿠·노노그램·퀸즈·이진)" },
-      { n: "3단계", l: "요일별 난이도" }
+      { n: "3종", l: "날짜로 정해지는 그림 장면 (석양 호수 · 밤의 도시 · 산호초)" },
+      { n: "8종 → 1종", l: "퍼즐 종류 (대형 직소에 집중)" }
     ],
     pivots: [
       {
@@ -212,16 +212,21 @@ const PROJECTS = [
         title: "그림도 조각도 날짜로 생성, 이웃 조각은 같은 곡선 공유",
         body: "직소에 사진을 쓰면 저작권과 파일 관리가 따라와서 날짜를 시드로 그림을 생성했고, 조각끼리 구분이 되도록 단색 영역이 생기지 않게 질감 레이어를 더했습니다. 조각 모양은 각 변의 곡선을 한 번만 만들어 양쪽 조각이 (한쪽은 역방향으로) 같이 쓰게 해서 틈 없이 맞물립니다. 같은 그림 생성기를 슬라이드 퍼즐에도 재사용했습니다."
       }
+      ,
+      {
+        n: "06",
+        title: "작은 퍼즐 8종 → 대형 직소 하나",
+        body: "앞의 01~04는 퍼즐이 여러 종류였을 때의 결정입니다. 직접 써 보니 작은 퍼즐 여러 개보다 오래 붙잡고 있는 큰 그림 하나가 낫다고 판단해서, 스도쿠 등 7종을 지우고 직소를 '한 사람이 몇 시간' 걸리는 크기(384조각)까지 키웠습니다. 사용자 반응 데이터는 아직 없고 제 판단입니다. 기존 직소 엔진은 30조각이 한 화면에 다 보이는 구조라 384조각을 감당하지 못해서, 확대·이동되는 책상, 이웃 조각의 덩어리 병합, 판 고정, 가장자리만 보기, 자동 저장을 새로 만들었습니다. 이전 버전은 git 태그로 남겼고, 소요 시간은 예상일 뿐 아직 재 보지 못했습니다."
+      }
     ],
     skills: [
-      "시드 기반 절차적 생성 (PRNG)",
-      "백트래킹 풀이 · 유일해 검증",
-      "풀이 기법 기반 난이도 채점",
-      "줄 단위 논리 풀이 (노노그램)",
-      "해 검사로 영역을 고치는 생성 (퀸즈)",
-      "Canvas 2D · 베지어 곡선 · 포인터 드래그",
-      "공통 모듈 추출 · 다중 페이지 정적 사이트",
-      "모바일 우선 반응형 · 다크 모드",
+      "시드 기반 절차적 생성 (PRNG) · 일러스트 장면 생성",
+      "Canvas 2D 대형 렌더링 · 확대/이동 카메라 · 컬링",
+      "조각 덩어리 병합과 판 고정 로직 (그룹 관리)",
+      "베지어 곡선 조각 모양 · 포인터/핀치 입력",
+      "서버 없는 정적 사이트 · localStorage 자동 저장",
+      "서비스 워커 · 홈 화면 설치 · 오프라인 캐시",
+      "범위 축소 결정 (8종 → 1종)",
       "Vercel 배포"
     ],
     links: {
@@ -630,9 +635,9 @@ const EVIDENCE = {
     {
       project: "daily-puzzles",
       text: {
-        ko: "퍼즐마다 따로 만들던 사이트를 하나의 허브로 합치고, 새 퍼즐은 공통 모듈 위에 규칙만 얹도록 범위를 정리",
-        ja: "パズルごとに別々だったサイトを一つのハブにまとめ、新しいパズルは共通モジュールの上にルールだけ載せる形に範囲を整理",
-        en: "Merged separate puzzle sites into one hub and scoped new puzzles to only add their own rules on a shared module"
+        ko: "퍼즐 8종까지 늘렸다가, 하나를 오래 붙잡게 만드는 쪽이 낫다고 보고 대형 직소 하나로 범위를 좁힘 (반응 데이터 없이 내린 판단)",
+        ja: "パズルを8種まで増やした後、ひとつに長く向き合える形のほうがよいと判断し、大型ジグソー1つに範囲を絞った（反応データなしでの判断）",
+        en: "Grew to eight puzzles, then judged that one puzzle people stay with is better and narrowed the scope to a single large jigsaw (a call made without usage data)"
       }
     },
     {
@@ -712,9 +717,9 @@ const EVIDENCE = {
     {
       project: "daily-puzzles",
       text: {
-        ko: "퍼즐 6종을 하나의 사이트로 배포하고, 홈 화면 설치와 오프라인 캐시까지 추가",
-        ja: "パズル6種を一つのサイトとして公開し、ホーム画面への追加とオフラインキャッシュまで実装",
-        en: "Shipped six puzzles as one site, with home-screen install and an offline cache"
+        ko: "서버 없는 정적 사이트로 배포하고, 홈 화면 설치와 오프라인 캐시, 이전 버전으로 돌아갈 수 있는 git 태그까지 남김",
+        ja: "サーバーなしの静的サイトとして公開し、ホーム画面への追加とオフラインキャッシュ、以前の版に戻せるgitタグまで残した",
+        en: "Shipped as a serverless static site, with home-screen install, an offline cache and a git tag to return to the previous version"
       }
     },
     {
@@ -762,9 +767,9 @@ const EVIDENCE = {
     {
       project: "daily-puzzles",
       text: {
-        ko: "남긴 힌트 수로 나눈 난이도가 체감과 어긋나서, 풀이 기법으로 채점하는 방식으로 바꿈",
-        ja: "残したヒント数で分けた難易度が体感とずれていたため、解法テクニックで採点する方式に変更",
-        en: "Difficulty by clue count didn't match how puzzles felt, so it now grades by solving techniques"
+        ko: "기존 직소 엔진이 30조각 전체가 한 화면에 보이는 구조라 384조각을 감당하지 못한다는 점을 확인하고, 확대·이동·덩어리 병합이 되는 엔진으로 새로 만듦",
+        ja: "既存のジグソーエンジンは30ピース全体が1画面に収まる構造で384ピースには耐えられないと確認し、拡大・移動・塊の結合ができるエンジンに作り直した",
+        en: "Found that the old jigsaw engine, built for 30 pieces visible at once, could not handle 384, and rebuilt it with zoom, pan and cluster merging"
       }
     },
     {
