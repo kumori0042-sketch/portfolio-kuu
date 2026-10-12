@@ -339,6 +339,19 @@
     observeReveal(list.querySelectorAll(".writing-item"), 60);
   }
 
+  // ---------- 사용량 집계 (쿠키·개인 식별자 없이 횟수만) ----------
+  const METRIC_URL = "https://space-guessr-api.kumori0042.workers.dev/m";
+  function track(e, d) {
+    try {
+      const h = location.hostname;
+      if (h === "localhost" || h === "127.0.0.1" || navigator.doNotTrack === "1") return;
+      const body = JSON.stringify(d ? { e, d: String(d) } : { e });
+      if (navigator.sendBeacon && navigator.sendBeacon(METRIC_URL, new Blob([body], { type: "text/plain" }))) return;
+      fetch(METRIC_URL, { method: "POST", body, keepalive: true, headers: { "Content-Type": "text/plain" } }).catch(() => {});
+    } catch (_) {}
+  }
+  window.addEventListener("langchange", (ev) => { if (["ko", "ja", "en"].includes(ev.detail)) track("lang", ev.detail); });
+
   // ---------- 모달 ----------
   const backdrop = document.getElementById("modal-backdrop");
   const modalBody = document.getElementById("modal-body");
@@ -392,7 +405,8 @@
   }
 
   let currentModal = null;
-  function openModal(p0) {
+  function openModal(p0, silent) {
+    if (!silent) track("project_open", p0.id);
     currentModal = p0;
     const p = localized(p0);
     modalBody.innerHTML = `
@@ -481,7 +495,7 @@
   renderAll();
   // 소개 문단은 스크롤로 글자가 서서히 진해지는 효과를 쓰지 않는다. 처음 보는 사람이 바로 읽을 수 있어야 해서.
   window.addEventListener("langchange", renderAll);
-  window.addEventListener("langchange", () => { if (currentModal && !backdrop.hidden) openModal(currentModal); });
+  window.addEventListener("langchange", () => { if (currentModal && !backdrop.hidden) openModal(currentModal, true); });
 
   playHeroEntrance();
   enableHeroTilt();
