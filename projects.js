@@ -160,31 +160,31 @@ const PROJECTS = [
     },
     status: "live",
     oneLiner: {
-      ko: "날짜로 생성되는 그림을 48·150·384조각으로 맞추는, 서버 없는 대형 직소 사이트",
-      ja: "日付から生成される絵を48・150・384ピースで組み立てる、サーバーなしの大型ジグソーサイト",
-      en: "A serverless large-jigsaw site: a picture generated from the date, in 48, 150 or 384 pieces"
+      ko: "테마를 고르고 난이도(384~30,246조각)를 고르는, 서버 없는 대형 직소 사이트",
+      ja: "テーマと難易度（384〜30,246ピース）を選ぶ、サーバーなしの大型ジグソーサイト",
+      en: "A serverless large-jigsaw site: pick a theme and a difficulty from 384 up to 30,246 pieces"
     },
     proof: {
-      ko: "확대·이동하는 책상 위에서 이웃 조각이 덩어리로 붙는 직소 엔진을 직접 구현 · 그림과 조각 모양을 날짜로 생성 · 8종이던 퍼즐을 대형 직소 하나로 좁힘",
-      ja: "拡大・移動できる机の上で、隣のピースが塊としてくっつくジグソーエンジンを自作 · 絵とピースの形を日付から生成 · 8種あったパズルを大型ジグソー1つに絞った",
-      en: "Built a jigsaw engine from scratch where neighboring pieces join into clusters on a zoomable, pannable table · picture and piece shapes generated from the date · narrowed eight puzzles down to one large jigsaw"
+      ko: "3만 조각을 버티도록 조각 모양 지연 생성·거리별 그리기·압축 저장을 직접 설계 · 8종이던 퍼즐을 대형 직소 하나로 좁혀 별도 사이트로 분리 · 느린 지점을 측정해 고침",
+      ja: "3万ピースに耐えるよう、ピース形状の遅延生成・距離別描画・圧縮保存を自分で設計 · 8種あったパズルを大型ジグソー1つに絞って別サイトに分離 · 遅い箇所を計測して改善",
+      en: "Designed lazy piece shapes, distance-based drawing and compact saves to hold 30,000 pieces · narrowed eight puzzles to one large jigsaw and split it into its own site · measured the slow spots and fixed them"
     },
     signals: ["scope", "ship", "learn"],
-    name: "오늘의 퍼즐",
-    nameL: { ko: "오늘의 퍼즐", ja: "今日のパズル", en: "Daily Puzzles" },
-    tagline: "날짜로 생성되는 그림을 최대 384조각으로 맞추는 서버 없는 직소 사이트",
+    name: "Grand Jigsaw",
+    nameL: { ko: "Grand Jigsaw", ja: "Grand Jigsaw", en: "Grand Jigsaw" },
+    tagline: "테마를 고르고 난이도를 고르는, 최대 30,246조각의 서버 없는 직소 사이트",
     year: "2026",
     tags: ["Web App", "Game", "Solo"],
     accent: "#3182F6",
     accent2: "#7C5CFF",
-    cover: { type: "iframe", src: "https://daily-puzzles-rho.vercel.app" },
+    cover: { type: "iframe", src: "https://grand-jigsaw.vercel.app" },
     description:
-      "매일 모두에게 같은 그림이 나오는 직소 사이트입니다. 같은 그림을 48·150·384조각 중에서 골라 맞추고, 확대·이동이 되는 책상 위에 조각을 흩어 놓고 시작합니다. 이웃 조각을 맞추면 한 덩어리로 움직이고, 덩어리가 제자리 근처에 오면 판에 고정됩니다. 그림과 조각 모양은 날짜를 시드로 브라우저에서 생성해서(일러스트 느낌이고 사진은 아님) 서버도 DB도 이미지 파일도 없고, 진행은 브라우저에 자동 저장됩니다. 처음에는 스도쿠 등 여러 퍼즐이 있었지만 큰 직소 하나에 집중하려고 나머지를 지웠습니다. 극상(384조각)의 '약 3시간'은 예상이고 직접 잰 시간은 아닙니다.",
+      "테마(사이버펑크·신스웨이브·우주 성운·모던 기하·풍경)를 먼저 고르고 난이도를 고르는 대형 직소입니다. 쉬움 384조각부터 극상 30,246조각까지 같은 그림을 나눠 맞추고, 확대·이동되는 책상 위에서 이웃 조각이 덩어리로 붙고 판에 고정됩니다. 그림과 조각 모양은 날짜를 시드로 브라우저에서 생성하는 일러스트(사진 아님)라서 서버도 DB도 이미지 파일도 없고, 진행은 브라우저에 압축해 저장합니다. 처음에는 스도쿠 등 여러 퍼즐이 한 사이트에 있었지만 직소 하나에 집중하고 별도 사이트로 분리했습니다. 극상은 한 번에 끝낼 수 없는 크기이고, 완성 시간은 직접 재 본 적이 없습니다.",
     stats: [
-      { n: "3단계", l: "같은 그림을 48 · 150 · 384조각으로" },
+      { n: "4단계", l: "384 · 1,536 · 6,144 · 30,246조각" },
       { n: "0개", l: "서버 · DB · 이미지 파일" },
-      { n: "3종", l: "날짜로 정해지는 그림 장면 (석양 호수 · 밤의 도시 · 산호초)" },
-      { n: "8종 → 1종", l: "퍼즐 종류 (대형 직소에 집중)" }
+      { n: "164 → 10ms", l: "30,246조각 한 화면 그리기 시간 (작은 화면에서 측정)" },
+      { n: "8종 → 1종", l: "퍼즐 종류 (대형 직소에 집중, 별도 사이트로 분리)" }
     ],
     pivots: [
       {
@@ -215,22 +215,22 @@ const PROJECTS = [
       ,
       {
         n: "06",
-        title: "작은 퍼즐 8종 → 대형 직소 하나",
-        body: "앞의 01~04는 퍼즐이 여러 종류였을 때의 결정입니다. 직접 써 보니 작은 퍼즐 여러 개보다 오래 붙잡고 있는 큰 그림 하나가 낫다고 판단해서, 스도쿠 등 7종을 지우고 직소를 '한 사람이 몇 시간' 걸리는 크기(384조각)까지 키웠습니다. 사용자 반응 데이터는 아직 없고 제 판단입니다. 기존 직소 엔진은 30조각이 한 화면에 다 보이는 구조라 384조각을 감당하지 못해서, 확대·이동되는 책상, 이웃 조각의 덩어리 병합, 판 고정, 가장자리만 보기, 자동 저장을 새로 만들었습니다. 이전 버전은 git 태그로 남겼고, 소요 시간은 예상일 뿐 아직 재 보지 못했습니다."
+        title: "작은 퍼즐 8종 → 대형 직소 하나, 그리고 3만 조각",
+        body: "앞의 01~04는 퍼즐이 여러 종류였을 때의 결정입니다. 직접 써 보니 작은 퍼즐 여러 개보다 오래 붙잡고 있는 큰 그림 하나가 낫다고 판단해서 스도쿠 등 7종을 지웠고, 이후 요청에 따라 쉬움이 예전 극상(384조각)이 되도록 난이도를 올려 극상은 30,246조각으로 만들었습니다(사용자 반응 데이터는 없고 제 판단입니다). 조각을 전부 미리 그리는 방식으로는 3만 개를 감당할 수 없어서, 조각 모양은 필요할 때 생성하고 보이는 조각만 비트맵을 만들어 캐시하며, 멀리서는 작은 그림이나 점 하나로 그리고, 저장은 숫자 배열로 압축했습니다. 이 중 한 화면 그리기가 약 164ms에서 약 10ms로 줄어든 것을 측정했습니다(작은 화면 기준). 화면은 테마 → 난이도 → 게임 순서의 별도 사이트로 나눴습니다."
       }
     ],
     skills: [
-      "시드 기반 절차적 생성 (PRNG) · 일러스트 장면 생성",
-      "Canvas 2D 대형 렌더링 · 확대/이동 카메라 · 컬링",
-      "조각 덩어리 병합과 판 고정 로직 (그룹 관리)",
-      "베지어 곡선 조각 모양 · 포인터/핀치 입력",
-      "서버 없는 정적 사이트 · localStorage 자동 저장",
-      "서비스 워커 · 홈 화면 설치 · 오프라인 캐시",
-      "범위 축소 결정 (8종 → 1종)",
+      "대규모 Canvas 2D 렌더링 (LOD · 캐시 · 컬링 · 픽셀 모드)",
+      "조각 덩어리 병합·판 고정 로직과 격자 색인 클릭 판정",
+      "시드 기반 절차적 일러스트 생성 (5개 테마)",
+      "성능 측정과 병목 제거 (끌 때 느림, 3만 조각 그리기)",
+      "압축 저장 (Int16 배열 + base64, 용량 초과 대응)",
+      "화면 전환이 있는 정적 SPA (해시 라우팅, 뒤로 가기)",
+      "범위 축소·분리 결정 (8종 → 1종, 별도 사이트)",
       "Vercel 배포"
     ],
     links: {
-      live: "https://daily-puzzles-rho.vercel.app"
+      live: "https://grand-jigsaw.vercel.app"
     }
   },
   {
@@ -767,9 +767,9 @@ const EVIDENCE = {
     {
       project: "daily-puzzles",
       text: {
-        ko: "기존 직소 엔진이 30조각 전체가 한 화면에 보이는 구조라 384조각을 감당하지 못한다는 점을 확인하고, 확대·이동·덩어리 병합이 되는 엔진으로 새로 만듦",
-        ja: "既存のジグソーエンジンは30ピース全体が1画面に収まる構造で384ピースには耐えられないと確認し、拡大・移動・塊の結合ができるエンジンに作り直した",
-        en: "Found that the old jigsaw engine, built for 30 pieces visible at once, could not handle 384, and rebuilt it with zoom, pan and cluster merging"
+        ko: "조각을 전부 미리 그리는 구조로는 3만 개를 감당할 수 없다는 점을 확인하고, 지연 생성·거리별 그리기·압축 저장 구조로 새로 만든 뒤 측정으로 개선을 확인",
+        ja: "ピースを全部あらかじめ描く構造では3万個に耐えられないと確認し、遅延生成・距離別描画・圧縮保存の構造に作り直して、計測で改善を確認",
+        en: "Found that pre-drawing every piece cannot handle 30,000, rebuilt it with lazy generation, distance-based drawing and compact saves, and confirmed the improvement by measuring"
       }
     },
     {

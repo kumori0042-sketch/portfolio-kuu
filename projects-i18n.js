@@ -168,12 +168,12 @@ const PROJECT_I18N = {
   "daily-puzzles": {
     ja: {
       description:
-        "毎日みんなに同じ絵が出るジグソーサイトです。同じ絵を48・150・384ピースから選んで組み立て、拡大・移動できる机の上にピースが散らばった状態から始めます。隣のピースを合わせると1つの塊として動き、塊が正しい位置の近くに来ると盤に固定されます。絵とピースの形は日付をシードにブラウザ上で生成する（イラスト調で写真ではない）ため、サーバーもDBも画像ファイルもなく、進行はブラウザに自動保存されます。最初は数独など複数のパズルがありましたが、大きなジグソー1つに集中するため残りは削除しました。極上（384ピース）の「約3時間」は目安であり、実際に計った時間ではありません。",
+        "テーマ（サイバーパンク・シンセウェーブ・宇宙の星雲・モダン幾何・風景）を先に選び、次に難易度を選ぶ大型ジグソーです。かんたん384ピースから極上30,246ピースまで同じ絵を分けて組み立て、拡大・移動できる机の上で隣のピースが塊としてくっつき、盤に固定されます。絵とピースの形は日付をシードにブラウザ上で生成するイラスト（写真ではない）なので、サーバーもDBも画像ファイルもなく、進行はブラウザに圧縮して保存します。最初は数独など複数のパズルが1つのサイトにありましたが、ジグソー1つに集中して別サイトに分けました。極上は一度で終えられないサイズで、完成にかかる時間は実際に計ったことがありません。",
       stats: [
-        { n: "3段階", l: "同じ絵を48・150・384ピースで" },
+        { n: "4段階", l: "384・1,536・6,144・30,246ピース" },
         { n: "0個", l: "サーバー · DB · 画像ファイル" },
-        { n: "3種", l: "日付で決まる絵の場面（夕焼けの湖・夜の街・サンゴ礁）" },
-        { n: "8種 → 1種", l: "パズルの種類（大型ジグソーに集中）" }
+        { n: "164 → 10ms", l: "30,246ピースを1画面に描く時間（小さい画面で計測）" },
+        { n: "8種 → 1種", l: "パズルの種類（大型ジグソーに集中し、別サイトに分離）" }
       ],
       pivots: [
         {
@@ -197,29 +197,29 @@ const PROJECT_I18N = {
           body: "ジグソーに写真を使うと著作権とファイル管理がついてくるため、日付をシードに絵を生成し、ピース同士が区別できるよう単色の領域ができないテクスチャ層を加えました。ピースの形は、各辺の曲線を一度だけ作って両側のピースが（片方は逆向きで）共有するので、隙間なく噛み合います。同じ絵の生成器をスライドパズルにも再利用しました。"
         },
         {
-          title: "小さなパズル8種 → 大型ジグソー1つ",
-          body: "前の01〜04は、パズルが複数あったときの判断です。実際に使ってみて、小さなパズルをたくさん並べるより、長く向き合える大きな絵のほうがよいと判断し、数独など7種を削除して、ジグソーを「1人で数時間」かかるサイズ（384ピース）まで大きくしました。ユーザーの反応データはまだなく、私の判断です。既存のジグソーエンジンは30ピースが1画面に収まる構造で384ピースには耐えられなかったため、拡大・移動できる机、隣のピースの塊の結合、盤への固定、外枠のみ表示、自動保存を新しく作りました。以前の版はgitタグで残してあり、所要時間は目安でまだ計れていません。"
+          title: "小さなパズル8種 → 大型ジグソー1つ、そして3万ピース",
+          body: "前の01〜04は、パズルが複数あったときの判断です。実際に使ってみて、小さなパズルをたくさん並べるより、長く向き合える大きな絵のほうがよいと判断して数独など7種を削除し、その後の要望でかんたんが以前の極上（384ピース）になるよう難易度を上げ、極上は30,246ピースにしました（ユーザーの反応データはなく、私の判断です）。ピースを全部あらかじめ描く方式では3万個に耐えられないため、ピースの形は必要なときに生成し、見えるピースだけビットマップを作ってキャッシュし、遠くからは小さな絵や1点で描き、保存は数値配列に圧縮しました。1画面の描画が約164msから約10msになったことを計測で確認しました（小さい画面での値）。画面はテーマ → 難易度 → ゲームの順の別サイトに分けました。"
         }
       ],
       skills: [
-        "シード付き手続き生成（PRNG）・イラスト場面の生成",
-        "Canvas 2Dの大型描画・拡大/移動カメラ・カリング",
-        "ピースの塊の結合と盤への固定ロジック（グループ管理）",
-        "ベジェ曲線のピース形状・ポインター/ピンチ入力",
-        "サーバーなしの静的サイト · localStorageの自動保存",
-        "Service Worker · ホーム画面追加 · オフラインキャッシュ",
-        "範囲を絞る意思決定（8種 → 1種）",
+        "大規模Canvas 2D描画（LOD・キャッシュ・カリング・ピクセルモード）",
+        "ピースの塊の結合・盤への固定ロジックと格子インデックスによる当たり判定",
+        "シード付き手続き生成のイラスト（5テーマ）",
+        "性能計測とボトルネックの解消（ドラッグが遅い、3万ピースの描画）",
+        "圧縮保存（Int16配列＋base64、容量超過への対応）",
+        "画面遷移のある静的SPA（ハッシュルーティング、戻る操作）",
+        "範囲を絞る・分離する意思決定（8種 → 1種、別サイト）",
         "Vercelデプロイ"
       ]
     },
     en: {
       description:
-        "A jigsaw site where everyone gets the same picture each day. You choose to assemble it in 48, 150 or 384 pieces, starting with pieces scattered on a table you can zoom and pan. Neighboring pieces join into a cluster that moves together, and a cluster placed near its spot locks onto the board. The picture and piece shapes are generated in the browser from the date (illustration-style, not photos), so there is no server, database or image file, and progress is saved automatically in the browser. It started with several puzzles such as Sudoku, but I removed the rest to focus on one large jigsaw. The 'about 3 hours' for Extreme (384 pieces) is an estimate, not a measured time.",
+        "A large jigsaw where you pick a theme first (cyberpunk, synthwave, space nebula, modern geometry, landscape) and then a difficulty. The same picture is split from 384 pieces up to 30,246, and on a zoomable, pannable table neighboring pieces join into clusters and lock onto the board. The picture and piece shapes are illustrations generated in the browser from the date (not photos), so there is no server, database or image file, and progress is saved compactly in the browser. It started as several puzzles such as Sudoku on one site, but I focused on one jigsaw and split it into its own site. Extreme is a size you cannot finish in one sitting, and I have never measured how long completing it takes.",
       stats: [
-        { n: "3 levels", l: "The same picture in 48, 150 or 384 pieces" },
+        { n: "4 levels", l: "384, 1,536, 6,144 and 30,246 pieces" },
         { n: "0", l: "Servers, databases and image files" },
-        { n: "3", l: "Date-driven picture scenes (sunset lake, night city, coral reef)" },
-        { n: "8 → 1", l: "Kinds of puzzle (focused on the large jigsaw)" }
+        { n: "164 → 10 ms", l: "Time to draw 30,246 pieces on one screen (measured on a small viewport)" },
+        { n: "8 → 1", l: "Kinds of puzzle (focused on the large jigsaw, split into its own site)" }
       ],
       pivots: [
         {
@@ -243,18 +243,18 @@ const PROJECT_I18N = {
           body: "Using photos for the jigsaw would bring copyright and file management, so I generate the picture from the date seed and add a texture layer so no solid-color areas make pieces indistinguishable. Each edge's curve is created once and shared by both neighboring pieces (one of them reversed), so they interlock with no gaps. The same picture generator is reused for the slide puzzle."
         },
         {
-          title: "Eight small puzzles → one large jigsaw",
-          body: "Decisions 01–04 above were made when the site had several puzzles. Using it myself, I judged that one big picture you stay with beats many small puzzles, so I removed seven puzzles such as Sudoku and grew the jigsaw to a size meant to take one person hours (384 pieces). There is no usage data yet; this is my call. The old jigsaw engine assumed 30 pieces visible at once and could not handle 384, so I built a zoomable, pannable table, cluster merging for neighboring pieces, locking onto the board, an edges-only view and autosave. The previous version is kept as a git tag, and the time estimate has not been measured yet."
+          title: "Eight small puzzles → one large jigsaw, then 30,000 pieces",
+          body: "Decisions 01–04 above were made when the site had several puzzles. Using it myself, I judged that one big picture you stay with beats many small puzzles and removed seven; on a later request I raised the difficulty so Easy is the old Extreme (384 pieces) and Extreme is 30,246 pieces (no usage data; my call). Pre-drawing every piece cannot handle 30,000, so shapes are generated on demand, bitmaps are made and cached only for visible pieces, far views draw a small image or a single dot, and saves are packed into number arrays. I measured drawing one screen dropping from about 164 ms to about 10 ms (on a small viewport). The flow is now a separate site with theme → difficulty → game screens."
         }
       ],
       skills: [
-        "Seeded procedural generation (PRNG) and illustrated scene generation",
-        "Large Canvas 2D rendering, zoom/pan camera and culling",
-        "Piece-cluster merging and board-locking logic (group management)",
-        "Bezier piece shapes and pointer/pinch input",
-        "Serverless static site with localStorage autosave",
-        "Service worker, home-screen install and offline cache",
-        "Scope-narrowing decision (8 puzzles → 1)",
+        "Large-scale Canvas 2D rendering (LOD, caching, culling, pixel mode)",
+        "Piece-cluster merging, board locking and grid-indexed hit testing",
+        "Seeded procedural illustration (five themes)",
+        "Performance measurement and bottleneck removal (slow dragging, drawing 30,000 pieces)",
+        "Compact saves (Int16 arrays + base64, handling storage limits)",
+        "Static SPA with screen transitions (hash routing, back button)",
+        "Scope-narrowing and splitting decisions (8 puzzles → 1, separate site)",
         "Vercel deployment"
       ]
     }
